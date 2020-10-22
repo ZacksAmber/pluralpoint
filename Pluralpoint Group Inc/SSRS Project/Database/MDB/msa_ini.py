@@ -30,47 +30,10 @@ Prerequisite:
 
 """
 Sample .ini file:
-
-[MoveDB MSAccess to MySQL]
-  sourcefilename=D:\Users\zacks\Desktop\xtreme.mdb
-  sourceusername=
-  sourcepassword=
-  sourcesystemdatabase=
-  destinationmethod=DIRECT
-  destinationhost=mysql-xtr.c9d5goyg8g3a.us-east-1.rds.amazonaws.com
-  destinationport=3306
-  destinationusername=admin
-  destinationpassword=myPassWord_123
-  destinationdatabase=testdb2
-  storageengine=InnoDB
-  destinationdumpfilename=
-  sourcetables[]="Credit","Credit\Credit Authorization Number","Credit\Customer Credit ID","Credit\Amount","Customer","Customer\Customer ID","Customer\Customer Credit ID","Customer\Customer Name","Customer\Contact First Name","Customer\Contact Last Name","Customer\Contact Title","Customer\Contact Position","Customer\Last Year Sales","Customer\Address1","Customer\Address2","Customer\City","Customer\negion","Customer\Country","Customer\Postal Code","Customer\Email","Customer\Web Site","Customer\Phone","Customer\Fax","Employee","Employee\Employee ID","Employee\Supervisor ID","Employee\Last Name","Employee\First Name","Employee\Position","Employee\Birth Date","Employee\Hire Date","Employee\Home Phone","Employee\Extension","Employee\Photo","Employee\notes","Employee\neports To","Employee\Salary","Employee\SSN","Employee\Emergency Contact First Name","Employee\Emergency Contact Last Name","Employee\Emergency Contact Relationship","Employee\Emergency Contact Phone","Employee Addresses","Employee Addresses\Employee ID","Employee Addresses\Address1","Employee Addresses\Address2","Employee Addresses\City","Employee Addresses\negion","Employee Addresses\Country","Employee Addresses\Postal Code","Employee Addresses\Emergency Contact Address1","Employee Addresses\Emergency Contact Address2","Employee Addresses\Emergency Contact City","Employee Addresses\Emergency Contact Region","Employee Addresses\Emergency Contact Country","Employee Addresses\Emergency Contact Postal Code","Financials","Financials\Company ID","Financials\Statement Date","Financials\Cash","Financials\Account Receivable","Financials\Inventories","Financials\Other Current Assets","Financials\Land","Financials\Buildings","Financials\Machinery etc","Financials\Accumulated Depreciation","Financials\Other Assets","Financials\Accounts Payable","Financials\Accrued Liabilities","Financials\Accrued Income Taxes","Financials\notes Payable","Financials\Deferred Income Taxes","Financials\Preferred Stock","Financials\Common Stock","Financials\netained Earnings","Financials\net Sales","Financials\COGS","Financials\General Expenses","Financials\Depreciation","Financials\Interest Expenses","Financials\Other Income Expenses","Financials\Taxes","Orders","Orders\Order ID","Orders\Order Amount","Orders\Customer ID","Orders\Employee ID","Orders\Order Date","Orders\nequired Date","Orders\Ship Date","Orders\Courier Website","Orders\Ship Via","Orders\Shipped","Orders\PO","Orders\Payment Received","Orders Detail","Orders Detail\Order ID","Orders Detail\Product ID","Orders Detail\Unit Price","Orders Detail\Quantity","Product","Product\Product ID","Product\Product Name","Product\Color","Product\Size","Product\MF","Product\Price","Product\Product Type ID","Product\Product Class","Product\Supplier ID","Product Type","Product Type\Product Type ID","Product Type\Product Type Name","Product Type\Description","Product Type\Picture","Purchases","Purchases\Product ID","Purchases\neorder Level","Purchases\Units in Stock","Purchases\Units on Order","Purchases\PO","Purchases\Order Date","Purchases\Expected Receiving Date","Purchases\neceived","Purchases\Paid","Supplier","Supplier\Supplier ID","Supplier\Supplier Name","Supplier\Address1","Supplier\Address2","Supplier\City","Supplier\negion","Supplier\Country","Supplier\Postal Code","Supplier\Phone","Xtreme Info","Xtreme Info\Xtreme Name","Xtreme Info\Address","Xtreme Info\City","Xtreme Info\Province","Xtreme Info\Country","Xtreme Info\Postal Code","Xtreme Info\Phone","Xtreme Info\Fax","Xtreme Info\Logo B&W","Xtreme Info\Logo Color"
-  dropdatabase=1
-  createtables=1
-  unicode=1
-  autocommit=1
-  transferdefaultvalues=1
-  transferindexes=1
-  transferautonumbers=1
-  transferrecords=1
-  columnlist=1
-  tableprefix=
-  negativeboolean=0
-  ignorelargeblobs=0
-  memotype=LONGTEXT
-  datetimetype=DATETIME
-  """
-'''
-# Modules
-import os
-import sys
-import re
-import numpy as np
-
-
-
-file = open(sourcePath, "r")
-'''
+- MySQL: https://raw.githubusercontent.com/ZacksAmber/Work/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini/msa2mysql.ini?token=AF3F6DHYHL4NB6TIOAY7THK7SDRRE
+- MSSQL: https://raw.githubusercontent.com/ZacksAmber/Work/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini/msa2mssql.ini?token=AF3F6DE5DA63MVNLP52C37K7SDRLM
+- PostgreSQL: https://raw.githubusercontent.com/ZacksAmber/Work/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini/msa2prgsql.ini?token=AF3F6DDMZLHNFDJW2DIICJS7SDRUA
+"""
 
 # %reset -f
 
@@ -195,7 +158,7 @@ windowsPath = input("Please input your Windows .mdb files directory: ")
 
 sourcePath = os.getcwd()
 
-# Time
+# Tim
 # windowsPath = D:\xtrdb\multi-mdbs
 windowsPath = input("Please input your Windows .mdb files directory: ")
 
