@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 ################################################################################
-# File Name: mdb_ini.py                                                        #
-# File Path: /mdb_ini.py                                                       #
+# File Name: mdb_ini_Generator.py                                              #
+# File Path: /mdb_ini_Generator.py                                             #
 # Created Date: 2020-10-19                                                     #
 # -----                                                                        #
 # Company: Pluralpoint Group Inc.                                              #
@@ -11,11 +11,12 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-10-19 3:28:02 pm                                         #
+# Last Modified: 2020-10-23 8:41:57 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
 ################################################################################
+
 
 """
 Description:
@@ -29,10 +30,10 @@ Prerequisite:
 """
 
 """
-Sample .ini file:
-- MySQL: https://raw.githubusercontent.com/ZacksAmber/Work/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini/msa2mysql.ini?token=AF3F6DHYHL4NB6TIOAY7THK7SDRRE
-- MSSQL: https://raw.githubusercontent.com/ZacksAmber/Work/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini/msa2mssql.ini?token=AF3F6DE5DA63MVNLP52C37K7SDRLM
-- PostgreSQL: https://raw.githubusercontent.com/ZacksAmber/Work/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini/msa2prgsql.ini?token=AF3F6DDMZLHNFDJW2DIICJS7SDRUA
+Sample .ini files:
+- MySQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mysql.ini
+- MSSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mssql.ini
+- PostgreSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2prgsql.ini
 """
 
 # %reset -f
@@ -42,7 +43,7 @@ import sys
 import re
 import numpy as np
 
-class msa_ini:
+class mdb_ini_Generator:
     def __init__(self):
         pass
 
@@ -75,6 +76,61 @@ class msa_ini:
             self.sqlTableIndex.append([s, e])
 
         return self.sqlTableIndex
+
+    def getUserInput(self):
+        '''
+        sourcePath = input("Please input your .mdb files directory: ")
+        windowsPath = input("Please input your Windows .mdb files directory: ")
+        '''
+        
+        # define the python working directory
+        self.sourcePath = os.getcwd()
+
+        # Tim
+        # define the the .mdb files' path in Windows
+        #self.windowsPath = 'D:\xtrdb\multi-mdbs'
+        self.windowsPath = input("Please input your Windows .mdb files directory: ")
+        if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
+            self.windowsPath += '\\'
+
+        # get user target DB type
+        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
+        
+        self.infoCheck()
+
+    def infoCheck(self):
+        # find all .mdb files, and store their name with .mdb in list self.mdbFiles
+        self.mdbFiles = []
+        for i in os.listdir(self.sourcePath):
+            if re.findall("[.]mdb$", i) != []:
+                self.mdbFiles.append(i)
+
+        # run mdbtools for generating schemas, and give the schemas a extension with .txt
+        self.mdbSchemas = []
+        for self.mdbFile in self.mdbFiles:
+            self.mdbTxt = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
+            self.mdbTxt = self.mdbTxt[0] # get the first item, which is the mdb name
+            self.mdbTxt += '.txt' # add the extension .txt to schema files
+            self.mdbSchemas.append(self.mdbTxt)
+            os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdbTxt))
+
+        if self.mdbSchemas == []:
+            print("Please input correct .mdb files directory!")
+            sys.exit()
+        else:
+            for self.mdbSchema in self.mdbSchemas:
+                self.readFile()
+                self.getSchemaIndex()
+                self.getTableStructure()
+                if self.DB == '1':
+                    self.iniMySQL()
+                elif self.DB == '2':
+                    self.iniMSSQL()
+                elif self.DB == '3':
+                    self.iniPostgreSQL()
+                else:
+                    print("Please input correct target DB ID!")
+                    sys.exit() 
 
     # get the full indices from start index and end index, then get the table name and column name.
     def getTableStructure(self):
@@ -223,88 +279,3 @@ class msa_ini:
             f.write("  datetimetype=TIMESTAMP\n")
         
         f.close()
-
-    def getUserInput(self):
-        '''
-        sourcePath = input("Please input your .mdb files directory: ")
-        windowsPath = input("Please input your Windows .mdb files directory: ")
-        '''
-        
-        # define the python working directory
-        self.sourcePath = os.getcwd()
-
-        # Tim
-        # define the the .mdb files' path in Windows
-        #self.windowsPath = 'D:\xtrdb\multi-mdbs'
-        self.windowsPath = input("Please input your Windows .mdb files directory: ")
-        if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
-            self.windowsPath += '\\'
-
-        # get user target DB type
-        self.DB = input("Input the ID of your target DB:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\n")
-        
-        self.infoCheck()
-
-    def infoCheck(self):
-        # find all .mdb files, and store their name with .mdb in list self.mdbFiles
-        self.mdbFiles = []
-        for i in os.listdir(self.sourcePath):
-            if re.findall("[.]mdb$", i) != []:
-                self.mdbFiles.append(i)
-
-        # run mdbtools for generating schemas, and give the schemas a extension with .txt
-        self.mdbSchemas = []
-        for self.mdbFile in self.mdbFiles:
-            self.mdbTxt = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
-            self.mdbTxt = self.mdbTxt[0] # get the first item, which is the mdb name
-            self.mdbTxt += '.txt' # add the extension .txt to schema files
-            self.mdbSchemas.append(self.mdbTxt)
-            os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdbTxt))
-
-        if self.mdbSchemas == []:
-            print("Please input correct .mdb files directory!")
-            sys.exit()
-        else:
-            for self.mdbSchema in self.mdbSchemas:
-                self.readFile()
-                self.getSchemaIndex()
-                self.getTableStructure()
-                if self.DB == '1':
-                    self.iniMySQL()
-                elif self.DB == '2':
-                    self.iniMSSQL()
-                elif self.DB == '3':
-                    self.iniPostgreSQL()
-                else:
-                    print("Please input correct target DB ID!")
-                    sys.exit() 
-
-obj = msa_ini()            
-obj.getUserInput()
-
-'''
-
-            
-    # run all functions
-    def iniGenerate(self):
-        self.readFile()
-        self.getSchemaIndex()
-        self.getTableStructure()
-        if s == mysql:
-            self.iniMySQL()
-        elif 
-
-
-
-# Main Function
-
-
-
-if mdbSchemas == []:
-    print("Please input correct .mdb files directory!")
-    sys.exit()
-else:
-    for mdbSchema in mdbSchemas:
-        obj = msa2mys(mdbSchema)            
-        obj.iniGenerate()
-'''
