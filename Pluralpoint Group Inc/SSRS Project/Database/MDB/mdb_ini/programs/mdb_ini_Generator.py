@@ -37,16 +37,6 @@ Sample .ini files:
 
 # %reset -f
 
-'''
-os.getcwd()
-os.chdir("..")
-rootDir = os.getcwd()
-mdbDir = rootDir + "/mdb/"
-os.listdir()
-import shutil
-shutil.move("3sql.sh", "2sql.sh")
-'''
-
 import os
 import sys
 import shutil # module for moving file
@@ -60,17 +50,15 @@ class mdb_ini_Generator:
 
         wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2 .Input anything to quit.\nYour input: ")
         
-        if wdCheck in ["y", "Y"] == False:
+        if wdCheck not in ["y", "Y"]:
             sys.exit()
         
-        if "mdb" in os.listdir(self.rootDir) is False:
+        if "mdb" not in os.listdir(self.rootDir):
             print("Please make a directory with the name 'mdb' that in the partent directory of this program!")
             sys.exit()
 
     def main(self):
-        # define the python working directory
-        # define the root working directory
-
+        # define the windowsPath for the convertor loading mdb files.
         self.windowsPath = "W:\My Documents\mdb_ini\mdb"
         # self.windowsPath = input("Please input your Windows .mdb files directory: ")
         if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
@@ -97,10 +85,11 @@ class mdb_ini_Generator:
                 self.mdbFiles.append(i)
 
     def generateSchemas(self):
+        os.chdir(self.rootDir)
         # run mdbtools for generating schemas, and give the schemas a extension with .txt
-        if "schemas" in os.listdir(self.rootDir) == False:
+        if ("schemas" in os.listdir(self.rootDir)) == False:
             os.mkdir("schemas")
-        
+
         self.schemasDir = self.rootDir + "/schemas/"
         os.chdir(self.schemasDir)
 
@@ -188,7 +177,8 @@ class mdb_ini_Generator:
 
     # generate .ini file for MySQL
     def iniMySQL(self):
-        if "mysql_ini" in os.listdir(self.rootDir) == False:
+        os.chdir(self.rootDir)
+        if "mysql_ini" not in os.listdir(self.rootDir):
             os.mkdir("mysql_ini")
         
         mysql_iniDir = self.rootDir + "/mysql_ini/"
@@ -235,7 +225,8 @@ class mdb_ini_Generator:
 
     # generate .ini file for MSSQL
     def iniMSSQL(self):
-        if "mssql_ini" in os.listdir(self.rootDir) == False:
+        os.chdir(self.rootDir)
+        if "mssql_ini" not in os.listdir(self.rootDir):
             os.mkdir("mssql_ini")
         
         mssql_iniDir = self.rootDir + "/mssql_ini/"
@@ -283,11 +274,12 @@ class mdb_ini_Generator:
     # connection string: Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
     # select statement: SELECT * FROM "table_name";
     def iniPostgreSQL(self):
-        if "postgresql_ini" in os.listdir(self.rootDir) == False:
+        os.chdir(self.rootDir)
+        if "postgresql_ini" not in os.listdir(self.rootDir):
             os.mkdir("postgresql_ini")
         
         postgresql_iniDir = self.rootDir + "/postgresql_ini/"
-        os.chdir(postgresql_ini)
+        os.chdir(postgresql_iniDir)
 
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
 
@@ -327,3 +319,7 @@ class mdb_ini_Generator:
             f.write("  datetimetype=TIMESTAMP\n")
         
         f.close()
+
+# run the program
+obj = mdb_ini_Generator()            
+obj.main() # execute the program
