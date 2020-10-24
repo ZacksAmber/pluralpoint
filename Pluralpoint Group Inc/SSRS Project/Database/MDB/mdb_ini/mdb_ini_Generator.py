@@ -17,7 +17,6 @@
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
 ################################################################################
 
-
 """
 Description:
 1. This program will generate .ini files
@@ -46,6 +45,65 @@ import numpy as np
 class mdb_ini_Generator:
     def __init__(self):
         pass
+
+    def getUserInput(self):
+        '''
+        sourcePath = input("Please input your .mdb files directory: ")
+        windowsPath = input("Please input your Windows .mdb files directory: ")
+        '''
+        
+        # define the python working directory
+        self.sourcePath = os.getcwd()
+
+        # Tim
+        # define the the .mdb files' path in Windows
+        #self.windowsPath = 'D:\xtrdb\multi-mdbs'
+        self.windowsPath = input("Please input your Windows .mdb files directory: ")
+        if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
+            self.windowsPath += '\\'
+
+        # get user target DB type
+        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
+
+        self.getMdbFiles()
+        self.infoCheck()
+    
+    def getMdbFiles(self):
+        # find all .mdb files, and store their name with .mdb in list self.mdbFiles
+        self.mdbFiles = []
+        for i in os.listdir(self.sourcePath):
+            if re.findall("[.]mdb$", i) != []:
+                self.mdbFiles.append(i)
+
+        if self.mdbFiles == []:
+            print("Please input correct .mdb files directory!")
+            sys.exit()
+        else:
+            return(self.mdbFiles)
+
+    def infoCheck(self):
+        # run mdbtools for generating schemas, and give the schemas a extension with .txt
+        self.mdbSchemas = []
+        for self.mdbFile in self.mdbFiles:
+            self.mdbTxt = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
+            self.mdbTxt = self.mdbTxt[0] # get the first item, which is the mdb name
+            self.mdbTxt += '.txt' # add the extension .txt to schema files
+            self.mdbSchemas.append(self.mdbTxt)
+            os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdbTxt))
+
+        for self.mdbSchema in self.mdbSchemas:
+            self.readFile()
+            self.getSchemaIndex()
+            self.getTableStructure()
+            if self.DB == '1':
+                self.iniMySQL()
+            elif self.DB == '2':
+                self.iniMSSQL()
+            elif self.DB == '3':
+                self.iniPostgreSQL()
+            else:
+                print("Please input correct target DB ID!")
+                sys.exit() 
 
     def readFile(self):
         # Read the schema file
@@ -76,61 +134,6 @@ class mdb_ini_Generator:
             self.sqlTableIndex.append([s, e])
 
         return self.sqlTableIndex
-
-    def getUserInput(self):
-        '''
-        sourcePath = input("Please input your .mdb files directory: ")
-        windowsPath = input("Please input your Windows .mdb files directory: ")
-        '''
-        
-        # define the python working directory
-        self.sourcePath = os.getcwd()
-
-        # Tim
-        # define the the .mdb files' path in Windows
-        #self.windowsPath = 'D:\xtrdb\multi-mdbs'
-        self.windowsPath = input("Please input your Windows .mdb files directory: ")
-        if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
-            self.windowsPath += '\\'
-
-        # get user target DB type
-        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
-        
-        self.infoCheck()
-
-    def infoCheck(self):
-        # find all .mdb files, and store their name with .mdb in list self.mdbFiles
-        self.mdbFiles = []
-        for i in os.listdir(self.sourcePath):
-            if re.findall("[.]mdb$", i) != []:
-                self.mdbFiles.append(i)
-
-        # run mdbtools for generating schemas, and give the schemas a extension with .txt
-        self.mdbSchemas = []
-        for self.mdbFile in self.mdbFiles:
-            self.mdbTxt = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
-            self.mdbTxt = self.mdbTxt[0] # get the first item, which is the mdb name
-            self.mdbTxt += '.txt' # add the extension .txt to schema files
-            self.mdbSchemas.append(self.mdbTxt)
-            os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdbTxt))
-
-        if self.mdbSchemas == []:
-            print("Please input correct .mdb files directory!")
-            sys.exit()
-        else:
-            for self.mdbSchema in self.mdbSchemas:
-                self.readFile()
-                self.getSchemaIndex()
-                self.getTableStructure()
-                if self.DB == '1':
-                    self.iniMySQL()
-                elif self.DB == '2':
-                    self.iniMSSQL()
-                elif self.DB == '3':
-                    self.iniPostgreSQL()
-                else:
-                    print("Please input correct target DB ID!")
-                    sys.exit() 
 
     # get the full indices from start index and end index, then get the table name and column name.
     def getTableStructure(self):
