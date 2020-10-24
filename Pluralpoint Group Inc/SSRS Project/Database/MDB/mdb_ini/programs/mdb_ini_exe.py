@@ -20,4 +20,7 @@
 from mdb_ini_Generator import mdb_ini_Generator
 
 obj = mdb_ini_Generator()            
-obj.getUserInput()
+obj.getUserInput() # runing the program
+
+mdbFiles = obj.getMdbFiles() # get the .mdb files name
+from 
