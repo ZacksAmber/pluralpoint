@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-10-23 8:41:57 pm                                         #
+# Last Modified: 2020-10-23 10:14:03 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -37,28 +37,42 @@ Sample .ini files:
 
 # %reset -f
 
+'''
+os.getcwd()
+os.chdir("..")
+rootDir = os.getcwd()
+mdbDir = rootDir + "/mdb/"
+os.listdir()
+import shutil
+shutil.move("3sql.sh", "2sql.sh")
+'''
+
 import os
 import sys
+import shutil # module for moving file
 import re
 import numpy as np
 
 class mdb_ini_Generator:
     def __init__(self):
-        pass
+        os.chdir("..")
+        self.rootDir = os.getcwd()
 
-    def getUserInput(self):
-        '''
-        sourcePath = input("Please input your .mdb files directory: ")
-        windowsPath = input("Please input your Windows .mdb files directory: ")
-        '''
+        wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2 .Input anything to quit.\nYour input: ")
         
-        # define the python working directory
-        self.sourcePath = os.getcwd()
+        if wdCheck in ["y", "Y"] == False:
+            sys.exit()
+        
+        if "mdb" in os.listdir(self.rootDir) is False:
+            print("Please make a directory with the name 'mdb' that in the partent directory of this program!")
+            sys.exit()
 
-        # Tim
-        # define the the .mdb files' path in Windows
-        #self.windowsPath = 'D:\xtrdb\multi-mdbs'
-        self.windowsPath = input("Please input your Windows .mdb files directory: ")
+    def main(self):
+        # define the python working directory
+        # define the root working directory
+
+        self.windowsPath = "W:\My Documents\mdb_ini\mdb"
+        # self.windowsPath = input("Please input your Windows .mdb files directory: ")
         if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
             self.windowsPath += '\\'
 
@@ -66,23 +80,32 @@ class mdb_ini_Generator:
         self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
 
         self.getMdbFiles()
-        self.infoCheck()
+        self.generateSchemas()
     
     def getMdbFiles(self):
         # find all .mdb files, and store their name with .mdb in list self.mdbFiles
+        self.mdbDir = self.rootDir+"/mdb/"
+        os.chdir(self.mdbDir)
+     
+        if os.listdir(self.mdbDir) == []:
+            print("Please put the .mdb files in mdb directory that in the parent directory of this program!")
+            sys.exit()
+
         self.mdbFiles = []
-        for i in os.listdir(self.sourcePath):
+        for i in os.listdir(self.mdbDir):
             if re.findall("[.]mdb$", i) != []:
                 self.mdbFiles.append(i)
 
-        if self.mdbFiles == []:
-            print("Please input correct .mdb files directory!")
-            sys.exit()
-        else:
-            return(self.mdbFiles)
-
-    def infoCheck(self):
+    def generateSchemas(self):
         # run mdbtools for generating schemas, and give the schemas a extension with .txt
+        if "schemas" in os.listdir(self.rootDir) == False:
+            os.mkdir("schemas")
+        
+        self.schemasDir = self.rootDir + "/schemas/"
+        os.chdir(self.schemasDir)
+
+        # give mdb schemas extensions with .txt
+        os.chdir(self.mdbDir)
         self.mdbSchemas = []
         for self.mdbFile in self.mdbFiles:
             self.mdbTxt = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
@@ -90,9 +113,11 @@ class mdb_ini_Generator:
             self.mdbTxt += '.txt' # add the extension .txt to schema files
             self.mdbSchemas.append(self.mdbTxt)
             os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdbTxt))
+            shutil.move(self.mdbTxt, self.schemasDir+self.mdbTxt)
 
+        os.chdir(self.schemasDir)
         for self.mdbSchema in self.mdbSchemas:
-            self.readFile()
+            self.loadSchemas()
             self.getSchemaIndex()
             self.getTableStructure()
             if self.DB == '1':
@@ -105,18 +130,17 @@ class mdb_ini_Generator:
                 print("Please input correct target DB ID!")
                 sys.exit() 
 
-    def readFile(self):
+    def loadSchemas(self):
+        os.chdir(self.schemasDir)
         # Read the schema file
         file = open(self.mdbSchema, "r")
         self.schema = file.read().splitlines()
         file.close()
-        
-        return self.schema
 
     # get the start index & end index of each table
     def getSchemaIndex(self):
         # Grab the index of "CRATE TABLE" statement
-        startIndex = [] # startIndex: in schema, the items start with "CREAT" is a create table statement block
+        startIndex = [] # startIndex: in schema, the items start with "CREATE" is a create table statement block
         for i in self.schema:
             if re.findall("^CREATE", i) != []:
                 startIndex.append(self.schema.index(i))
@@ -164,7 +188,14 @@ class mdb_ini_Generator:
 
     # generate .ini file for MySQL
     def iniMySQL(self):
+        if "mysql_ini" in os.listdir(self.rootDir) == False:
+            os.mkdir("mysql_ini")
+        
+        mysql_iniDir = self.rootDir + "/mysql_ini/"
+        os.chdir(mysql_iniDir)
+
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
+
         with open(self.mdbSchema + "_mysql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MySQL]\n")
             f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
@@ -204,7 +235,14 @@ class mdb_ini_Generator:
 
     # generate .ini file for MSSQL
     def iniMSSQL(self):
+        if "mssql_ini" in os.listdir(self.rootDir) == False:
+            os.mkdir("mssql_ini")
+        
+        mssql_iniDir = self.rootDir + "/mssql_ini/"
+        os.chdir(mssql_iniDir)
+
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
+
         with open(self.mdbSchema + "_mssql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MSSQL]\n")
             f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
@@ -245,7 +283,14 @@ class mdb_ini_Generator:
     # connection string: Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
     # select statement: SELECT * FROM "table_name";
     def iniPostgreSQL(self):
+        if "postgresql_ini" in os.listdir(self.rootDir) == False:
+            os.mkdir("postgresql_ini")
+        
+        postgresql_iniDir = self.rootDir + "/postgresql_ini/"
+        os.chdir(postgresql_ini)
+
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
+
         with open(self.mdbSchema + "_postgresql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to PostgreSQL]\n")
             f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")

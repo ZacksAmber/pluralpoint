@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-10-23 8:43:01 pm                                         #
+# Last Modified: 2020-10-23 10:14:29 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -20,7 +20,4 @@
 from mdb_ini_Generator import mdb_ini_Generator
 
 obj = mdb_ini_Generator()            
-obj.getUserInput() # runing the program
-
-mdbFiles = obj.getMdbFiles() # get the .mdb files name
-from 
+obj.main() # runing the program

@@ -1,0 +1,459 @@
+-- ----------------------------------------------------------
+-- MDB Tools - A library for reading MS Access database files
+-- Copyright (C) 2000-2011 Brian Bruns and others.
+-- Files in libmdb are licensed under LGPL and the utilities under
+-- the GPL, see COPYING.LIB and COPYING files respectively.
+-- Check out http://mdbtools.sourceforge.net
+-- ----------------------------------------------------------
+
+-- That file uses encoding UTF-8
+
+CREATE TABLE [Account]
+ (
+	[Account Number]			Text (16) NOT NULL, 
+	[Account Heading Number]			Text (16), 
+	[Account Type ID]			Integer NOT NULL, 
+	[Account Class ID]			Integer NOT NULL, 
+	[Account Name]			Text (100) NOT NULL, 
+	[Description]			Text (200), 
+	[Account Balance]			Currency NOT NULL
+);
+
+CREATE TABLE [Account Class]
+ (
+	[Account Class ID]			Integer NOT NULL, 
+	[Account Class]			Text (100) NOT NULL
+);
+
+CREATE TABLE [Account Heading]
+ (
+	[Account Heading Number]			Text (16) NOT NULL, 
+	[Account Heading Name]			Text (100) NOT NULL
+);
+
+CREATE TABLE [Account Type]
+ (
+	[Account Type ID]			Integer NOT NULL, 
+	[Account Type]			Text (40) NOT NULL
+);
+
+CREATE TABLE [Bill]
+ (
+	[Bill #]			Long Integer NOT NULL, 
+	[Vendor Name]			Text (100) NOT NULL, 
+	[Statement Date]			DateTime NOT NULL, 
+	[Paid Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Paid]			Boolean NOT NULL, 
+	[Tax]			Currency NOT NULL
+);
+
+CREATE TABLE [Credit]
+ (
+	[Credit Authorization Number]			Text (20), 
+	[Customer Credit ID]			Long Integer, 
+	[Amount]			Currency
+);
+
+CREATE TABLE [Customer]
+ (
+	[Customer ID]			Long Integer, 
+	[Customer Credit ID]			Long Integer, 
+	[Customer Name]			Text (80), 
+	[Contact First Name]			Text (60), 
+	[Contact Last Name]			Text (60), 
+	[Contact Title]			Text (10), 
+	[Contact Position]			Text (60), 
+	[Last Year's Sales]			Currency, 
+	[Address1]			Text (120), 
+	[Address2]			Text (40), 
+	[City]			Text (40), 
+	[Region]			Text (60), 
+	[Country]			Text (60), 
+	[Postal Code]			Text (20), 
+	[E-mail]			Text (100), 
+	[Web Site]			Text (100), 
+	[Phone]			Text (40), 
+	[Fax]			Text (40)
+);
+
+CREATE TABLE [Customer Payment]
+ (
+	[Customer Payment ID]			Long Integer NOT NULL, 
+	[Invoice #]			Long Integer NOT NULL, 
+	[Customer ID]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Payment Type]			Text (40) NOT NULL, 
+	[Tax]			Currency NOT NULL
+);
+
+CREATE TABLE [Employee]
+ (
+	[Employee ID]			Long Integer, 
+	[Supervisor ID]			Long Integer, 
+	[Last Name]			Text (40) NOT NULL, 
+	[First Name]			Text (20) NOT NULL, 
+	[Position]			Text (60), 
+	[Birth Date]			DateTime, 
+	[Hire Date]			DateTime, 
+	[Home Phone]			Text (40), 
+	[Extension]			Text (8), 
+	[Photo]			OLE (255), 
+	[Notes]			Memo/Hyperlink (255), 
+	[Reports To]			Long Integer, 
+	[Salary]			Currency, 
+	[SSN]			Text (24), 
+	[Emergency Contact First Name]			Text (40), 
+	[Emergency Contact Last Name]			Text (40), 
+	[Emergency Contact Relationship]			Text (40), 
+	[Emergency Contact Phone]			Text (40)
+);
+
+CREATE TABLE [Financials]
+ (
+	[Company ID]			Text (10), 
+	[Statement Date]			DateTime, 
+	[Cash]			Double, 
+	[Account Receivable]			Double, 
+	[Inventories]			Double, 
+	[Other Current Assets]			Double, 
+	[Land]			Double, 
+	[Buildings]			Double, 
+	[Machinery etc]			Double, 
+	[Accumulated Depreciation]			Double, 
+	[Other Assets]			Double, 
+	[Accounts Payable]			Double, 
+	[Accrued Liabilities]			Double, 
+	[Accrued Income Taxes]			Double, 
+	[Notes Payable]			Double, 
+	[Deferred Income Taxes]			Double, 
+	[Preferred Stock]			Double, 
+	[Common Stock]			Double, 
+	[Retained Earnings]			Double, 
+	[Net Sales]			Double, 
+	[COGS]			Double, 
+	[Selling/Admin/ General Expenses]			Double, 
+	[Depreciation]			Double, 
+	[Interest Expenses]			Double, 
+	[Other Income Expenses]			Double, 
+	[Taxes]			Double
+);
+
+CREATE TABLE [Inventory]
+ (
+	[Product ID]			Long Integer NOT NULL, 
+	[Quantity]			Long Integer NOT NULL, 
+	[Purchase Price]			Currency
+);
+
+CREATE TABLE [Inventory Purchase]
+ (
+	[Inventory Purchase ID]			Text (32) NOT NULL, 
+	[Product ID]			Long Integer NOT NULL, 
+	[Purchase ID]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Inventory Return]
+ (
+	[Inventory Return ID]			Text (32) NOT NULL, 
+	[Sales Return ID]			Long Integer NOT NULL, 
+	[Product ID]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Inventory Sale]
+ (
+	[Inventory Sale ID]			Text (32) NOT NULL, 
+	[Order ID]			Long Integer NOT NULL, 
+	[Product ID]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Inventory Transaction]
+ (
+	[Inventory Transaction ID]			Long Integer NOT NULL, 
+	[Product ID]			Long Integer NOT NULL, 
+	[Inventory Transaction Type ID]			Long Integer NOT NULL, 
+	[ID Number]			Text (32) NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Quantity]			Long Integer NOT NULL, 
+	[Add Or Remove]			Text (16) NOT NULL, 
+	[Units In Stock]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Invoice]
+ (
+	[Invoice #]			Text (32) NOT NULL, 
+	[Order ID]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Paid]			Boolean NOT NULL, 
+	[Tax]			Currency
+);
+
+CREATE TABLE [Journal Entries Run]
+ (
+	[ID]			Long Integer NOT NULL, 
+	[ID Number]			Long Integer, 
+	[Journal Entry Type ID]			Long Integer NOT NULL, 
+	[Priority]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL
+);
+
+CREATE TABLE [Journal Entry]
+ (
+	[Journal Entry ID]			Long Integer NOT NULL, 
+	[ID Number]			Text (32), 
+	[Account Number]			Text (16) NOT NULL, 
+	[Journal Entry Type ID]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Amount]			Currency NOT NULL, 
+	[Debit Or Credit]			Text (20) NOT NULL, 
+	[Comments]			Text (150), 
+	[New Balance]			Currency NOT NULL
+);
+
+CREATE TABLE [Journal Entry Type]
+ (
+	[Journal Entry Type ID]			Integer NOT NULL, 
+	[Journal Entry Type]			Text (100) NOT NULL
+);
+
+CREATE TABLE [Linked Inventory Accounts]
+ (
+	[Product ID]			Long Integer NOT NULL, 
+	[Inventory Account]			Text (16), 
+	[Revenue Account]			Text (16), 
+	[Expense Account]			Text (16)
+);
+
+CREATE TABLE [List Totals]
+ (
+	[Expr1]			Currency, 
+	[Order ID]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Manager]
+ (
+	[Manager ID]			Long Integer NOT NULL, 
+	[Employee ID]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Monthly Account Budgets]
+ (
+	[Year]			Integer NOT NULL, 
+	[Month]			Integer NOT NULL, 
+	[Account Number]			Text (16) NOT NULL, 
+	[Amount]			Currency
+);
+
+CREATE TABLE [Orders Detail]
+ (
+	[Order ID]			Long Integer, 
+	[Product ID]			Long Integer, 
+	[Unit Price]			Currency, 
+	[Quantity]			Long Integer
+);
+
+CREATE TABLE [Pay Cheque]
+ (
+	[Pay Cheque #]			Text (32) NOT NULL, 
+	[Employee ID]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Vacation]			Currency NOT NULL, 
+	[Tax]			Currency NOT NULL
+);
+
+CREATE TABLE [Product]
+ (
+	[Product ID]			Long Integer, 
+	[Product Name]			Text (100), 
+	[Color]			Text (40), 
+	[Size]			Text (20), 
+	[M/F]			Text (20), 
+	[Price (SRP)]			Currency, 
+	[Product Type ID]			Long Integer, 
+	[Product Class]			Text (100), 
+	[Supplier ID]			Long Integer
+);
+
+CREATE TABLE [Product Type]
+ (
+	[Product Type ID]			Long Integer, 
+	[Product Type Name]			Text (100), 
+	[Description]			Memo/Hyperlink (255), 
+	[Picture]			OLE (255), 
+	[Graphic Image Location]			Text (500)
+);
+
+CREATE TABLE [Purchase]
+ (
+	[Purchase ID]			Long Integer NOT NULL, 
+	[Manager ID]			Long Integer NOT NULL, 
+	[Supplier ID]			Long Integer NOT NULL, 
+	[Purchase Date]			DateTime NOT NULL, 
+	[Purchase Amount]			Currency NOT NULL
+);
+
+CREATE TABLE [Purchase Order]
+ (
+	[Purchase Order #]			Text (32) NOT NULL, 
+	[Purchase ID]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Paid]			Boolean NOT NULL, 
+	[Tax]			Currency
+);
+
+CREATE TABLE [Purchase Payment]
+ (
+	[Purchase Payment ID]			Text (32) NOT NULL, 
+	[Manager ID]			Long Integer NOT NULL, 
+	[Purchase Order #]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Payment Type]			Text (40) NOT NULL, 
+	[Tax]			Currency
+);
+
+CREATE TABLE [Purchases]
+ (
+	[Product ID]			Long Integer, 
+	[Reorder Level]			Long Integer, 
+	[Units in Stock]			Long Integer, 
+	[Units on Order]			Long Integer, 
+	[PO#]			Long Integer, 
+	[Order Date]			DateTime, 
+	[Expected Receiving Date]			DateTime, 
+	[Received]			Boolean NOT NULL, 
+	[Paid]			Boolean NOT NULL
+);
+
+CREATE TABLE [Receipt]
+ (
+	[Receipt #]			Text (32) NOT NULL, 
+	[Customer Payment ID]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Tax]			Currency
+);
+
+CREATE TABLE [Sales Return]
+ (
+	[Sales Return ID]			Text (32) NOT NULL, 
+	[Employee ID]			Long Integer NOT NULL, 
+	[Customer ID]			Long Integer NOT NULL, 
+	[Invoice #]			Long Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Tax]			Currency
+);
+
+CREATE TABLE [Sales Return Detail]
+ (
+	[Sales Return ID]			Long Integer NOT NULL, 
+	[Product ID]			Long Integer NOT NULL, 
+	[Quantity]			Long Integer NOT NULL, 
+	[Unit Price]			Currency NOT NULL
+);
+
+CREATE TABLE [Vendor]
+ (
+	[Vendor Name]			Text (100) NOT NULL, 
+	[Contact]			Text (100), 
+	[Address1]			Text (100), 
+	[Address2]			Text (100), 
+	[City]			Text (100), 
+	[Region]			Text (100), 
+	[Country]			Text (100), 
+	[Phone]			Text (100), 
+	[Expense Account]			Text (16)
+);
+
+CREATE TABLE [Xtreme Info]
+ (
+	[Xtreme Name]			Text (100), 
+	[Address]			Text (510), 
+	[City]			Text (100), 
+	[Province]			Text (100), 
+	[Country]			Text (100), 
+	[Postal Code]			Text (40), 
+	[Phone]			Text (40), 
+	[Fax]			Text (40), 
+	[Logo B&W]			OLE (255), 
+	[Logo Color]			OLE (255)
+);
+
+CREATE TABLE [Bill Payment]
+ (
+	[Bill Payment ID]			Text (32) NOT NULL, 
+	[Bill #]			Long Integer NOT NULL, 
+	[Manager ID]			Integer NOT NULL, 
+	[Date]			DateTime NOT NULL, 
+	[Gross Amount]			Currency NOT NULL, 
+	[Payment Type]			Text (40) NOT NULL, 
+	[Tax]			Currency NOT NULL
+);
+
+CREATE TABLE [Employee Addresses]
+ (
+	[Employee ID]			Long Integer NOT NULL, 
+	[Address1]			Text (120), 
+	[Address2]			Text (40), 
+	[City]			Text (30), 
+	[Region]			Text (30), 
+	[Country]			Text (30), 
+	[Postal Code]			Text (20), 
+	[Emergency Contact Address1]			Text (120), 
+	[Emergency Contact Address2]			Text (40), 
+	[Emergency Contact City]			Text (30), 
+	[Emergency Contact Region]			Text (30), 
+	[Emergency Contact Country]			Text (30), 
+	[Emergency Contact Postal Code]			Text (20), 
+	[plural01]			Text (510)
+);
+
+CREATE TABLE [Inventory Transaction Type]
+ (
+	[Inventory Transaction Type ID]			Integer NOT NULL, 
+	[Inventory Transaction Type]			Text (60) NOT NULL
+);
+
+CREATE TABLE [Orders]
+ (
+	[Order ID]			Long Integer, 
+	[Order Amount]			Currency, 
+	[Customer ID]			Long Integer, 
+	[Employee ID]			Long Integer, 
+	[Order Date]			DateTime, 
+	[Required Date]			DateTime, 
+	[Ship Date]			DateTime, 
+	[Courier Website]			Memo/Hyperlink (255), 
+	[Ship Via]			Text (40), 
+	[Shipped]			Boolean NOT NULL, 
+	[PO#]			Text (100), 
+	[Payment Received]			Boolean NOT NULL
+);
+
+CREATE TABLE [Purchase Detail]
+ (
+	[Purchase ID]			Long Integer NOT NULL, 
+	[Product ID]			Long Integer NOT NULL, 
+	[Unit Price]			Currency NOT NULL, 
+	[Quantity]			Long Integer NOT NULL
+);
+
+CREATE TABLE [Supplier]
+ (
+	[Supplier ID]			Long Integer, 
+	[Supplier Name]			Text (100), 
+	[Address1]			Text (100), 
+	[Address2]			Text (100), 
+	[City]			Text (100), 
+	[Region]			Text (100), 
+	[Country]			Text (100), 
+	[Postal Code]			Text (100), 
+	[Phone]			Text (40)
+);
+
+
