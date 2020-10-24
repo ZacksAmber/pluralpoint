@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 ################################################################################
-# File Name: msa2mys.py                                                        #
-# File Path: /msa2mys.py                                                       #
+# File Name: mdb_ini.py                                                        #
+# File Path: /mdb_ini.py                                                       #
 # Created Date: 2020-10-19                                                     #
 # -----                                                                        #
+# Company: Pluralpoint Group Inc.                                              #
 # Author: Zacks Shen                                                           #
 # Blog: https://zacks.one                                                      #
 # Email: <zacks.shen@pluralpoint.com>                                          #
@@ -13,13 +14,12 @@
 # Last Modified: 2020-10-19 3:28:02 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
-# Copyright (c) 2020 Zacks Shen                                                #
+# Copyright (c) 2020 Pluralpoint Group Inc.                                    #
 ################################################################################
 
 """
-Description: 
-1. This program will replace generate .ini files
-
+Description:
+1. This program will generate .ini files
 2. This program working in MacOS/Linux will grab all of the Access DB's tables in a specificed working directory, and export files with the same name as Access DB to the working directory.
 
 OS: MacOS
@@ -105,6 +105,7 @@ class msa_ini:
 
     # generate .ini file for MySQL
     def iniMySQL(self):
+        self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
         with open(self.mdbSchema + "_mysql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MySQL]\n")
             f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
@@ -144,6 +145,7 @@ class msa_ini:
 
     # generate .ini file for MSSQL
     def iniMSSQL(self):
+        self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
         with open(self.mdbSchema + "_mssql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MSSQL]\n")
             f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
@@ -184,6 +186,7 @@ class msa_ini:
     # connection string: Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
     # select statement: SELECT * FROM "table_name";
     def iniPostgreSQL(self):
+        self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
         with open(self.mdbSchema + "_postgresql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to PostgreSQL]\n")
             f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
@@ -243,20 +246,20 @@ class msa_ini:
         self.infoCheck()
 
     def infoCheck(self):
-        # find all .mdb files
-        self.files = os.listdir(self.sourcePath)
+        # find all .mdb files, and store their name with .mdb in list self.mdbFiles
         self.mdbFiles = []
-        for i in self.files:
+        for i in os.listdir(self.sourcePath):
             if re.findall("[.]mdb$", i) != []:
                 self.mdbFiles.append(i)
 
-        # run mdbtools for generating schemas
+        # run mdbtools for generating schemas, and give the schemas a extension with .txt
         self.mdbSchemas = []
         for self.mdbFile in self.mdbFiles:
-            self.mdb = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
-            self.mdb = self.mdb[0] # get the first item, which is the mdb name
-            self.mdbSchemas.append(self.mdb)
-            os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdb))
+            self.mdbTxt = re.split("[.]mdb", self.mdbFile) # split .mdb, return a list
+            self.mdbTxt = self.mdbTxt[0] # get the first item, which is the mdb name
+            self.mdbTxt += '.txt' # add the extension .txt to schema files
+            self.mdbSchemas.append(self.mdbTxt)
+            os.system("mdb-schema {0} > {1}".format(self.mdbFile, self.mdbTxt))
 
         if self.mdbSchemas == []:
             print("Please input correct .mdb files directory!")
