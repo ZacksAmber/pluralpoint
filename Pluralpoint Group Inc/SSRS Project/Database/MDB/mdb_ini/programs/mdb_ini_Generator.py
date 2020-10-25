@@ -67,7 +67,7 @@ class mdb_ini_Generator:
             self.windowsPath += '\\'
 
         # get user target DB type
-        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
+        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
 
         self.getMdbFiles()
         self.generateSchemas()
@@ -333,3 +333,6 @@ class mdb_ini_Generator:
 # execute the program
 obj = mdb_ini_Generator()            
 obj.main()
+
+
+print(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generate " + "MSSQL" + " " + "xtreme" + " ini file succeed!\n")

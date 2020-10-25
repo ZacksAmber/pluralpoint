@@ -41,7 +41,7 @@ class mdb_ini_exe:
 
     def main(self):
         # get user target DB type
-        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
+        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
         
         if self.DB == '1':
             self.exportMySQL()
