@@ -98,7 +98,7 @@ class mdb_ini_Exporter:
 
     def outputLog(self, mdbName, databaseType, status):
         os.chdir(self.programDir)
-        with open("mdb_ini_Generator_log.txt", "a", newline="\n") as f:
+        with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Export DB " + mdbName + " to RDS " + databaseType + " " + status + "\n")
 
 # Execute the program
