@@ -42,9 +42,11 @@ import sys
 import shutil # module for moving file
 import re
 import numpy as np
+from datetime import datetime
 
 class mdb_ini_Generator:
     def __init__(self):
+        self.programDir = os.getcwd()
         os.chdir("..")
         self.rootDir = os.getcwd()
 
@@ -220,8 +222,9 @@ class mdb_ini_Generator:
             f.write("  ignorelargeblobs=0\n")
             f.write("  memotype=LONGTEXT\n")
             f.write("  datetimetype=DATETIME\n")
-        
         f.close()
+
+        self.outputLog("MySQL")
 
     # generate .ini file for MSSQL
     def iniMSSQL(self):
@@ -267,8 +270,9 @@ class mdb_ini_Generator:
             f.write("  ignorelargeblobs=0\n")
             f.write("  memotype=VARCHAR(MAX)\n")
             f.write("  datetimetype=DATETIME2\n")
-        
         f.close()
+
+        self.outputLog("MSSQL")
 
     # generate .ini file for PostgreSQL
     # connection string: Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
@@ -317,8 +321,14 @@ class mdb_ini_Generator:
             f.write("  ignorelargeblobs=0\n")
             f.write("  memotype=TEXT\n")
             f.write("  datetimetype=TIMESTAMP\n")
-        
         f.close()
+
+        self.outputLog("PostgreSQL")
+
+    def outputLog(self, filetype):
+        os.chdir(self.programDir)
+        with open("mdb_ini_Generator_log.txt", "a", newline="\n") as f:
+            f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generate " + filetype + " " + self.mdbSchema + " ini file succeed!\n")
 
 # execute the program
 obj = mdb_ini_Generator()            
