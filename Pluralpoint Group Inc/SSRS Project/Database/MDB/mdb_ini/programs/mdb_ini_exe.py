@@ -23,38 +23,99 @@ This program is designed for passing parameters to the covertor then runing it.
 
 import os
 import sys
+import subprocess
 
-class mdb_ini_Generator:
+class mdb_ini_exe:
     def __init__(self):
         os.chdir("..")
         self.rootDir = os.getcwd()
 
         wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2 .Input anything to quit.\nYour input: ")
         
-        if wdCheck in ["y", "Y"] == False:
+        if wdCheck not in ["y", "Y"]:
             sys.exit()
         
-        if "mdb" in os.listdir(self.rootDir) is False:
+        if "mdb" not in os.listdir(self.rootDir):
             print("Please make a directory with the name 'mdb' that in the partent directory of this program!")
             sys.exit()
 
     def main(self):
-        pass
+        # get user target DB type
+        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostGreSQL\nInput the number here: ")
+        
+        if self.DB == '1':
+            self.exportMySQL()
+        elif self.DB == '2':
+            self.exportMSSQL()
+        elif self.DB == '3':
+            self.exportPostgreSQL()
+        else:
+            print("Please input an valid number!")
+            sys.exit() 
 
-    def mysql(self):
+    def exportMySQL(self):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MySQL\\msa2mys.exe'
-        mdbPath = 'W:\\My Documents\\mdb_ini\\mdb\\'
-        iniPath = 'W:\My Documents\mdb_ini\mysql_ini\\'
+        
+        mysql_iniDir = self.rootDir + "\\mysql_ini\\"
+        os.chdir(mysql_iniDir)
 
-        args = ['SETTINGS=', 'AUTORUN,',]
-        subprocess.Popen()
-        pass
+        iniFiles = os.listdir()
+        for iniFile in iniFiles:
+            SETTINGS = "SETTINGS=" + iniFile
+            args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"]
+            proc = subprocess.Popen(args)
+            try:
+                proc.wait()
+                #outs, errs = proc.communicate(timeout=15)
+                print("Process Running Succeed: " + iniFile)
+            except:
+            #except TimeoutExpired:
+                proc.kill()
+                #outs, errs = proc.communicate()
+                print("Process Running Failed: " + iniFile)  
 
-    def mssql(self):
-        exePath = 'C:\\Program Files (x86)\Bullzip\\MS Access to MSSQL\\msa2sql.exe'
-        pass
+    def exportMSSQL(self):
+        exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MSSQL\\msa2sql.exe'
 
-    def postgresql(self):
-        exePath = 'C:\\Program Files (x86)\\Bullzip\MS Access to PostgreSQL\\msa2pgs.exe'
-        pass
+        mssql_iniDir = self.rootDir + "\\mssql_ini\\"
+        os.chdir(mssql_iniDir)
 
+        iniFiles = os.listdir()
+        for iniFile in iniFiles:
+            SETTINGS = "SETTINGS=" + iniFile
+            args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"]
+            proc = subprocess.Popen(args)
+            try:
+                proc.wait()
+                #outs, errs = proc.communicate(timeout=15)
+                print("Process Running Succeed: " + iniFile)
+            except:
+            #except TimeoutExpired:
+                proc.kill()
+                #outs, errs = proc.communicate()
+                print("Process Running Failed: " + iniFile)
+
+    def exportPostgreSQL(self):
+        exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to PostgreSQL\\msa2pgs.exe'
+
+        postgresql_iniDir = self.rootDir + "\\postgresql_ini\\"
+        os.chdir(postgresql_iniDir)
+
+        iniFiles = os.listdir()
+        for iniFile in iniFiles:
+            SETTINGS = "SETTINGS=" + iniFile
+            args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"]
+            proc = subprocess.Popen(args)
+            try:
+                proc.wait()
+                #outs, errs = proc.communicate(timeout=15)
+                print("Process Running Succeed: " + iniFile)
+            except:
+            #except TimeoutExpired:
+                proc.kill()
+                #outs, errs = proc.communicate()
+                print("Process Running Failed: " + iniFile)
+
+# Execute the program
+obj = mdb_ini_exe()
+obj.main()

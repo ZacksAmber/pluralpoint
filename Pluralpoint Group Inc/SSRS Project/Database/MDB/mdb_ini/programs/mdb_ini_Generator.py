@@ -116,7 +116,7 @@ class mdb_ini_Generator:
             elif self.DB == '3':
                 self.iniPostgreSQL()
             else:
-                print("Please input correct target DB ID!")
+                print("Please input an valid number!")
                 sys.exit() 
 
     def loadSchemas(self):
@@ -201,7 +201,7 @@ class mdb_ini_Generator:
             f.write("  storageengine=InnoDB\n")
             f.write("  destinationdumpfilename=\n")
 
-            f.write("  self.sourcetables[]=")
+            f.write("  sourcetables[]=")
             for i in self.sourcetables[:-1]:
                 f.write('"' + i + '"' + ',')
             f.write('"' + self.sourcetables[-1] + '"' + '\n')
@@ -248,7 +248,7 @@ class mdb_ini_Generator:
             f.write("  destinationdatabase=" + self.mdbSchema + "\n")
             f.write("  destinationdumpfilename=\n")
 
-            f.write("  self.sourcetables[]=")
+            f.write("  sourcetables[]=")
             for i in self.sourcetables[:-1]:
                 f.write('"' + i + '"' + ',')
             f.write('"' + self.sourcetables[-1] + '"' + '\n')
@@ -298,7 +298,7 @@ class mdb_ini_Generator:
             f.write("  maintenancedb=postgres\n")
             f.write("  destinationdumpfilename=\n")
 
-            f.write("  self.sourcetables[]=")
+            f.write("  sourcetables[]=")
             for i in self.sourcetables[:-1]:
                 f.write('"' + i + '"' + ',')
             f.write('"' + self.sourcetables[-1] + '"' + '\n')
@@ -320,6 +320,6 @@ class mdb_ini_Generator:
         
         f.close()
 
-# run the program
+# execute the program
 obj = mdb_ini_Generator()            
-obj.main() # execute the program
+obj.main()
