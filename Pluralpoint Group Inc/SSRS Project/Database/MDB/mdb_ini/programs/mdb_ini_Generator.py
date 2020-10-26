@@ -50,7 +50,7 @@ class mdb_ini_Generator:
         os.chdir("..")
         self.rootDir = os.getcwd()
 
-        wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2 .Input anything to quit.\nYour input: ")
+        wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2. Input anything to quit.\nYour input: ")
         
         if wdCheck not in ["y", "Y"]:
             sys.exit()
@@ -328,11 +328,9 @@ class mdb_ini_Generator:
     def outputLog(self, filetype):
         os.chdir(self.programDir)
         with open("mdb_ini_Generator_log.txt", "a", newline="\n") as f:
-            f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generate " + filetype + " " + self.mdbSchema + " ini file succeed!\n")
+            f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generating " + filetype + " " + self.mdbSchema + " ini file. Mission successful!\n")
+        f.close()
 
 # execute the program
 obj = mdb_ini_Generator()            
 obj.main()
-
-
-print(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generate " + "MSSQL" + " " + "xtreme" + " ini file succeed!\n")

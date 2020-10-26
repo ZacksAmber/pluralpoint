@@ -76,7 +76,9 @@ class mdb_ini_Exporter:
     def exportDB(self, exePath, iniDir, databaseType):
         os.chdir(iniDir)
         iniFiles = os.listdir()
+
         for iniFile in iniFiles:
+            os.chdir(iniDir) # after invoking outputLog, go back to the iniDir
             mdbName = iniFile # get the ini file name without extension and DB type
             mdbName = mdbName[::-1]
             mdbName = mdbName.split("_", 1)
@@ -86,72 +88,41 @@ class mdb_ini_Exporter:
             args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"] # define the parameters for the .exe
             proc = subprocess.Popen(args)
             try:
-                print("Exporting DB: " + mdbName)
+                print("Exporting DB " + mdbName)
                 startTime = datetime.datetime.now().time()
-                self.outputLog(mdbName=mdbName, databaseType=databaseType, status="succeed", startTime=startTime)
+                self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful", startTime=startTime)
                 proc.wait()
-                #proc.wait() # wait until the current process finished
-                print("Export Succeed: " + mdbName)
+                print("Export DB " + mdbName + ": Successful!")
+                print("")
                 endTime = datetime.datetime.now().time()
-                self.outputLog(mdbName=mdbName, databaseType=databaseType, status="succeed",  startTime=startTime, endTime=endTime)
+                self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)
             except:
                 proc.kill()
                 startTime = datetime.datetime.now().time()
-                print("Export Failed: " + mdbName)
+                print("Export DB " + mdbName + ": Failed!")
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="failed", startTime=startTime)
 
     def outputLog(self, mdbName=None, databaseType=None, status=None, startTime=None, endTime=None):
         os.chdir(self.programDir)
 
-        if status == "succeed":
+        if status == "successful":
             if endTime == None:
                 with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
-                    f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ", mission start!\n")               
+                    f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission start!\n")               
             else:
                 procTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second) - datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second)
                 with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
-                    f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ", mission " + status + "!\n")
-                    f.write("Time consume: " + str(procTime))
+                    f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
+                    f.write("Time consumed: " + str(procTime) + "\n")
                     f.write("\n")
         else:
             with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
-                f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ", mission " + status + "!\n")
+                f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
+                f.write("")
         
         f.close()
             
 # Execute the program
 obj = mdb_ini_Exporter()
 obj.main()
-
-'''
-programDir = os.getcwd()
-mdbName = "xtreme"
-databaseType = "MySQL"
-startTime = datetime.datetime.now().time()
-endTime = datetime.datetime.now().time()
-databaseType = "MySQL"
-
-outputLog(mdbName=mdbName, databaseType = databaseType, status="succeed", startTime=startTime)
-outputLog(mdbName=mdbName, databaseType = databaseType, status="succeed", startTime=startTime, endTime=endTime)
-outputLog(mdbName=mdbName, databaseType = databaseType, status="failed", startTime=startTime)
-
-
-def outputLog(mdbName=None, databaseType=None, status=None, startTime=None, endTime=None):
-    os.chdir(programDir)
-
-    if status == "succeed":
-        if endTime == None:
-            with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
-                f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ", mission start!\n")               
-        else:
-            procTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second) - datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second)
-            with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
-                f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ", mission " + status + "!\n")
-                f.write("Time consume: " + str(procTime))
-                f.write("\n")
-    else:
-        with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
-            f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ", mission " + status + "!\n")
-    
-    f.close()
-'''
+input("All mission complete! Please check the log file.")
