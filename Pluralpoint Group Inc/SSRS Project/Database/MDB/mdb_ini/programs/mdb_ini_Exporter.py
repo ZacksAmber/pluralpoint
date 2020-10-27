@@ -123,16 +123,16 @@ class mdb_ini_Exporter:
 
         if status == "successful":
             if endTime == None:
-                with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
+                with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
                     f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission start!\n")               
             else:
                 procTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second) - datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second)
-                with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
+                with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
                     f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                     f.write("Time consumed: " + str(procTime) + "\n")
                     f.write("\n")
         else:
-            with open("mdb_ini_Exporter_log.txt", "a", newline="\r\n") as f:
+            with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
                 f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                 f.write("")
         

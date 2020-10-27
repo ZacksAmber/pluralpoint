@@ -344,7 +344,7 @@ class mdb_ini_Generator:
 
     def outputLog(self, filetype):
         os.chdir(self.programDir)
-        with open("mdb_ini_Generator_log.txt", "a", newline="\n") as f:
+        with open("mdb_ini_Generator.log", "a", newline="\n") as f:
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generating " + filetype + " " + self.mdbSchema + " ini file. Mission successful!\n")
         f.close()
 
