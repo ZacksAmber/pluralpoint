@@ -50,11 +50,28 @@ class mdb_ini_Generator:
         os.chdir("..")
         self.rootDir = os.getcwd()
 
+
+        '''
         wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2. Input anything to quit.\nYour input: ")
         
         if wdCheck not in ["y", "Y"]:
             sys.exit()
+        '''
+
+        # Create README.txt
+        os.chdir(self.programDir)
+        with open("README.txt", "w", newline="\n") as f:
+            f.write("Prerequisite:\n")
+            f.write("1. Please make a directory to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
+            f.write("2. Please make a directory named 'mdb' to store mdb files.\n")
+            f.write("3. Search 'mdbtools' online and install it.\n")
+            f.write("---\n")
+            f.write("Instruction:\n")
+            f.write("1. Run 'mdb_ini_Generator.py' on your MacBook or Linux.\n")
+            f.write("2. Run 'mdb_ini_Exporter.py' on your Windows.\n")
+            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories inside the folder.")
         
+        os.chdir(self.rootDir)
         if "mdb" not in os.listdir(self.rootDir):
             print("Please make a directory with the name 'mdb' that in the partent directory of this program!")
             sys.exit()

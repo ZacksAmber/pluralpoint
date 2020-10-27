@@ -1,0 +1,16 @@
+2020-10-26 13:26:42: Generating MySQL RptDB-01 ini file. Mission successful!
+2020-10-26 13:26:42: Generating MySQL RptDB-03 ini file. Mission successful!
+2020-10-26 13:26:42: Generating MySQL RptDB-02 ini file. Mission successful!
+2020-10-26 13:26:42: Generating MySQL xtreme ini file. Mission successful!
+2020-10-26 13:31:32: Generating MSSQL RptDB-01 ini file. Mission successful!
+2020-10-26 13:31:32: Generating MSSQL RptDB-03 ini file. Mission successful!
+2020-10-26 13:31:32: Generating MSSQL RptDB-02 ini file. Mission successful!
+2020-10-26 13:31:32: Generating MSSQL xtreme ini file. Mission successful!
+2020-10-26 17:03:30: Generating MySQL RptDB-01 ini file. Mission successful!
+2020-10-26 17:03:30: Generating MySQL RptDB-03 ini file. Mission successful!
+2020-10-26 17:03:30: Generating MySQL RptDB-02 ini file. Mission successful!
+2020-10-26 17:03:30: Generating MySQL xtreme ini file. Mission successful!
+2020-10-26 17:06:13: Generating MSSQL RptDB-01 ini file. Mission successful!
+2020-10-26 17:06:13: Generating MSSQL RptDB-03 ini file. Mission successful!
+2020-10-26 17:06:13: Generating MSSQL RptDB-02 ini file. Mission successful!
+2020-10-26 17:06:13: Generating MSSQL xtreme ini file. Mission successful!
