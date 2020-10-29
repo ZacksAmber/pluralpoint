@@ -349,5 +349,5 @@ class mdb_ini_Generator:
         f.close()
 
 # execute the program
-obj = mdb_ini_Generator()            
+obj = mdb_ini_Generator()
 obj.main()
