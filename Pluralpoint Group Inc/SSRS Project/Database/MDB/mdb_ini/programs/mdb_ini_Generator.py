@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-10-23 10:14:03 pm                                        #
+# Last Modified: 2020-10-31 4:42:34 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -41,6 +41,7 @@ import os
 import sys
 import shutil # module for moving file
 import re
+import json
 import numpy as np
 from datetime import datetime
 
@@ -77,11 +78,13 @@ class mdb_ini_Generator:
             sys.exit()
 
     def main(self):
+        '''
         # define the windowsPath for the convertor loading mdb files.
         self.windowsPath = "W:\My Documents\mdb_ini\mdb"
         # self.windowsPath = input("Please input your Windows .mdb files directory: ")
         if re.findall("[a-z]$", self.windowsPath) != []: # make sure the windowsPath is end with \
             self.windowsPath += '\\'
+        '''
 
         # get user target DB type
         self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
@@ -129,17 +132,18 @@ class mdb_ini_Generator:
             self.getSchemaIndex()
             self.getTableStructure()
             if self.DB == '1':
-                self.iniMySQL()
+                self.loadMySQLSettings()
             elif self.DB == '2':
-                self.iniMSSQL()
+                self.loadMSSQLSettings()
             elif self.DB == '3':
-                self.iniPostgreSQL()
+                self.loadPostgreSQLSettings()
             else:
                 print("Please input an valid number!")
                 sys.exit() 
 
     def loadSchemas(self):
         os.chdir(self.schemasDir)
+        
         # Read the schema file
         file = open(self.mdbSchema, "r")
         self.schema = file.read().splitlines()
@@ -164,8 +168,6 @@ class mdb_ini_Generator:
         self.sqlTableIndex = []
         for s, e in zip(startIndex, endIndex):
             self.sqlTableIndex.append([s, e])
-
-        return self.sqlTableIndex
 
     # get the full indices from start index and end index, then get the table name and column name.
     def getTableStructure(self):
@@ -194,9 +196,60 @@ class mdb_ini_Generator:
         
         return self.sourcetables
 
+    # load the settings of exporting to MySQL. 
+    # If there is no settings file, create it.
+    # If the settings file is all default, then use the default settings.
+    def loadMySQLSettings(self):
+        os.chdir(self.programDir)
+
+        mysqlDefaultSettings = {
+        'sourcedirectory':'<Your mdb files directory>',
+        'sourceusername':'',
+        'sourcepassword':'',
+        'sourcesystemdatabase':'',
+        'destinationmethod':'DIRECT',
+        'destinationhost':'<Your MySQL Server Host>',
+        'destinationport':3306,
+        'destinationusername':'<Your MySQL Username>',
+        'destinationpassword':'<Your MySQL Password>',
+        'destinationdatabase':'<Your destinationdatabase. Leave it default and the program will create a database with the same name as your mdb file.>',
+        'storageengine':'InnDB',
+        'destinationdumpfilename':'',
+        'sourcetables[]':'<default convert all of the tables>',
+        'dropdatabase':1,
+        'createtables':1,
+        'unicode':1,
+        'autocommit':1,
+        'transferdefaultvalues':1,
+        'transferindexes':1,
+        'transferautonumbers':1,
+        'transferrecords':1,
+        'columnlist':1,
+        'tableprefix':'',
+        'negativeboolean':0,
+        'ignorelargeblobs':0,
+        'memotype':'LONGTEXT',
+        'datetimetype':'DATETIME'
+        }
+
+        if "mdb2mysql.json" not in os.listdir():
+            print("Create default settings file named 'mdb2mysql.json' for exporting mdb to MySQL successfully.")
+            print("Please customize the settings in 'mdb2mysql.json' as you need. Then run this program again.")
+            with open ("mdb2mysql.json", "w") as f:
+                json.dump(mysqlDefaultSettings, f, indent=4, sort_keys=False)
+            sys.exit() # exit the program after creating the default settings
+        else:
+            print("Loading 'mdb2mysql.json' successfully!\nIf you want to use the default settings, delete 'mdb2mysql.json', and restart this program.")
+
+        with open ("mdb2mysql.json", "r") as f:
+            userSettings = json.load(f)
+
+        self.iniMySQL(userSettings)
+
     # generate .ini file for MySQL
-    def iniMySQL(self):
+    def iniMySQL(self, userSettings):
         os.chdir(self.rootDir)
+        
         if "mysql_ini" not in os.listdir(self.rootDir):
             os.mkdir("mysql_ini")
         
@@ -207,7 +260,12 @@ class mdb_ini_Generator:
 
         with open(self.mdbSchema + "_mysql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MySQL]\n")
-            f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
+
+            if re.findall("[a-z]$", userSettings['sourcedirectory']
+            ) != []: # make sure the windowsPath is end with \
+                userSettings['sourcedirectory'] += '\\'
+            f.write("  sourcefilename=" + userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
+
             f.write("  sourceusername=\n")
             f.write("  sourcepassword=\n")
             f.write("  sourcesystemdatabase=\n")
@@ -242,6 +300,12 @@ class mdb_ini_Generator:
         f.close()
 
         self.outputLog("MySQL")
+
+    # load the settings of exporting to MySQL. 
+    # If there is no settings file, create it.
+    # If the settings file is all default, then use the default settings.
+    def loadMSSQLSettings(self):
+        pass
 
     # generate .ini file for MSSQL
     def iniMSSQL(self):
@@ -290,6 +354,12 @@ class mdb_ini_Generator:
         f.close()
 
         self.outputLog("MSSQL")
+
+    # load the settings of exporting to MySQL. 
+    # If there is no settings file, create it.
+    # If the settings file is all default, then use the default settings.
+    def loadPostgreSQLSettings(self):
+        pass
 
     # generate .ini file for PostgreSQL
     # connection string: Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
