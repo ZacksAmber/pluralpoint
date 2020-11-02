@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-01 8:10:42 pm                                         #
+# Last Modified: 2020-11-01 9:01:10 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -197,7 +197,7 @@ class mdb_ini_Generator:
         'sourceusername':'<If no username, leave it as default>',
         'sourcepassword':'<If no password, leave it as default>',
         'sourcesystemdatabase':'<If no specified database, leave it as default>',
-        'destinationmethod':"<Choose 'DIRECT', 'DUMP'>",
+        'destinationmethod':"DIRECT",
         'destinationhost':'<Your MySQL Server Host>',
         'destinationport':3306,
         'destinationusername':'<Your MySQL Username>',
@@ -220,7 +220,7 @@ class mdb_ini_Generator:
         }
 
         if "mdb2mysql.json" not in os.listdir():
-            print("Create default settings file named 'mdb2mysql.json' for exporting mdb to MySQL successfully.")
+            print("\nCreate default settings file named 'mdb2mysql.json' for exporting mdb to MySQL successfully.")
             print("Please customize the settings in 'mdb2mysql.json' as you need. Then run this program again.")
             with open ("mdb2mysql.json", "w") as f:
                 json.dump(mysqlDefaultSettings, f, indent=4, sort_keys=False)
@@ -255,7 +255,7 @@ class mdb_ini_Generator:
             ) != []: # make sure the windows Path is end with \
                 self.userSettings['sourcedirectory'] += '\\'
             f.write("  sourcefilename=" + self.userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
-            
+
             # define sourceusername
             if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) == ['<', '>']:
                 self.userSettings['sourceusername'] = ''
@@ -393,7 +393,6 @@ class mdb_ini_Generator:
 
         self.outputLog("MySQL")
 
-
     # Load the settings of exporting to MSSQL. 
     # If there is no settings file, create it.
     # If the settings file is all default, then use the default settings.
@@ -428,7 +427,7 @@ class mdb_ini_Generator:
         }
 
         if "mdb2mssql.json" not in os.listdir():
-            print("Create default settings file named 'mdb2mssql.json' for exporting mdb to MySQL successfully.")
+            print("\nCreate default settings file named 'mdb2mssql.json' for exporting mdb to MySQL successfully.")
             print("Please customize the settings in 'mdb2mssql.json' as you need. Then run this program again.")
             with open ("mdb2mssql.json", "w") as f:
                 json.dump(mssqlDefaultSettings, f, indent=4, sort_keys=False)
@@ -597,18 +596,56 @@ class mdb_ini_Generator:
 
         self.outputLog("MSSQL")
 
-
-    # load the settings of exporting to PostgreSQL. 
+    # Load the settings of exporting to PostgreSQL. 
     # If there is no settings file, create it.
     # If the settings file is all default, then use the default settings.
     def loadPostgreSQLSettings(self):
-        pass
+        os.chdir(self.programDir)
 
-    # generate .ini file for PostgreSQL
-    # connection string: Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;
-    # select statement: SELECT * FROM "table_name";
+        postgresqlDefaultSettings = {
+        'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\>',
+        'sourceusername':'<If no username, leave it as default>',
+        'sourcepassword':'<If no password, leave it as default>',
+        'sourcesystemdatabase':'<If no specified database, leave it as default>',
+        'destinationmethod':"DIRECT",
+        'destinationserver':'<Your MySQL Server Host>',
+        'destinationport':5432,
+        'destinationusername':'<Your MySQL Username>',
+        'destinationpassword':'<Your MySQL Password>',
+        'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        'maintenancedb':'postgres',
+        'destinationdumpfilename':'',
+        'dropdatabase':1,
+        'createtables':1,
+        'unicode':1,
+        'autocommit':1,
+        'transferdefaultvalues':1,
+        'transferindexes':1,
+        'transferautonumbers':1,
+        'transferrecords':1,
+        'columnlist':1,
+        'tableprefix':'',
+        'negativeboolean':0,
+        'ignorelargeblobs':0
+        }
+
+        if "mdb2postgresql.json" not in os.listdir():
+            print("\nCreate default settings file named 'mdb2postgresql.json' for exporting mdb to MySQL successfully.")
+            print("Please customize the settings in 'mdb2postgresql.json' as you need. Then run this program again.")
+            with open ("mdb2postgresql.json", "w") as f:
+                json.dump(postgresqlDefaultSettings, f, indent=4, sort_keys=False)
+            sys.exit() # exit the program after creating the default settings
+        else:
+            print("\nLoading 'mdb2postgresql.json' successfully!\nIf you want to use the default settings, delete 'mdb2postgresql.json', and restart this program.")
+
+        with open ("mdb2postgresql.json", "r") as f:
+            self.userSettings = json.load(f)
+
+    # generate .ini file for MySQL
     def iniPostgreSQL(self):
         os.chdir(self.rootDir)
+        
         if "postgresql_ini" not in os.listdir(self.rootDir):
             os.mkdir("postgresql_ini")
         
@@ -619,39 +656,145 @@ class mdb_ini_Generator:
 
         with open(self.mdbSchema + "_postgresql.ini", "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to PostgreSQL]\n")
-            f.write("  sourcefilename=" + self.windowsPath + self.mdbSchema + ".mdb\n")
-            f.write("  sourceusername=\n")
-            f.write("  sourcepassword=\n")
-            f.write("  sourcesystemdatabase=\n")
+
+            # define sourcefilename
+            # validate value
+            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'sourcedirectory')
+            # if no \ at the end of directory, the program will add a \
+            if re.findall("[a-z]$", self.userSettings['sourcedirectory']
+            ) != []: # make sure the windows Path is end with \
+                self.userSettings['sourcedirectory'] += '\\'
+            f.write("  sourcefilename=" + self.userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
+
+            # define sourceusername
+            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) == ['<', '>']:
+                self.userSettings['sourceusername'] = ''
+            f.write("  sourceusername=" + self.userSettings['sourceusername'] + "\n")
+
+            # define sourcepassword
+            if re.findall('^[<]|[>]$', self.userSettings['sourcepassword']) == ['<', '>']:
+                self.userSettings['sourcepassword'] = ''
+            f.write("  sourcepassword=" + self.userSettings['sourcepassword'] + "\n")
+
+            # define sourcesystemdatabase
+            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) == ['<', '>']:
+                self.userSettings['sourcesystemdatabase'] = ''
+            f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
+
+            # define destinationmethod
             f.write("  destinationmethod=DIRECT\n")
-            f.write("  destinationserver=postgresql.c9d5goyg8g3a.us-east-1.rds.amazonaws.com\n")
-            f.write("  destinationport=5432\n")
-            f.write("  destinationusername=postgre\n")
-            f.write("  destinationpassword=myPassWord_123\n")
-            f.write("  destinationdatabase=" + self.mdbSchema + "\n")
-            f.write("  maintenancedb=postgres\n")
+
+            # define destinationserver
+            if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'destinationserver')
+            f.write("  destinationserver=" + self.userSettings['destinationserver'] + "\n")
+
+            # define destinationport
+            f.write("  destinationport=" + str(self.userSettings['destinationport']) + "\n")
+
+            # define destinationusername
+            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'destinationusername')
+            f.write("  destinationusername=" + self.userSettings['destinationusername'] + "\n")
+
+            # define destinationpassword
+            if re.findall('^[<]|[>]$', self.userSettings['destinationpassword']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'destinationpassword')
+            f.write("  destinationpassword=" + self.userSettings['destinationpassword'] + "\n")
+
+            # define destinationdatabase
+            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) == ['<', '>']:
+                f.write("  destinationdatabase=" + self.mdbSchema + "\n")
+            else:
+                f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
+
+            # define maintenancedb
+            f.write(" maintenancedb=" + self.userSettings['maintenancedb'] + "\n")
+
+            # define destinationdumpfilename
             f.write("  destinationdumpfilename=\n")
 
+            # define sourcetables[]
             f.write("  sourcetables[]=")
             for i in self.sourcetables[:-1]:
                 f.write('"' + i + '"' + ',')
             f.write('"' + self.sourcetables[-1] + '"' + '\n')
 
-            f.write("  dropdatabase=1\n")
-            f.write("  createtables=1\n")
-            f.write("  unicode=1\n")
-            f.write("  autocommit=1\n")
-            f.write("  transferdefaultvalues=1\n")
-            f.write("  transferindexes=1\n")
-            f.write("  transferautonumbers=1\n")
-            f.write("  transferrecords=1\n")
-            f.write("  columnlist=1\n")
-            f.write("  tableprefix=\n")
-            f.write("  negativeboolean=0\n")
-            f.write("  ignorelargeblobs=0\n")
+            # define dropdatabase
+            if self.userSettings['dropdatabase'] in [0, 1]:
+                f.write("  dropdatabase=" + str(self.userSettings['dropdatabase']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'dropdatabase')
+
+            # define createtables
+            if self.userSettings['createtables'] in [0, 1]:
+                f.write("  createtables=" + str(self.userSettings['createtables']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'createtables')
+
+            # define unicode
+            if self.userSettings['unicode'] in [0, 1]:
+                f.write("  unicode=" + str(self.userSettings['unicode']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'unicode')
+            
+            # define autocommit
+            if self.userSettings['autocommit'] in [0, 1]:
+                f.write("  autocommit=" + str(self.userSettings['autocommit']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'autocommit')
+            
+            # define transferdefaultvalues
+            if self.userSettings['transferdefaultvalues'] in [0, 1]:
+                f.write("  transferdefaultvalues=" + str(self.userSettings['transferdefaultvalues']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferdefaultvalues')
+            
+            # define transferindexes
+            if self.userSettings['transferindexes'] in [0, 1]:
+                f.write("  transferindexes=" + str(self.userSettings['transferindexes']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferindexes')
+            
+            # define transferautonumbers
+            if self.userSettings['transferautonumbers'] in [0, 1]:
+                f.write("  transferautonumbers=" + str(self.userSettings['transferautonumbers']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferautonumbers')
+            
+            # define transferrecords
+            if self.userSettings['transferrecords'] in [0, 1]:
+                f.write("  transferrecords=" + str(self.userSettings['transferrecords']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferrecords')
+            
+            # define columnlist
+            if self.userSettings['columnlist'] in [0, 1]:
+                f.write("  columnlist=" + str(self.userSettings['columnlist']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'columnlist')
+            
+            # define tableprefix
+            f.write("  tableprefix=" + str(self.userSettings['tableprefix']) + "\n")
+            
+            # define negativeboolean
+            if self.userSettings['negativeboolean'] in [0, 1]:
+                f.write("  negativeboolean=" + str(self.userSettings['negativeboolean']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'negativeboolean')
+            
+            # define ignorelargeblobs
+            if self.userSettings['ignorelargeblobs'] in [0, 1]:
+                f.write("  ignorelargeblobs=" + str(self.userSettings['ignorelargeblobs']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'ignorelargeblobs')
+            
+            # define memotype
             f.write("  memotype=TEXT\n")
+            
+            # define datetimetype
             f.write("  datetimetype=TIMESTAMP\n")
-        f.close()
 
         self.outputLog("PostgreSQL")
 
