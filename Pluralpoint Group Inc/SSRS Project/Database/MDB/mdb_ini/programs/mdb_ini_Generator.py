@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-01 9:01:10 pm                                         #
+# Last Modified: 2020-11-01 9:38:57 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -74,9 +74,10 @@ class mdb_ini_Generator:
             print("Please make a directory with the name 'mdb' that in the partent directory of this program!")
             sys.exit()
 
+    # main function
     def main(self):
         # get user target DB type
-        choiceDB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
+        choiceDB = input("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
 
         self.generateSchemas()
     
@@ -86,18 +87,21 @@ class mdb_ini_Generator:
             for self.mdbSchema in self.mdbSchemas:
                 self.loadSchemas()
                 self.iniMySQL()
+                self.iniMySQL(DUMP='Y')
         elif choiceDB == '2':
             self.loadMSSQLSettings()
             os.chdir(self.schemasDir)
             for self.mdbSchema in self.mdbSchemas:
                 self.loadSchemas()
                 self.iniMSSQL()
+                self.iniMSSQL(DUMP='Y')
         elif choiceDB == '3':
             self.loadPostgreSQLSettings()
             os.chdir(self.schemasDir)
             for self.mdbSchema in self.mdbSchemas:
                 self.loadSchemas()
                 self.iniPostgreSQL()
+                self.iniPostgreSQL(DUMP='Y')
         else:
             self.outputErrors('invalidInput') 
 
@@ -204,7 +208,6 @@ class mdb_ini_Generator:
         'destinationpassword':'<Your MySQL Password>',
         'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
         'storageengine':"<Select one of the following engine: 'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
-        'destinationdumpfilename':'',
         'dropdatabase':1,
         'createtables':1,
         'unicode':1,
@@ -232,7 +235,7 @@ class mdb_ini_Generator:
             self.userSettings = json.load(f)
 
     # generate .ini file for MySQL
-    def iniMySQL(self):
+    def iniMySQL(self, DUMP=None):
         os.chdir(self.rootDir)
         
         if "mysql_ini" not in os.listdir(self.rootDir):
@@ -243,7 +246,12 @@ class mdb_ini_Generator:
 
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
 
-        with open(self.mdbSchema + "_mysql.ini", "w", newline="\r\n") as f:
+        if DUMP == None:
+            extension = "_mysql.ini"
+        elif DUMP == 'Y':
+            extension = '_mysql_dump.ini'
+
+        with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MySQL]\n")
 
             # define sourcefilename
@@ -272,7 +280,10 @@ class mdb_ini_Generator:
             f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
 
             # define destinationmethod
-            f.write("  destinationmethod=DIRECT\n")
+            if DUMP == None:
+                f.write("  destinationmethod=DIRECT\n")
+            elif DUMP == 'Y':
+                f.write("  destinationmethod=DUMP\n")
 
             # define destinationhost
             if re.findall('^[<]|[>]$', self.userSettings['destinationhost']) == ['<', '>']:
@@ -308,7 +319,7 @@ class mdb_ini_Generator:
                 self.outputErrors('invalidSetting', 'storageengine')
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=\n")
+            f.write("  destinationdumpfilename=" + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
@@ -411,7 +422,6 @@ class mdb_ini_Generator:
         'destinationusername':'<Your MySQL Username>',
         'destinationpassword':'<Your MySQL Password>',
         'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-        'destinationdumpfilename':'',
         'dropdatabase':1,
         'createtables':1,
         'unicode':1,
@@ -439,7 +449,7 @@ class mdb_ini_Generator:
             self.userSettings = json.load(f)
 
     # generate .ini file for MySQL
-    def iniMSSQL(self):
+    def iniMSSQL(self, DUMP=None):
         os.chdir(self.rootDir)
         
         if "mssql_ini" not in os.listdir(self.rootDir):
@@ -450,7 +460,12 @@ class mdb_ini_Generator:
 
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
 
-        with open(self.mdbSchema + "_mssql.ini", "w", newline="\r\n") as f:
+        if DUMP == None:
+            extension = "_mssql.ini"
+        elif DUMP == 'Y':
+            extension = '_mssql_dump.ini'
+
+        with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to MSSQL]\n")
 
             # define sourcefilename
@@ -479,7 +494,10 @@ class mdb_ini_Generator:
             f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
 
             # define destinationmethod
-            f.write("  destinationmethod=DIRECT\n")
+            if DUMP == None:
+                f.write("  destinationmethod=DIRECT\n")
+            elif DUMP == 'Y':
+                f.write("  destinationmethod=DUMP\n")
 
             # define destinationserver
             if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) == ['<', '>']:
@@ -511,7 +529,7 @@ class mdb_ini_Generator:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=\n")
+            f.write("  destinationdumpfilename=" + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
@@ -615,7 +633,6 @@ class mdb_ini_Generator:
         'destinationpassword':'<Your MySQL Password>',
         'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
         'maintenancedb':'postgres',
-        'destinationdumpfilename':'',
         'dropdatabase':1,
         'createtables':1,
         'unicode':1,
@@ -643,7 +660,7 @@ class mdb_ini_Generator:
             self.userSettings = json.load(f)
 
     # generate .ini file for MySQL
-    def iniPostgreSQL(self):
+    def iniPostgreSQL(self, DUMP=None):
         os.chdir(self.rootDir)
         
         if "postgresql_ini" not in os.listdir(self.rootDir):
@@ -654,7 +671,12 @@ class mdb_ini_Generator:
 
         self.mdbSchema = self.mdbSchema.replace(".txt", "") # remove the .txt extension
 
-        with open(self.mdbSchema + "_postgresql.ini", "w", newline="\r\n") as f:
+        if DUMP == None:
+            extension = "_postgresql.ini"
+        elif DUMP == 'Y':
+            extension = '_postgresql_dump.ini'
+
+        with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
             f.write("[MoveDB MSAccess to PostgreSQL]\n")
 
             # define sourcefilename
@@ -683,7 +705,10 @@ class mdb_ini_Generator:
             f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
 
             # define destinationmethod
-            f.write("  destinationmethod=DIRECT\n")
+            if DUMP == None:
+                f.write("  destinationmethod=DIRECT\n")
+            elif DUMP == 'Y':
+                f.write("  destinationmethod=DUMP\n")
 
             # define destinationserver
             if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) == ['<', '>']:
@@ -713,7 +738,7 @@ class mdb_ini_Generator:
             f.write(" maintenancedb=" + self.userSettings['maintenancedb'] + "\n")
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=\n")
+            f.write("  destinationdumpfilename=" + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
