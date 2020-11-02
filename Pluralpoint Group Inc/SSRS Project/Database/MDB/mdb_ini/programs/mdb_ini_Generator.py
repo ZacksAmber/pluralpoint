@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-01 9:38:57 pm                                         #
+# Last Modified: 2020-11-01 10:04:09 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -60,14 +60,15 @@ class mdb_ini_Generator:
         os.chdir(self.programDir)
         with open("README.txt", "w", newline="\n") as f:
             f.write("Prerequisite:\n")
-            f.write("1. Please make a directory to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
+            f.write("1. Please make a directory named 'programs' to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
             f.write("2. Please make a directory named 'mdb' to store mdb files.\n")
             f.write("3. Search 'mdbtools' online and install it.\n")
             f.write("---\n")
             f.write("Instruction:\n")
             f.write("1. Run 'mdb_ini_Generator.py' on your MacBook or Linux.\n")
-            f.write("2. Run 'mdb_ini_Exporter.py' on your Windows.\n")
-            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories inside the folder.")
+            f.write("2. copy the following directories to your Windows: 'mdb', 'programs', *_ini\n")
+            f.write("3. Run 'mdb_ini_Exporter.py' on your Windows.\n")
+            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.")
         
         os.chdir(self.rootDir)
         if "mdb" not in os.listdir(self.rootDir):
@@ -319,7 +320,7 @@ class mdb_ini_Generator:
                 self.outputErrors('invalidSetting', 'storageengine')
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=" + self.mdbSchema + ".sql\n")
+            f.write("  destinationdumpfilename=" + self.userSettings['sourcedirectory'] + "mysql_dump\\" + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
@@ -529,7 +530,7 @@ class mdb_ini_Generator:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=" + self.mdbSchema + ".sql\n")
+            f.write("  destinationdumpfilename=" + self.userSettings['sourcedirectory'] + "mssql_dump\\" + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
@@ -738,7 +739,7 @@ class mdb_ini_Generator:
             f.write(" maintenancedb=" + self.userSettings['maintenancedb'] + "\n")
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=" + self.mdbSchema + ".sql\n")
+            f.write("  destinationdumpfilename=" + self.userSettings['sourcedirectory'] + "postgresql_dump\\" + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")

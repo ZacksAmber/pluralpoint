@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-10-25 7:43:15 pm                                         #
+# Last Modified: 2020-11-01 10:04:23 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -41,14 +41,15 @@ class mdb_ini_Exporter:
         os.chdir(self.programDir)
         with open("README.txt", "w", newline="\r\n") as f:
             f.write("Prerequisite:\n")
-            f.write("1. Please make a directory to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
+            f.write("1. Please make a directory named 'programs' to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
             f.write("2. Please make a directory named 'mdb' to store mdb files.\n")
             f.write("3. Search 'mdbtools' online and install it.\n")
             f.write("\n")
             f.write("Instruction:\n")
             f.write("1. Run 'mdb_ini_Generator.py' on your MacBook or Linux.\n")
-            f.write("2. Run 'mdb_ini_Exporter.py' on your Windows.\n")
-            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories inside the folder.")
+            f.write("2. copy the following directories to your Windows: 'mdb', 'programs', *_ini\n")
+            f.write("3. Run 'mdb_ini_Exporter.py' on your Windows.\n")
+            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.")
         
         os.chdir(self.rootDir)
         if "mdb" not in os.listdir(self.rootDir):
@@ -58,7 +59,7 @@ class mdb_ini_Exporter:
 
     def main(self):
         # get user target DB type
-        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
+        self.DB = input("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
         print("")
         
         if self.DB == '1':
@@ -77,11 +78,19 @@ class mdb_ini_Exporter:
 
         self.exportDB(exePath, iniDir, "MySQL")
 
+        if "mysql_dump" not in os.listdir(self.rootDir):
+            os.mkdir("mysql_dump")
+        #self.exportDB(exePath, iniDir, "MySQL", DUMP='Y')
+
     def getMSSQL(self):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MSSQL\\msa2sql.exe'
         mssql_iniDir = self.rootDir + "\\mssql_ini\\"
 
-        self.exportDB(exePath, iniDir, "MSSSQL")
+        self.exportDB(exePath, iniDir, "MSSQL")
+
+        if "mssql_dump" not in os.listdir(self.rootDir):
+            os.mkdir("mssql_dump")
+        #self.exportDB(exePath, iniDir, "MSSQL", DUMP='Y')
 
     def getPostgreSQL(self):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to PostgreSQL\\msa2pgs.exe'
@@ -89,7 +98,11 @@ class mdb_ini_Exporter:
 
         self.exportDB(exePath, iniDir, "PostgreSQL")
 
-    def exportDB(self, exePath, iniDir, databaseType):
+        if "postgresql_dump" not in os.listdir(self.rootDir):
+            os.mkdir("postgresql_dump")
+        #self.exportDB(exePath, iniDir, "PostgreSQL", DUMP='Y')
+
+    def exportDB(self, exePath, iniDir, databaseType, DUMP=None):
         os.chdir(iniDir)
         iniFiles = os.listdir()
 
