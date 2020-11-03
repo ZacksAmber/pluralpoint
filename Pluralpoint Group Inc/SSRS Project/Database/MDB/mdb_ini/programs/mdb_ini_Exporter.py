@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-01 10:04:23 pm                                        #
+# Last Modified: 2020-11-02 1:28:33 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -25,6 +25,7 @@ import os
 import sys
 import subprocess
 import datetime
+import re
 
 class mdb_ini_Exporter:
     def __init__(self):
@@ -76,33 +77,30 @@ class mdb_ini_Exporter:
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MySQL\\msa2mys.exe'
         iniDir = self.rootDir + "\\mysql_ini\\"
 
-        self.exportDB(exePath, iniDir, "MySQL")
-
+        os.chdir(self.rootDir)
         if "mysql_dump" not in os.listdir(self.rootDir):
             os.mkdir("mysql_dump")
-        #self.exportDB(exePath, iniDir, "MySQL", DUMP='Y')
+        self.exportDB(exePath, iniDir, "MySQL")
 
     def getMSSQL(self):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MSSQL\\msa2sql.exe'
-        mssql_iniDir = self.rootDir + "\\mssql_ini\\"
+        iniDir = self.rootDir + "\\mssql_ini\\"
 
-        self.exportDB(exePath, iniDir, "MSSQL")
-
+        os.chdir(self.rootDir)
         if "mssql_dump" not in os.listdir(self.rootDir):
             os.mkdir("mssql_dump")
-        #self.exportDB(exePath, iniDir, "MSSQL", DUMP='Y')
+        self.exportDB(exePath, iniDir, "MSSQL")
 
     def getPostgreSQL(self):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to PostgreSQL\\msa2pgs.exe'
-        postgresql_iniDir = self.rootDir + "\\postgresql_ini\\"
+        iniDir = self.rootDir + "\\postgresql_ini\\"
 
-        self.exportDB(exePath, iniDir, "PostgreSQL")
-
+        os.chdir(self.rootDir)
         if "postgresql_dump" not in os.listdir(self.rootDir):
             os.mkdir("postgresql_dump")
-        #self.exportDB(exePath, iniDir, "PostgreSQL", DUMP='Y')
+        self.exportDB(exePath, iniDir, "PostgreSQL")
 
-    def exportDB(self, exePath, iniDir, databaseType, DUMP=None):
+    def exportDB(self, exePath, iniDir, databaseType):
         os.chdir(iniDir)
         iniFiles = os.listdir()
 
@@ -121,7 +119,10 @@ class mdb_ini_Exporter:
                 startTime = datetime.datetime.now().time()
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful", startTime=startTime)
                 proc.wait()
-                print("Export DB " + mdbName + ": Successful!")
+                if re.findall("[_]", mdbName) == ["_"]:
+                    print("Export DB " + mdbName + ": Successful!")
+                else:
+                    print("Export dump file " + mdbName + ": Successful!")
                 print("")
                 endTime = datetime.datetime.now().time()
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)

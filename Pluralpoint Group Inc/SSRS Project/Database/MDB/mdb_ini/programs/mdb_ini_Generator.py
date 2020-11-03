@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-01 10:04:09 pm                                        #
+# Last Modified: 2020-11-02 2:18:36 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -198,7 +198,8 @@ class mdb_ini_Generator:
 
         mysqlDefaultSettings = {
         'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\>',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mysql_dump\\>',
         'sourceusername':'<If no username, leave it as default>',
         'sourcepassword':'<If no password, leave it as default>',
         'sourcesystemdatabase':'<If no specified database, leave it as default>',
@@ -320,7 +321,14 @@ class mdb_ini_Generator:
                 self.outputErrors('invalidSetting', 'storageengine')
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=" + self.userSettings['sourcedirectory'] + "mysql_dump\\" + self.mdbSchema + ".sql\n")
+            # validate value
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'dumpfiledirectory')
+            # if no \ at the end of directory, the program will add a \
+            if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']
+            ) != []: # make sure the windows Path is end with \
+                self.userSettings['dumpfiledirectory'] += '\\'
+            f.write("  destinationdumpfilename=" + self.userSettings['dumpfiledirectory'] + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
@@ -413,7 +421,8 @@ class mdb_ini_Generator:
 
         mssqlDefaultSettings = {
         'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\>',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mssql_dump\\>',
         'sourceusername':'<If no username, leave it as default>',
         'sourcepassword':'<If no password, leave it as default>',
         'sourcesystemdatabase':'<If no specified database, leave it as default>',
@@ -530,7 +539,14 @@ class mdb_ini_Generator:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=" + self.userSettings['sourcedirectory'] + "mssql_dump\\" + self.mdbSchema + ".sql\n")
+            # validate value
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'dumpfiledirectory')
+            # if no \ at the end of directory, the program will add a \
+            if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']
+            ) != []: # make sure the windows Path is end with \
+                self.userSettings['dumpfiledirectory'] += '\\'
+            f.write("  destinationdumpfilename=" + self.userSettings['dumpfiledirectory'] + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
@@ -623,7 +639,8 @@ class mdb_ini_Generator:
 
         postgresqlDefaultSettings = {
         'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\>',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\postgresql_dump\\>',
         'sourceusername':'<If no username, leave it as default>',
         'sourcepassword':'<If no password, leave it as default>',
         'sourcesystemdatabase':'<If no specified database, leave it as default>',
@@ -736,10 +753,17 @@ class mdb_ini_Generator:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define maintenancedb
-            f.write(" maintenancedb=" + self.userSettings['maintenancedb'] + "\n")
+            f.write("  maintenancedb=" + self.userSettings['maintenancedb'] + "\n")
 
             # define destinationdumpfilename
-            f.write("  destinationdumpfilename=" + self.userSettings['sourcedirectory'] + "postgresql_dump\\" + self.mdbSchema + ".sql\n")
+            # validate value
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'dumpfiledirectory')
+            # if no \ at the end of directory, the program will add a \
+            if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']
+            ) != []: # make sure the windows Path is end with \
+                self.userSettings['dumpfiledirectory'] += '\\'
+            f.write("  destinationdumpfilename=" + self.userSettings['dumpfiledirectory'] + self.mdbSchema + ".sql\n")
 
             # define sourcetables[]
             f.write("  sourcetables[]=")
