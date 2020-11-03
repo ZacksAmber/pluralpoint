@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-02 1:28:33 pm                                         #
+# Last Modified: 2020-11-03 8:32:41 am                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -26,18 +26,15 @@ import sys
 import subprocess
 import datetime
 import re
+import json
+import mysql.connector
 
 class mdb_ini_Exporter:
     def __init__(self):
         self.programDir = os.getcwd()
         os.chdir("..")
         self.rootDir = os.getcwd()
-        '''
-        wdCheck = input("Please make a directory to store the programs, and make another directory with the name 'mdb' to store the mdb files.\n1. Input 'y' to start.\n2. Input anything to quit.\nYour input: ")
-        
-        if wdCheck not in ["y", "Y"]:
-            sys.exit()
-        '''
+
         # Create README.txt
         os.chdir(self.programDir)
         with open("README.txt", "w", newline="\r\n") as f:
@@ -45,6 +42,7 @@ class mdb_ini_Exporter:
             f.write("1. Please make a directory named 'programs' to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
             f.write("2. Please make a directory named 'mdb' to store mdb files.\n")
             f.write("3. Search 'mdbtools' online and install it.\n")
+            f.write("4. Modules Required: mysql.connector\n")
             f.write("\n")
             f.write("Instruction:\n")
             f.write("1. Run 'mdb_ini_Generator.py' on your MacBook or Linux.\n")
@@ -113,12 +111,14 @@ class mdb_ini_Exporter:
             mdbName = mdbName[::-1]
             SETTINGS = "SETTINGS=" + iniFile
             args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"] # define the parameters for the .exe
-            proc = subprocess.Popen(args)
+            # proc = subprocess.Popen(args)
+            proc = subprocess.run(args)
             try:
                 print("Exporting DB " + mdbName)
                 startTime = datetime.datetime.now().time()
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful", startTime=startTime)
-                proc.wait()
+                #proc.wait()
+                proc
                 if re.findall("[_]", mdbName) == ["_"]:
                     print("Export DB " + mdbName + ": Successful!")
                 else:
@@ -151,7 +151,7 @@ class mdb_ini_Exporter:
                 f.write("")
         
         f.close()
-            
+
 # Execute the program
 obj = mdb_ini_Exporter()
 obj.main()
