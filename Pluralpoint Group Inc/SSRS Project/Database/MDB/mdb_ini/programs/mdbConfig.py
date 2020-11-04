@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 ################################################################################
-# File Name: mdb_ini_Generator.py                                              #
-# File Path: /mdb_ini_Generator.py                                             #
+# File Name: mdbConfig.py                                                      #
+# File Path: /mdbConfig.py                                                     #
 # Created Date: 2020-10-19                                                     #
 # -----                                                                        #
 # Company: Pluralpoint Group Inc.                                              #
@@ -11,31 +11,11 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-03 12:34:13 pm                                        #
+# Last Modified: 2020-11-03 7:31:27 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
 ################################################################################
-
-"""
-Description:
-1. This program will generate .ini files
-2. This program working in MacOS/Linux will grab all of the Access DB's tables in a specificed working directory, and export files with the same name as Access DB to the working directory.
-
-OS: MacOS
-Prerequisite:
-- Homebrew:  $ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-- mdbtools: brew install mdbtools
-"""
-
-"""
-Sample .ini files:
-- MySQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mysql.ini
-- MSSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mssql.ini
-- PostgreSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2prgsql.ini
-"""
-
-# %reset -f
 
 import os
 import subprocess
@@ -47,7 +27,7 @@ import numpy as np
 from datetime import datetime
 
 
-class mdb_ini_Generator:
+class mdbConfig:
     def __init__(self):
         # Path definition
         self.programDir = os.getcwd()
@@ -58,19 +38,31 @@ class mdb_ini_Generator:
         if ("schemas" in os.listdir(self.rootDir)) is False:
             os.mkdir("schemas")
 
-        # Create README.txt
         os.chdir(self.programDir)
-        with open("README.txt", "w", newline="\n") as f:
-            f.write("Prerequisite:\n")
-            f.write("1. Please make a directory named 'programs' to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
-            f.write("2. Please make a directory named 'mdb' to store mdb files.\n")
-            f.write("3. Search 'mdbtools' online and install it.\n")
+
+        # Create README.txt
+        with open("README.md", "w", newline="\n") as f:
+            f.write("## Prerequisite for `mdbConfig.py`:\n")
+            f.write("__IMPORTANT__: Run `mdbConfig.py` on your MacBook or Linux before run `mdbMigrator.py.`\n")
+            f.write("__ENV: MacOS or Linux, Python 3.7x, PIP.__\n")
+            f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
+            f.write("2. Make a directory named `mdb` to store mdb files.\n")
+            f.write("3. Search `mdbtools` online and install it.\n")
+            f.write("4. Module requirements: `numpy`.\n")
             f.write("---\n")
-            f.write("Instruction:\n")
-            f.write("1. Run 'mdb_ini_Generator.py' on your MacBook or Linux.\n")
-            f.write("2. copy the following directories to your Windows: 'mdb', 'programs', *_ini\n")
-            f.write("3. Run 'mdb_ini_Exporter.py' on your Windows.\n")
-            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.")
+            f.write("## Prerequisite for `mdbMigrator.py`:\n")
+            f.write("__IMPORTANT__: Run `mdbMigrator.py` on your Windows after run `mdbConfig.py`\n")
+            f.write("__ENV: Windows, Python 3.7x, PIP.__\n")
+            f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
+            f.write("2. Make a directory named `mdb` to store mdb files.\n")
+            f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
+            f.write("4. Modules Required: `mysql.connector`\n")
+            f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
+            f.write("---\n")
+            f.write("Sample .ini files:\n")
+            f.write("- MySQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mysql.ini\n")
+            f.write("- MSSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mssql.ini\n")
+            f.write("- PostgreSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2prgsql.ini\n")
 
         os.chdir(self.rootDir)
         if "mdb" not in os.listdir(self.rootDir):
@@ -80,9 +72,21 @@ class mdb_ini_Generator:
     # main function
     def main(self):
         # get user target DB type
-        targetDB = input("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nInput the number here: ")
+        print("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nq. q for Quit")
 
-        self.generateSchemas()
+        while True:
+            try:
+                targetDB = input("Input the number here: ")
+                if targetDB in ['1', '2', '3']:
+                    break
+                elif targetDB == 'q':
+                    sys.exit()
+                else:
+                    print("Please input an valid number!\n")
+            except ValueError:
+                print("Please input an number!\n")
+            finally:
+                self.generateSchemas()
 
         if targetDB == '1':
             self.loadMySQLSettings()
@@ -845,7 +849,7 @@ class mdb_ini_Generator:
 
     def outputLog(self, filetype):
         os.chdir(self.programDir)
-        with open("mdb_ini_Generator.log", "a", newline="\n") as f:
+        with open("mdbConfig.log", "a", newline="\n") as f:
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generating " + filetype + " " + self.mdbSchema + " ini file. Mission successful!\n")
         f.close()
 
@@ -860,5 +864,5 @@ class mdb_ini_Generator:
 
 
 # execute the program
-obj = mdb_ini_Generator()
+obj = mdbConfig()
 obj.main()
