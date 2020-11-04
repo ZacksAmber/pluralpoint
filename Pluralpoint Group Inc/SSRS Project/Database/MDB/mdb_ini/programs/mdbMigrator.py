@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-03 7:31:40 pm                                         #
+# Last Modified: 2020-11-03 8:08:27 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -25,12 +25,12 @@ import re
 import json
 import mysql.connector
 
+
 class mdbMigrator:
     def __init__(self):
         self.programDir = os.getcwd()
         os.chdir("..")
         self.rootDir = os.getcwd()
-
 
         os.chdir(self.programDir)
 
@@ -162,7 +162,7 @@ class mdbMigrator:
         iniFiles = os.listdir()
 
         for iniFile in iniFiles:
-            os.chdir(self.iniDir) # after invoking outputLog, go back to the iniDir
+            os.chdir(self.iniDir)  # after invoking outputLog, go back to the iniDir
             '''
             mdbName = iniFile # get the ini file name without extension and DB type
             mdbName = mdbName[::-1]
@@ -178,13 +178,13 @@ class mdbMigrator:
                 mdbName = iniFile.split('_postgresql.ini')[0]
             SETTINGS = "SETTINGS=" + iniFile
             args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"]  # define the parameters for the .exe
-            #proc = subprocess.Popen(args)
+            # proc = subprocess.Popen(args)
             proc = subprocess.run(args)
             try:
                 print("Handling DB " + mdbName)
                 startTime = datetime.datetime.now().time()
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful", startTime=startTime)
-                #proc.wait()
+                # proc.wait()
                 proc
                 if re.findall("_dump$", mdbName) == []:
                     print("Export DB " + mdbName + ": Successful!")
@@ -198,12 +198,12 @@ class mdbMigrator:
                     self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)
                 print("")
             except:
-                #proc.kill()
+                # proc.kill()
                 startTime = datetime.datetime.now().time()
                 print("Export DB " + mdbName + ": Failed!")
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="failed", startTime=startTime)
                 sys.exit()
-                
+
     def validateDB(self, mdbName, databaseType):
         if databaseType == 'MySQL':
             self.validateMySQL(mdbName)
@@ -223,11 +223,11 @@ class mdbMigrator:
             dbPort = int(userSettings['destinationport'])
 
         dbConnection = mysql.connector.connect(
-            host = dbHost,
-            user = dbUsername,
-            password = dbPassword,
-            port = dbPort,
-            database = mdbName
+            host=dbHost,
+            user=dbUsername,
+            password=dbPassword,
+            port=dbPort,
+            database=mdbName
             )
 
         if dbConnection.is_connected() is False:
@@ -288,7 +288,7 @@ class mdbMigrator:
         os.chdir(self.programDir)
 
         if status == "successful":
-            if endTime == None:
+            if endTime is None:
                 with open("mdbMigrator.log", "a", newline="\r\n") as f:
                     f.write("####################\n")
                     f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission start!\n")               
@@ -303,6 +303,7 @@ class mdbMigrator:
                 f.write("####################\n")
                 f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                 f.write("\n")
+
 
 # Execute the program
 obj = mdbMigrator()
