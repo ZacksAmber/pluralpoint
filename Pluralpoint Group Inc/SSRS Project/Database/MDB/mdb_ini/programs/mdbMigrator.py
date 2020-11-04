@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-03 8:08:27 pm                                         #
+# Last Modified: 2020-11-03 11:32:57 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -24,6 +24,7 @@ import datetime
 import re
 import json
 import mysql.connector
+import pymssql
 
 
 class mdbMigrator:
@@ -85,7 +86,7 @@ class mdbMigrator:
 
         # get user preference for validation of DB migration
         # get user target DB type
-        print("Do you prefer to validate the records after DB migration: y or n, q for Quit")
+        print("\nDo you prefer to validate the records after DB migration: y or n, q for Quit")
 
         while True:
             try:
@@ -98,6 +99,7 @@ class mdbMigrator:
                     print("Please input an valid letter!\n")
             except ValueError:
                 print("Please input an letter!\n")
+        print('')
 
         if targetDB == '1':
             if validateDB == 'y':
@@ -172,7 +174,7 @@ class mdbMigrator:
             '''
             if databaseType == 'MySQL':
                 mdbName = iniFile.split('_mysql.ini')[0]
-            elif databaseType == 'MSSSQL':
+            elif databaseType == 'MSSQL':
                 mdbName = iniFile.split('_mssql.ini')[0]
             elif databaseType == 'PostgreSQL':
                 mdbName = iniFile.split('_postgresql.ini')[0]
@@ -222,26 +224,26 @@ class mdbMigrator:
             dbHost = userSettings['destinationhost']
             dbPort = int(userSettings['destinationport'])
 
-        dbConnection = mysql.connector.connect(
+        cnx = mysql.connector.connect(
             host=dbHost,
             user=dbUsername,
             password=dbPassword,
             port=dbPort,
-            database=mdbName
+            database=mdbName,
             )
 
-        if dbConnection.is_connected() is False:
+        if cnx.is_connected() is False:
             sys.exit()
 
-        dbCursor = dbConnection.cursor()
-        dbCursor.execute('SHOW TABLES')
-        dbTables = dbCursor.fetchall()
+        cursor = cnx.cursor()
+        cursor.execute('SHOW TABLES')
+        dbTables = cursor.fetchall()
         
         # write log into mdbMigrator.log
         for dbTable in dbTables:
             dbTable = dbTable[0].decode()
-            dbCursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
-            dbRecords = dbCursor.fetchall()[0][0]
+            cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
             with open("mdbMigrator.log", "a", newline="\r\n") as f:
                 f.write('Table: ' + dbTable + '\n')
                 f.write('Records: ' + str(dbRecords) + '\n')
@@ -258,8 +260,8 @@ class mdbMigrator:
         dbJson = {}
         for dbTable in dbTables:
             dbTable = dbTable[0].decode()
-            dbCursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
-            dbRecords = dbCursor.fetchall()[0][0]
+            cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
             dbJson[dbTable] = dbRecords
 
         with open(recordsJsonFile, "w", newline="\r\n") as f:
@@ -269,11 +271,54 @@ class mdbMigrator:
 
     def validateMSSQL(self, mdbName):
         os.chdir(self.programDir)
+
         with open('mdb2mssql.json') as f:
             userSettings = json.load(f)
             dbUsername = userSettings['destinationusername']
             dbPassword = userSettings['destinationpassword']
             dbServer = userSettings['destinationserver']
+            dbAuth = userSettings['destinationauthentication']
+
+        cnx = pymssql.connect(
+            server=dbServer,
+            user=dbUsername,
+            password=dbPassword,
+            database=mdbName
+            )
+
+        cursor = cnx.cursor()
+        cursor.execute("SELECT TABLE_NAME from INFORMATION_SCHEMA.TABLES")
+        dbTables = cursor.fetchall()
+
+        # write log into mdbMigrator.log
+        for dbTable in dbTables:
+            dbTable = dbTable[0]
+            cursor.execute('SELECT COUNT(*) FROM "{0}";'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
+            with open("mdbMigrator.log", "a", newline="\r\n") as f:
+                f.write('Table: ' + dbTable + '\n')
+                f.write('Records: ' + str(dbRecords) + '\n')
+
+        with open("mdbMigrator.log", "a", newline="\r\n") as f:
+            f.write('\n')
+
+        print("Write records in log file successfully!")
+
+        # write records from querying table for each mdb in JSON file
+        os.chdir(self.mssql_recordsDir)
+        
+        recordsJsonFile = mdbName + '.json'
+        dbJson = {}
+        for dbTable in dbTables:
+            dbTable = dbTable[0]
+            cursor.execute('SELECT COUNT(*) FROM "{0}";'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
+            dbJson[dbTable] = dbRecords
+
+        with open(recordsJsonFile, "w", newline="\r\n") as f:
+            json.dump(dbJson, f, indent=4, sort_keys=False)
+
+        print("Write records in JSON file successfully!")
 
     def validatePostgreSQL(self, mdbName):
         os.chdir(self.programDir)
