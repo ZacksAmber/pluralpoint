@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 ################################################################################
-# File Name: mdb_ini_Exporter.py                                               #
-# File Path: /mdb_ini_Exporter.py                                              #
-# Created Date: 2020-10-24                                                     #
+# File Name: mdbMigrator.py                                                    #
+# File Path: /mdbMigrator.py                                                   #
+# Created Date: 2020-11-02                                                     #
 # -----                                                                        #
 # Company: Pluralpoint Group Inc.                                              #
 # Author: Zacks Shen                                                           #
@@ -11,15 +11,11 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-03 10:01:32 am                                        #
+# Last Modified: 2020-11-03 7:31:40 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
 ################################################################################
-
-"""
-This program is designed for passing parameters to the covertor then runing it.
-"""
 
 import os
 import sys
@@ -29,26 +25,38 @@ import re
 import json
 import mysql.connector
 
-class mdb_ini_Exporter:
+class mdbMigrator:
     def __init__(self):
         self.programDir = os.getcwd()
         os.chdir("..")
         self.rootDir = os.getcwd()
 
-        # Create README.txt
+
         os.chdir(self.programDir)
-        with open("README.txt", "w", newline="\r\n") as f:
-            f.write("Prerequisite:\n")
-            f.write("1. Please make a directory named 'programs' to store 'mdb_ini_Generator.py' and 'mdb_ini_Exporter.py'.\n")
-            f.write("2. Please make a directory named 'mdb' to store mdb files.\n")
-            f.write("3. Search 'mdbtools' online and install it.\n")
-            f.write("4. Modules Required: mysql.connector\n")
-            f.write("\n")
-            f.write("Instruction:\n")
-            f.write("1. Run 'mdb_ini_Generator.py' on your MacBook or Linux.\n")
-            f.write("2. copy the following directories to your Windows: 'mdb', 'programs', *_ini\n")
-            f.write("3. Run 'mdb_ini_Exporter.py' on your Windows.\n")
-            f.write("P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.")
+
+        # Create README.txt
+        with open("README.md", "w", newline="\r\n") as f:
+            f.write("## Prerequisite for `mdbConfig.py`:\n")
+            f.write("__IMPORTANT__: Run `mdbConfig.py` on your MacBook or Linux before run `mdbMigrator.py.`\n")
+            f.write("__ENV: MacOS or Linux, Python 3.7x, PIP.__\n")
+            f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
+            f.write("2. Make a directory named `mdb` to store mdb files.\n")
+            f.write("3. Search `mdbtools` online and install it.\n")
+            f.write("4. Module requirements: `numpy`.\n")
+            f.write("---\n")
+            f.write("## Prerequisite for `mdbMigrator.py`:\n")
+            f.write("__IMPORTANT__: Run `mdbMigrator.py` on your Windows after run `mdbConfig.py`\n")
+            f.write("__ENV: Windows, Python 3.7x, PIP.__\n")
+            f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
+            f.write("2. Make a directory named `mdb` to store mdb files.\n")
+            f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
+            f.write("4. Modules Required: `mysql.connector`\n")
+            f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
+            f.write("---\n")
+            f.write("Sample .ini files:\n")
+            f.write("- MySQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mysql.ini\n")
+            f.write("- MSSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2mssql.ini\n")
+            f.write("- PostgreSQL: https://github.com/ZacksAmber/Work/blob/master/Pluralpoint%20Group%20Inc/SSRS%20Project/Database/MDB/mdb_ini_samples/msa2prgsql.ini\n")
         
         os.chdir(self.rootDir)
         if "mdb" not in os.listdir(self.rootDir):
@@ -61,28 +69,35 @@ class mdb_ini_Exporter:
         os.chdir(self.rootDir)
         
         # get user target DB type
-        print("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL")
-        targetDB = input("Input the number here: ")
-        print("")
-        
-        if targetDB not in ['1', '2', '3']:
-            print("Please input an valid number!")
-            input("Press any to exit!")
-            sys.exit()
-        else:
-            print("")
+        print("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nq. q for Quit")
+
+        while True:
+            try:
+                targetDB = input("Input the number here: ")
+                if targetDB in ['1', '2', '3']:
+                    break
+                elif targetDB == 'q':
+                    sys.exit()
+                else:
+                    print("Please input an valid number!\n")
+            except ValueError:
+                print("Please input an number!\n")
 
         # get user preference for validation of DB migration
-        print("Do you prefer to validate the records after DB migration: y or n")
-        validateDB = input("Input the choice here: ")
-        print('')
+        # get user target DB type
+        print("Do you prefer to validate the records after DB migration: y or n, q for Quit")
 
-        if validateDB not in ['y', 'n']:
-            print("Please input 'y' or 'n'!")
-            input("Press any to exit!")
-            sys.exit()
-        else:
-            print('')
+        while True:
+            try:
+                validateDB = input("Input the choice here: ")
+                if validateDB in ['y', 'n']:
+                    break
+                elif validateDB == 'q':
+                    sys.exit()
+                else:
+                    print("Please input an valid letter!\n")
+            except ValueError:
+                print("Please input an letter!\n")
 
         if targetDB == '1':
             if validateDB == 'y':
@@ -222,16 +237,16 @@ class mdb_ini_Exporter:
         dbCursor.execute('SHOW TABLES')
         dbTables = dbCursor.fetchall()
         
-        # write log into mdb_ini_Exporter.log
+        # write log into mdbMigrator.log
         for dbTable in dbTables:
             dbTable = dbTable[0].decode()
             dbCursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
             dbRecords = dbCursor.fetchall()[0][0]
-            with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
+            with open("mdbMigrator.log", "a", newline="\r\n") as f:
                 f.write('Table: ' + dbTable + '\n')
                 f.write('Records: ' + str(dbRecords) + '\n')
 
-        with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
+        with open("mdbMigrator.log", "a", newline="\r\n") as f:
             f.write('\n')
 
         print("Write records in log file successfully!")
@@ -274,22 +289,22 @@ class mdb_ini_Exporter:
 
         if status == "successful":
             if endTime == None:
-                with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
+                with open("mdbMigrator.log", "a", newline="\r\n") as f:
                     f.write("####################\n")
                     f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission start!\n")               
             else:
                 procTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second) - datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second)
-                with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
+                with open("mdbMigrator.log", "a", newline="\r\n") as f:
                     f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                     f.write("Time consumed: " + str(procTime) + "\n")
                     f.write("\n")
         else:
-            with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
+            with open("mdbMigrator.log", "a", newline="\r\n") as f:
                 f.write("####################\n")
                 f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                 f.write("\n")
 
 # Execute the program
-obj = mdb_ini_Exporter()
+obj = mdbMigrator()
 obj.main()
 input("\nAll missions have been completed! Please check the log file.")
