@@ -224,3 +224,312 @@ def out(s):
 
 n = 1
 out(s='y' if n == 1 else s='n')
+
+
+Exporting DB RptDB-01
+Export DB RptDB-01: Successful!
+Export DB RptDB-01: Failed!
+Exporting DB RptDB-01_mysql
+Export DB RptDB-01_mysql: Successful!
+Export DB RptDB-01_mysql: Failed!
+
+Handling DB RptDB-01_dump
+Dump DB RptDB-01_dump: Successful!
+
+Handling DB RptDB-01
+Export DB RptDB-01: Successful!
+Export DB RptDB-01: Failed!
+Handling DB RptDB-02_dump
+Dump DB RptDB-02_dump: Successful!
+
+Handling DB RptDB-02
+
+Exporting DB RptDB-02
+
+f = 'xtreme_dump'
+import re
+re.findall("_dump$", iniFile)
+
+iniFile = 'xtreme_dump_mysql.ini'
+iniFile = 'xtreme_mysql.ini'
+
+iniFile.split('_mysql.ini')[0]
+
+
+mdbName = iniFile # get the ini file name without extension and DB type
+mdbName = mdbName[::-1]
+mdbName = mdbName.split("_", 1)
+mdbName = mdbName[-1]
+mdbName = mdbName[::-1]
+mdbName
+
+name = 'name'
+value = 5
+js = {name: value}
+js
+
+#####
+%reset -f
+
+import sys
+import os
+import mysql.connector
+import json
+
+rootDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini'
+programDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini/programs'
+os.chdir(programDir)
+
+mdbName = 'xtrdb'
+with open('mdb2mysql.json') as f:
+    userSettings = json.load(f)
+    dbUsername = userSettings['destinationusername']
+    dbPassword = userSettings['destinationpassword']
+    dbHost = userSettings['destinationhost']
+    dbPort = int(userSettings['destinationport'])
+
+dbConnection = mysql.connector.connect(
+    host = dbHost,
+    user = dbUsername,
+    password = dbPassword,
+    port = dbPort,
+    database = mdbName
+    )
+
+if dbConnection.is_connected() is False:
+    sys.exit()
+
+# write log into mdb_ini_Exporter.log
+dbCursor = dbConnection.cursor()
+dbCursor.execute('SHOW TABLES')
+dbTables = dbCursor.fetchall()
+
+for dbTable in dbTables:
+    dbTable = dbTable[0]
+    dbCursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+    dbRecords = dbCursor.fetchall()[0][0]
+    with open("mdb_ini_Exporter.log", "a", newline="\r\n") as f:
+        f.write('Table: ' + dbTable + '\n')
+        f.write('Records: ' + str(dbRecords) + '\n')
+
+with open("mdb_ini_Exporter.log", "a", newline="\n") as f:
+    f.write('\n')
+
+####
+mysql_recordsDir = rootDir + '/mysql_records/'
+
+dbConnection = mysql.connector.connect(
+    host = dbHost,
+    user = dbUsername,
+    password = dbPassword,
+    port = dbPort,
+    database = mdbName
+    )
+
+if dbConnection.is_connected() is False:
+    sys.exit()
+
+dbCursor = dbConnection.cursor()
+dbCursor.execute('SHOW TABLES')
+dbTables = dbCursor.fetchall()
+
+os.chdir(mysql_recordsDir)
+recordsJsonFile = mdbName + '.json'
+dbJson = {}
+for dbTable in dbTables:
+    dbTable = dbTable[0]
+    dbCursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+    dbRecords = dbCursor.fetchall()[0][0]
+    dbJson[dbTable] = dbRecords
+
+with open(recordsJsonFile, "w", newline="\n") as f:
+    json.dump(dbJson, f, indent=4, sort_keys=False) 
+
+
+###
+
+def hexo(x):
+    if x == 1:
+        print(1)
+    elif x == 2:
+        print(2)
+    elif x == 3:
+        print(3)
+
+while True:
+    try:
+        x = int(input("Please enter a number from the options:"))
+        if x in [1, 2, 3]:
+            hexo(x)
+            # break
+        else:
+            print("This is an inviald number!")
+    except ValueError:
+        print("This is not a number!")
+
+###
+
+def hexo(x):
+    if x == 1:
+        print(1)
+    elif x == 2:
+        print(2)
+    elif x == 3:
+        print(3)
+
+while True:
+    try:
+        x = int(input("Please enter a number from the options:"))
+        if x in [1, 2, 3]:
+            hexo(x)
+            break # The import stop
+        else:
+            print("This is an inviald number!")
+    except ValueError:
+        print("This is not a number!")
+
+
+####### connect to mssql
+
+import sys
+import os
+import json
+import pyodbc
+
+
+
+
+Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword;
+
+MSSQL
+sql19.c9d5goyg8g3a.us-east-1.rds.amazonaws.com
+admin
+myPassWord_123
+SQL
+
+import json
+import pymssql
+import os
+
+rootDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini'
+programDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini/programs'
+os.chdir(programDir)
+
+mdbName = 'xtreme'
+with open('mdb2mssql.json') as f:
+    userSettings = json.load(f)
+    dbUsername = userSettings['destinationusername']
+    dbPassword = userSettings['destinationpassword']
+    dbServer = userSettings['destinationserver']
+    dbAuth = userSettings['destinationauthentication']
+
+conn = pymssql.connect(
+    server=dbServer,
+    user=dbUsername,
+    password=dbPassword,
+    database=mdbName
+    )
+
+conn = pymssql.connect(
+    server='sql19.c9d5goyg8g3a.us-east-1.rds.amazonaws.com',
+    user='admin',
+    password='myPassWord_123',
+    database=mdbName
+    )
+
+cursor = conn.cursor()
+
+dir(cursor)
+
+cursor.execute("SELECT TABLE_NAME from INFORMATION_SCHEMA.TABLES")
+dbTables = cursor.fetchall()
+# dbTables[0][0]
+
+## bug fixes
+
+import datetime
+
+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+datetime.datetime.now().time().strftime("%Y-%m-%d %H:%M:%S")
+
+startTime = datetime.datetime.now()
+endTime = datetime.datetime.now()
+
+procTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second) - datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second)
+
+## connect to postgresql
+
+import os
+import sys
+import json
+import psycopg2
+
+
+rootDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini'
+programDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini/programs'
+os.chdir(programDir)
+
+mdbName = 'xtreme'
+with open('mdb2postgresql.json') as f:
+    userSettings = json.load(f)
+    dbUsername = userSettings['destinationusername']
+    dbPassword = userSettings['destinationpassword']
+    dbServer = userSettings['destinationserver']
+    dbPort = userSettings['destinationport']
+
+cnx = psycopg2.connect(
+    database=mdbName,
+    user=dbUsername,
+    password=dbPassword,
+    host=dbServer,
+    port=str(dbPort)
+    )
+
+# check connection status
+if cnx.status != 1:
+    self.outputErrors(errorType='DBConnection', databaseType=databaseType)
+
+# define cursor
+cursor = cnx.cursor()
+
+
+#SELECT table_name FROM information_schema.tables WHERE table_schema='public';
+
+# get all tables name of current database
+cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
+dbTables = cursor.fetchall()
+
+# write log into mdbMigrator.log
+for dbTable in dbTables:
+    # dbTable = dbTable[0].decode()
+    dbTable = dbTable[0]
+    cursor.execute('SELECT COUNT(*) FROM "{0}"'.format(dbTable))
+    dbRecords = cursor.fetchall()[0][0]
+    with open("mdbMigrator.log", "a", newline="\r\n") as f:
+        f.write('Table: ' + dbTable + '\n')
+        f.write('Records: ' + str(dbRecords) + '\n')
+
+with open("mdbMigrator.log", "a", newline="\r\n") as f:
+    f.write('\n')
+
+print("Write records in log file successfully!")
+
+# write records from querying table for each mdb in JSON file
+os.chdir(self.mysql_recordsDir)
+
+recordsJsonFile = mdbName + '.json'
+dbJson = {}
+for dbTable in dbTables:
+    # dbTable = dbTable[0].decode()
+    dbTable = dbTable[0]
+    cursor.execute('SELECT COUNT(*) FROM "{0}"'.format(dbTable))
+    dbRecords = cursor.fetchall()[0][0]
+    dbJson[dbTable] = dbRecords
+
+with open(recordsJsonFile, "w", newline="\r\n") as f:
+    json.dump(dbJson, f, indent=4, sort_keys=False)
+
+print("Write records in JSON file successfully!")
+
+# Close the connection
+cnx.close()
