@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-03 7:31:27 pm                                         #
+# Last Modified: 2020-11-05 3:11:17 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -56,7 +56,7 @@ class mdbConfig:
             f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
             f.write("2. Make a directory named `mdb` to store mdb files.\n")
             f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
-            f.write("4. Modules Required: `mysql.connector`\n")
+            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`\n")
             f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
             f.write("---\n")
             f.write("Sample .ini files:\n")
@@ -204,7 +204,7 @@ class mdbConfig:
         mysqlDefaultSettings = {
             'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
             'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mysql_dump\\>',
+            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
             'sourceusername': '<If no username, leave it as default>',
             'sourcepassword': '<If no password, leave it as default>',
             'sourcesystemdatabase': '<If no specified database, leave it as default>',
@@ -425,7 +425,7 @@ class mdbConfig:
         mssqlDefaultSettings = {
             'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
             'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mssql_dump\\>',
+            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
             'sourceusername': '<If no username, leave it as default>',
             'sourcepassword': '<If no password, leave it as default>',
             'sourcesystemdatabase': '<If no specified database, leave it as default>',
@@ -641,7 +641,7 @@ class mdbConfig:
         postgresqlDefaultSettings = {
             'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
             'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\postgresql_dump\\>',
+            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
             'sourceusername': '<If no username, leave it as default>',
             'sourcepassword': '<If no password, leave it as default>',
             'sourcesystemdatabase': '<If no specified database, leave it as default>',
@@ -847,12 +847,14 @@ class mdbConfig:
 
         self.outputLog("PostgreSQL")
 
+    # Define log function
     def outputLog(self, filetype):
         os.chdir(self.programDir)
         with open("mdbConfig.log", "a", newline="\n") as f:
             f.write(datetime.now().strftime("%Y-%m-%d %H:%M:%S") + ": Generating " + filetype + " " + self.mdbSchema + " ini file. Mission successful!\n")
         f.close()
 
+    # Define errors reminder
     def outputErrors(self, errorType=None, errorLocation=None):
         if errorType == 'invalidInput':
             print("\nError!\nInput Invalid!\nProgram Exit!\n")
@@ -866,3 +868,8 @@ class mdbConfig:
 # execute the program
 obj = mdbConfig()
 obj.main()
+
+
+import pymssql
+
+dir(pymssql.connect())
