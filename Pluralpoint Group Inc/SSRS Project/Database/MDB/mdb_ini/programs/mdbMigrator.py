@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-04 11:14:43 pm                                        #
+# Last Modified: 2020-11-05 3:50:14 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -51,7 +51,7 @@ class mdbMigrator:
             f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
             f.write("2. Make a directory named `mdb` to store mdb files.\n")
             f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
-            f.write("4. Modules Required: `mysql.connector`\n")
+            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`\n")
             f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
             f.write("---\n")
             f.write("Sample .ini files:\n")
@@ -84,6 +84,26 @@ class mdbMigrator:
             except ValueError:
                 print("Please input an number!\n")
 
+        # create dumps directory
+        if targetDB == '1':
+            jsonFile = 'mbd2mysql.json'
+        elif targetDB == '2':
+            jsonFile = 'mdb2mssql.json'
+        elif targetDB == '3':
+            jsonFile = 'mdb2postgresql.json'
+
+        with open(jsonFile) as f:
+            userSettings = json.load(f)
+            dumpsDir = userSettings['dumpfiledirectory']
+
+        if re.findall("[a-z]$", dumpsDir) != []:  # make sure the windows Path is end with \
+            dumpsDir += '\\'
+
+        dumpsDir = dumpsDir.split('\\')[-2]
+        os.mkdir("dumpsDir")
+        os.chdir("dumpsDir")
+        self.dumpsDir = os.getcwd()
+
         # get user preference for validation of DB migration
         # get user target DB type
         print("\nDo you prefer to validate the records after DB migration: y or n, q for Quit")
@@ -91,7 +111,12 @@ class mdbMigrator:
         while True:
             try:
                 validateDB = input("Input the choice here: ")
-                if validateDB in ['y', 'n']:
+                if validateDB == 'y':
+                    os.mkdir('records')
+                    os.chdir('records')
+                    self.recordsDir = os.getcwd()
+                    break
+                elif validateDB == 'n':
                     break
                 elif validateDB == 'q':
                     sys.exit()
@@ -117,61 +142,64 @@ class mdbMigrator:
             else:
                 self.PostgreSQL('n')
 
+    # Define MySQL settings
     def getMySQL(self, validateDB):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MySQL\\msa2mys.exe'
         self.iniDir = self.rootDir + "\\mysql_ini\\"
 
-        os.chdir(self.rootDir)
-        if "mysql_dump" not in os.listdir(self.rootDir):
-            os.mkdir("mysql_dump")
-        if validateDB == 'y':
-            if 'mysql_records' not in os.listdir(self.rootDir):
-                os.mkdir('mysql_records')
-            self.mysql_recordsDir = self.rootDir + '\\mysql_records\\'
-        
-        self.exportDB(exePath, "MySQL", validateDB)
+        os.chdir(self.dumpsDir)
+        if "mysql_dumps" not in os.listdir(self.dumpsDir):
+            os.mkdir("mysql_dumps")
 
+        os.chdir(self.recordsDir)
+        if validateDB == 'y':
+            if 'mysql_records' not in os.listdir(self.recordsDir):
+                os.mkdir('mysql_records')
+            self.mysql_recordsDir = self.rootDir + '\\records\\mysql_records\\'
+        
+        self.migrateDB(exePath, "MySQL", validateDB)
+
+    # Define MSSQL settings
     def getMSSQL(self, validateDB):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MSSQL\\msa2sql.exe'
-        self.iniDir = self.rootDir + "\\mssql_ini\\"
+        self.iniDir = self.rootDir + "\\records\\mssql_ini\\"
 
-        os.chdir(self.rootDir)
-        if "mssql_dump" not in os.listdir(self.rootDir):
-            os.mkdir("mssql_dump")
+        os.chdir(self.dumpsDir)
+        if "mssql_dumps" not in os.listdir(self.dumpsDir):
+            os.mkdir("mssql_dumps")
+
+        os.chdir(self.recordsDir)
         if validateDB == 'y':
-            if 'mssql_records' not in os.listdir(self.rootDir):
+            if 'mssql_records' not in os.listdir(self.recordsDir):
                 os.mkdir('mssql_records')
-            self.mssql_recordsDir = self.rootDir + '\\mssql_records\\'
+            self.mssql_recordsDir = self.rootDir + '\\records\\mssql_records\\'
         
-        self.exportDB(exePath, "MSSQL", validateDB)
+        self.migrateDB(exePath, "MSSQL", validateDB)
 
+    # Define PostgreSQL settings
     def getPostgreSQL(self, validateDB):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to PostgreSQL\\msa2pgs.exe'
         self.iniDir = self.rootDir + "\\postgresql_ini\\"
 
-        os.chdir(self.rootDir)
-        if "postgresql_dump" not in os.listdir(self.rootDir):
-            os.mkdir("postgresql_dump")
+        os.chdir(self.dumpsDir)
+        if "postgresql__dumps" not in os.listdir(self.dumpsDir):
+            os.mkdir("postgresql__dumps")
+
+        os.chdir(self.recordsDir)
         if validateDB == 'y':
-            if "postgresql_records" not in os.listdir(self.rootDir):
+            if "postgresql_records" not in os.listdir(self.recordsDir):
                 os.mkdir("postgresql_records")
             self.postgresql_recordsDir = self.rootDir + '\\postgresql_records\\'
                     
-        self.exportDB(exePath, "PostgreSQL", validateDB)
+        self.migrateDB(exePath, "PostgreSQL", validateDB)
 
-    def exportDB(self, exePath, databaseType, validateDB):
+    def migrateDB(self, exePath, databaseType, validateDB):
         os.chdir(self.iniDir)
         iniFiles = os.listdir()
 
         for iniFile in iniFiles:
             os.chdir(self.iniDir)  # after invoking outputLog, go back to the iniDir
-            '''
-            mdbName = iniFile # get the ini file name without extension and DB type
-            mdbName = mdbName[::-1]
-            mdbName = mdbName.split("_", 1)
-            mdbName = mdbName[-1]
-            mdbName = mdbName[::-1]
-            '''
+
             if databaseType == 'MySQL':
                 mdbName = iniFile.split('_mysql.ini')[0]
             elif databaseType == 'MSSQL':
@@ -206,6 +234,7 @@ class mdbMigrator:
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="failed", startTime=startTime)
                 sys.exit()
 
+    # Define function for connecting to different DB
     def validateDB(self, mdbName, databaseType):
         if databaseType == 'MySQL':
             self.validateMySQL(mdbName)
@@ -214,9 +243,11 @@ class mdbMigrator:
         elif databaseType == 'PostgreSQL':
             self.validatePostgreSQL(mdbName)
 
+    # Define MySQL connection
     def validateMySQL(self, mdbName):
         os.chdir(self.programDir)
 
+        # read DB settings from .json file
         with open('mdb2mysql.json') as f:
             userSettings = json.load(f)
             dbUsername = userSettings['destinationusername']
@@ -224,18 +255,22 @@ class mdbMigrator:
             dbHost = userSettings['destinationhost']
             dbPort = int(userSettings['destinationport'])
 
-        cnx = mysql.connector.connect(
-            host=dbHost,
-            user=dbUsername,
-            password=dbPassword,
-            port=dbPort,
-            database=mdbName,
-            )
+        # create connection
+        try:
+            cnx = mysql.connector.connect(
+                host=dbHost,
+                user=dbUsername,
+                password=dbPassword,
+                port=dbPort,
+                database=mdbName,
+                )
+        except mysql.connector.Error:
+            print("Connection Error")
 
-        if cnx.is_connected() is False:
-            sys.exit()
-
+        # define cursor
         cursor = cnx.cursor()
+
+        # get all tables name of current database
         cursor.execute('SHOW TABLES')
         dbTables = cursor.fetchall()
         
@@ -269,9 +304,14 @@ class mdbMigrator:
 
         print("Write records in JSON file successfully!")
 
+        # Close the connection
+        cnx.close()
+
+    # Define MSSQL connection
     def validateMSSQL(self, mdbName):
         os.chdir(self.programDir)
 
+        # read DB settings from .json file
         with open('mdb2mssql.json') as f:
             userSettings = json.load(f)
             dbUsername = userSettings['destinationusername']
@@ -279,14 +319,21 @@ class mdbMigrator:
             dbServer = userSettings['destinationserver']
             dbAuth = userSettings['destinationauthentication']
 
-        cnx = pymssql.connect(
-            server=dbServer,
-            user=dbUsername,
-            password=dbPassword,
-            database=mdbName
-            )
-
+        # create connection
+        try:
+            cnx = pymssql.connect(
+                server=dbServer,
+                user=dbUsername,
+                password=dbPassword,
+                database=mdbName
+                )
+        except pymssql.OperationalError:
+            self.outputErrors(errorType='DBConnection', databaseType=databaseType)
+        
+        # define cursor
         cursor = cnx.cursor()
+
+        # get all tables name of current database
         cursor.execute("SELECT TABLE_NAME from INFORMATION_SCHEMA.TABLES")
         dbTables = cursor.fetchall()
 
@@ -320,15 +367,76 @@ class mdbMigrator:
 
         print("Write records in JSON file successfully!")
 
+        # Close the connection
+        cnx.close()
+
+    # Define PostgreSQL connection
     def validatePostgreSQL(self, mdbName):
         os.chdir(self.programDir)
+
+        # read DB settings from .json file
         with open('mdb2postgresql.json') as f:
             userSettings = json.load(f)
             dbUsername = userSettings['destinationusername']
             dbPassword = userSettings['destinationpassword']
             dbServer = userSettings['destinationserver']
-            dbPort = int(userSettings['destinationport'])
+            dbPort = userSettings['destinationport']
 
+        # create connection
+        try:
+            cnx = psycopg2.connect(
+                database=mdbName,
+                user=dbUsername,
+                password=dbPassword,
+                host=dbServer,
+                port=str(dbPort)
+                )
+        except psycopg2.OperationalError:
+            self.outputErrors(errorType='DBConnection', databaseType=databaseType)
+
+        # define cursor
+        cursor = cnx.cursor()
+
+        # get all tables name of current database
+        cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
+        dbTables = cursor.fetchall()
+
+        # write log into mdbMigrator.log
+        for dbTable in dbTables:
+            # dbTable = dbTable[0].decode()
+            dbTable = dbTable[0]
+            cursor.execute('SELECT COUNT(*) FROM "{0}"'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
+            with open("mdbMigrator.log", "a", newline="\r\n") as f:
+                f.write('Table: ' + dbTable + '\n')
+                f.write('Records: ' + str(dbRecords) + '\n')
+
+        with open("mdbMigrator.log", "a", newline="\r\n") as f:
+            f.write('\n')
+
+        print("Write records in log file successfully!")
+
+        # write records from querying table for each mdb in JSON file
+        os.chdir(self.postgresql_recordsDir)
+
+        recordsJsonFile = mdbName + '.json'
+        dbJson = {}
+        for dbTable in dbTables:
+            # dbTable = dbTable[0].decode()
+            dbTable = dbTable[0]
+            cursor.execute('SELECT COUNT(*) FROM "{0}"'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
+            dbJson[dbTable] = dbRecords
+
+        with open(recordsJsonFile, "w", newline="\r\n") as f:
+            json.dump(dbJson, f, indent=4, sort_keys=False)
+
+        print("Write records in JSON file successfully!")
+
+        # Close the connection
+        cnx.close()
+
+    # Define log function
     def outputLog(self, mdbName=None, databaseType=None, status=None, startTime=None, endTime=None):
         os.chdir(self.programDir)
 
@@ -349,6 +457,17 @@ class mdbMigrator:
                 f.write(endTime.strftime("%Y-%m-%d %H:%M:%S") + " -- Migrate DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                 f.write("\n")
 
+    # Define errors reminder
+    def outputErrors(self, errorType=None, errorDB=None):
+        if errorType == 'invalidInput':
+            print("\nError!\nInput Invalid!\nProgram Exit!\n")
+        elif errorType == 'DBConnection':
+            print("\nError!")
+            print('Connect to ' + errorDB + ' failed!\n')
+            print('Please check your DB settings in *.json file under "programs" directory!\n')
+            print('Please check your DB running status!\n')
+
+        sys.exit()
 
 # Execute the program
 obj = mdbMigrator()
