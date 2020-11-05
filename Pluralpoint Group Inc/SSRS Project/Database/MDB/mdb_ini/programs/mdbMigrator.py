@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-03 11:32:57 pm                                        #
+# Last Modified: 2020-11-04 11:14:43 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -180,28 +180,28 @@ class mdbMigrator:
                 mdbName = iniFile.split('_postgresql.ini')[0]
             SETTINGS = "SETTINGS=" + iniFile
             args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"]  # define the parameters for the .exe
-            # proc = subprocess.Popen(args)
-            proc = subprocess.run(args)
+            proc = subprocess.Popen(args)
+            print("Handling DB " + mdbName)
+            # proc = subprocess.run(args)
             try:
-                print("Handling DB " + mdbName)
-                startTime = datetime.datetime.now().time()
-                self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful", startTime=startTime)
-                # proc.wait()
-                proc
+                startTime = datetime.datetime.now()
+                self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful", startTime=startTime, endTime=None)
+                proc.wait() # start migration
+                # proc
                 if re.findall("_dump$", mdbName) == []:
                     print("Export DB " + mdbName + ": Successful!")
-                    endTime = datetime.datetime.now().time()
+                    endTime = datetime.datetime.now()
                     self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)
                     if validateDB == 'y':  # validate the DB records
                         self.validateDB(mdbName, databaseType)
                 else:
                     print("Dump DB " + mdbName + ": Successful!")
-                    endTime = datetime.datetime.now().time()
+                    endTime = datetime.datetime.now()
                     self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)
                 print("")
             except:
                 # proc.kill()
-                startTime = datetime.datetime.now().time()
+                startTime = datetime.datetime.now()
                 print("Export DB " + mdbName + ": Failed!")
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="failed", startTime=startTime)
                 sys.exit()
@@ -336,17 +336,17 @@ class mdbMigrator:
             if endTime is None:
                 with open("mdbMigrator.log", "a", newline="\r\n") as f:
                     f.write("####################\n")
-                    f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission start!\n")               
+                    f.write(startTime.strftime("%Y-%m-%d %H:%M:%S") + " -- Migrate DB " + mdbName + " to RDS " + databaseType + ". Mission start!\n")               
             else:
                 procTime = datetime.timedelta(hours=endTime.hour, minutes=endTime.minute, seconds=endTime.second) - datetime.timedelta(hours=startTime.hour, minutes=startTime.minute, seconds=startTime.second)
                 with open("mdbMigrator.log", "a", newline="\r\n") as f:
-                    f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
+                    f.write(endTime.strftime("%Y-%m-%d %H:%M:%S") + " -- Migrate DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                     f.write("Time consumed: " + str(procTime) + "\n")
                     f.write("\n")
         else:
             with open("mdbMigrator.log", "a", newline="\r\n") as f:
                 f.write("####################\n")
-                f.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " -- Exporting DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
+                f.write(endTime.strftime("%Y-%m-%d %H:%M:%S") + " -- Migrate DB " + mdbName + " to RDS " + databaseType + ". Mission " + status + "!\n")
                 f.write("\n")
 
 
