@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-05 6:27:57 pm                                         #
+# Last Modified: 2020-11-05 10:59:18 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -41,7 +41,7 @@ class mdbConfig:
         os.chdir(self.programDir)
 
         # Create README.txt
-        with open("README.md", "w", newline="\n") as f:
+        with open("README.md", "w", newline="\r\n") as f:
             f.write("## Prerequisite for `mdbConfig.py`:\n")
             f.write("__IMPORTANT__: Run `mdbConfig.py` on your MacBook or Linux before run `mdbMigrator.py.`\n")
             f.write("__ENV: MacOS or Linux, Python 3.7x, PIP.__\n")
@@ -56,7 +56,7 @@ class mdbConfig:
             f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
             f.write("2. Make a directory named `mdb` to store mdb files.\n")
             f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
-            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`\n")
+            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`, `mariadb`\n")
             f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
             f.write("---\n")
             f.write("Sample .ini files:\n")
@@ -72,12 +72,12 @@ class mdbConfig:
     # main function
     def main(self):
         # get user target DB type
-        print("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nq. q for Quit")
+        print("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\n4. MariaDB\nq. q for Quit")
 
         while True:
             try:
                 targetDB = input("Input the number here: ")
-                if targetDB in ['1', '2', '3']:
+                if targetDB in ['1', '2', '3', '4']:
                     break
                 elif targetDB == 'q':
                     sys.exit()
@@ -94,21 +94,28 @@ class mdbConfig:
             for self.mdbSchema in self.mdbSchemas:
                 self.loadSchemas()
                 self.iniMySQL()
-                self.iniMySQL(DUMP='Y')
+                self.iniMySQL(DUMP='y')
         elif targetDB == '2':
             self.loadMSSQLSettings()
             os.chdir(self.schemasDir)
             for self.mdbSchema in self.mdbSchemas:
                 self.loadSchemas()
                 self.iniMSSQL()
-                self.iniMSSQL(DUMP='Y')
+                self.iniMSSQL(DUMP='y')
         elif targetDB == '3':
             self.loadPostgreSQLSettings()
             os.chdir(self.schemasDir)
             for self.mdbSchema in self.mdbSchemas:
                 self.loadSchemas()
                 self.iniPostgreSQL()
-                self.iniPostgreSQL(DUMP='Y')
+                self.iniPostgreSQL(DUMP='y')
+        elif targetDB == '4':
+            self.loadMariaDBSettings()
+            os.chdir(self.schemasDir)
+            for self.mdbSchema in self.mdbSchemas:
+                self.loadSchemas()
+                self.iniMariaDB()
+                self.iniMariaDB(DUMP='y')
         else:
             self.outputErrors('invalidInput')
 
@@ -200,36 +207,6 @@ class mdbConfig:
     # If the settings file is all default, then use the default settings.
     def loadMySQLSettings(self):
         os.chdir(self.programDir)
-
-        '''
-        mysqlDefaultSettings = {
-        'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-        'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-        'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
-        'sourceusername': '<If no username, leave it as default>',
-        'sourcepassword': '<If no password, leave it as default>',
-        'sourcesystemdatabase': '<If no specified database, leave it as default>',
-        'destinationmethod': "DIRECT",
-        'destinationhost': '<Your DB Server Host>',
-        'destinationport': 3306,
-        'destinationusername': '<Your DB Username>',
-        'destinationpassword': '<Your DB Password>',
-        'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-        # 'storageengine': "<Select one of the following engine: 'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
-        'dropdatabase': 1,
-        'createtables': 1,
-        'unicode': 1,
-        'autocommit': 1,
-        'transferdefaultvalues': 1,
-        'transferindexes': 1,
-        'transferautonumbers': 1,
-        'transferrecords': 1,
-        'columnlist': 1,
-        'tableprefix': '',
-        'negativeboolean': 0,
-        'ignorelargeblobs': 0
-        }
-        '''
         
         mysqlDefaultSettings = {
         'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
@@ -285,7 +262,7 @@ class mdbConfig:
 
         if DUMP is None:
             extension = "_mysql.ini"
-        elif DUMP == 'Y':
+        elif DUMP == 'y':
             extension = '_dump_mysql.ini'
 
         with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
@@ -293,7 +270,7 @@ class mdbConfig:
 
             # define sourcefilename
             # validate value
-            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'sourcedirectory')
             # if no \ at the end of directory, the program will add a \
             if re.findall("[a-z]$", self.userSettings['sourcedirectory']) != []:  # make sure the windows Path is end with \
@@ -301,7 +278,7 @@ class mdbConfig:
             f.write("  sourcefilename=" + self.userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
 
             # define sourceusername
-            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) + ['<', '>'] != ['<', '>']:
                 self.userSettings['sourceusername'] = ''
             f.write("  sourceusername=" + self.userSettings['sourceusername'] + "\n")
 
@@ -311,18 +288,18 @@ class mdbConfig:
             f.write("  sourcepassword=" + self.userSettings['sourcepassword'] + "\n")
 
             # define sourcesystemdatabase
-            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) + ['<', '>'] != ['<', '>']:
                 self.userSettings['sourcesystemdatabase'] = ''
             f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
 
             # define destinationmethod
             if DUMP is None:
                 f.write("  destinationmethod=DIRECT\n")
-            elif DUMP == 'Y':
+            elif DUMP == 'y':
                 f.write("  destinationmethod=DUMP\n")
 
             # define destinationhost
-            if re.findall('^[<]|[>]$', self.userSettings['destinationhost']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationhost']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationhost')
             f.write("  destinationhost=" + self.userSettings['destinationhost'] + "\n")
 
@@ -330,7 +307,7 @@ class mdbConfig:
             f.write("  destinationport=" + str(self.userSettings['destinationport']) + "\n")
 
             # define destinationusername
-            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationusername')
             f.write("  destinationusername=" + self.userSettings['destinationusername'] + "\n")
 
@@ -340,14 +317,14 @@ class mdbConfig:
             f.write("  destinationpassword=" + self.userSettings['destinationpassword'] + "\n")
 
             # define destinationdatabase
-            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) + ['<', '>'] != ['<', '>']:
                 f.write("  destinationdatabase=" + self.mdbSchema + "\n")
             else:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define storageengine
             '''
-            if re.findall('^[<]|[>]$', self.userSettings['storageengine']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['storageengine']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'storageengine')
 
             if self.userSettings['storageengine'] in ['ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM']:
@@ -359,7 +336,7 @@ class mdbConfig:
 
             # define destinationdumpfilename
             # validate value
-            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'dumpfiledirectory')
             # if no \ at the end of directory, the program will add a \
             if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']) != []:  # make sure the windows Path is end with \
@@ -455,35 +432,6 @@ class mdbConfig:
     def loadMSSQLSettings(self):
         os.chdir(self.programDir)
 
-        '''
-        mssqlDefaultSettings = {
-        'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-        'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-        'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
-        'sourceusername': '<If no username, leave it as default>',
-        'sourcepassword': '<If no password, leave it as default>',
-        'sourcesystemdatabase': '<If no specified database, leave it as default>',
-        'destinationmethod': 'DIRECT',
-        'destinationserver': '<Your DB Server Host>',
-        'destinationauthentication': '<Your authentication method: SQL or Windows>',
-        'destinationusername': '<Your DB Username>',
-        'destinationpassword': '<Your DB Password>',
-        'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-        'dropdatabase': 1,
-        'createtables': 1,
-        'unicode': 1,
-        'autocommit': 1,
-        'transferdefaultvalues': 1,
-        'transferindexes': 1,
-        'transferautonumbers': 1,
-        'transferrecords': 1,
-        'columnlist': 1,
-        'tableprefix': '',
-        'negativeboolean': 0,
-        'ignorelargeblobs': 0
-        }
-        '''
-
         mssqlDefaultSettings = {
         'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
         'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
@@ -537,7 +485,7 @@ class mdbConfig:
 
         if DUMP is None:
             extension = "_mssql.ini"
-        elif DUMP == 'Y':
+        elif DUMP == 'y':
             extension = '_dump_mssql.ini'
 
         with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
@@ -545,7 +493,7 @@ class mdbConfig:
 
             # define sourcefilename
             # validate value
-            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'sourcedirectory')
             # if no \ at the end of directory, the program will add a \
             if re.findall("[a-z]$", self.userSettings['sourcedirectory']) != []:  # make sure the windows Path is end with \
@@ -553,7 +501,7 @@ class mdbConfig:
             f.write("  sourcefilename=" + self.userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
 
             # define sourceusername
-            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) + ['<', '>'] != ['<', '>']:
                 self.userSettings['sourceusername'] = ''
             f.write("  sourceusername=" + self.userSettings['sourceusername'] + "\n")
 
@@ -563,23 +511,23 @@ class mdbConfig:
             f.write("  sourcepassword=" + self.userSettings['sourcepassword'] + "\n")
 
             # define sourcesystemdatabase
-            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) + ['<', '>'] != ['<', '>']:
                 self.userSettings['sourcesystemdatabase'] = ''
             f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
 
             # define destinationmethod
             if DUMP is None:
                 f.write("  destinationmethod=DIRECT\n")
-            elif DUMP == 'Y':
+            elif DUMP == 'y':
                 f.write("  destinationmethod=DUMP\n")
 
             # define destinationserver
-            if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationserver')
             f.write("  destinationserver=" + self.userSettings['destinationserver'] + "\n")
 
             # define destinationauthentication
-            if re.findall('^[<]|[>]$', self.userSettings['destinationauthentication']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationauthentication']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationauthentication')
             if self.userSettings['destinationauthentication'] in ['SQL', 'Windows']:
                 f.write("  destinationauthentication=" + self.userSettings['destinationauthentication'] + "\n")
@@ -587,7 +535,7 @@ class mdbConfig:
                 self.outputErrors('invalidSetting', 'destinationauthentication')
 
             # define destinationusername
-            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationusername')
             f.write("  destinationusername=" + self.userSettings['destinationusername'] + "\n")
 
@@ -597,14 +545,14 @@ class mdbConfig:
             f.write("  destinationpassword=" + self.userSettings['destinationpassword'] + "\n")
 
             # define destinationdatabase
-            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) + ['<', '>'] != ['<', '>']:
                 f.write("  destinationdatabase=" + self.mdbSchema + "\n")
             else:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define destinationdumpfilename
             # validate value
-            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'dumpfiledirectory')
             # if no \ at the end of directory, the program will add a \
             if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']) != []:  # make sure the windows Path is end with \
@@ -700,36 +648,6 @@ class mdbConfig:
     def loadPostgreSQLSettings(self):
         os.chdir(self.programDir)
 
-        '''
-        postgresqlDefaultSettings = {
-        'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-        'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-        'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
-        'sourceusername': '<If no username, leave it as default>',
-        'sourcepassword': '<If no password, leave it as default>',
-        'sourcesystemdatabase': '<If no specified database, leave it as default>',
-        'destinationmethod': "DIRECT",
-        'destinationserver': '<Your DB Server Host>',
-        'destinationport': 5432,
-        'destinationusername': '<Your DB Username>',
-        'destinationpassword': '<Your DB Password>',
-        'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-        'maintenancedb': 'postgres',
-        'dropdatabase': 1,
-        'createtables': 1,
-        'unicode': 1,
-        'autocommit': 1,
-        'transferdefaultvalues': 1,
-        'transferindexes': 1,
-        'transferautonumbers': 1,
-        'transferrecords': 1,
-        'columnlist': 1,
-        'tableprefix': '',
-        'negativeboolean': 0,
-        'ignorelargeblobs': 0
-        }
-        '''
-
         postgresqlDefaultSettings = {
         'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
         'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
@@ -784,7 +702,7 @@ class mdbConfig:
 
         if DUMP is None:
             extension = "_postgresql.ini"
-        elif DUMP == 'Y':
+        elif DUMP == 'y':
             extension = '_dump_postgresql.ini'
 
         with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
@@ -792,7 +710,7 @@ class mdbConfig:
 
             # define sourcefilename
             # validate value
-            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'sourcedirectory')
             # if no \ at the end of directory, the program will add a \
             if re.findall("[a-z]$", self.userSettings['sourcedirectory']) != []:  # make sure the windows Path is end with \
@@ -800,7 +718,7 @@ class mdbConfig:
             f.write("  sourcefilename=" + self.userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
 
             # define sourceusername
-            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) + ['<', '>'] != ['<', '>']:
                 self.userSettings['sourceusername'] = ''
             f.write("  sourceusername=" + self.userSettings['sourceusername'] + "\n")
 
@@ -810,18 +728,18 @@ class mdbConfig:
             f.write("  sourcepassword=" + self.userSettings['sourcepassword'] + "\n")
 
             # define sourcesystemdatabase
-            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) + ['<', '>'] != ['<', '>']:
                 self.userSettings['sourcesystemdatabase'] = ''
             f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
 
             # define destinationmethod
             if DUMP is None:
                 f.write("  destinationmethod=DIRECT\n")
-            elif DUMP == 'Y':
+            elif DUMP == 'y':
                 f.write("  destinationmethod=DUMP\n")
 
             # define destinationserver
-            if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationserver']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationserver')
             f.write("  destinationserver=" + self.userSettings['destinationserver'] + "\n")
 
@@ -829,17 +747,17 @@ class mdbConfig:
             f.write("  destinationport=" + str(self.userSettings['destinationport']) + "\n")
 
             # define destinationusername
-            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationusername')
             f.write("  destinationusername=" + self.userSettings['destinationusername'] + "\n")
 
             # define destinationpassword
-            if re.findall('^[<]|[>]$', self.userSettings['destinationpassword']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationpassword']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'destinationpassword')
             f.write("  destinationpassword=" + self.userSettings['destinationpassword'] + "\n")
 
             # define destinationdatabase
-            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) + ['<', '>'] != ['<', '>']:
                 f.write("  destinationdatabase=" + self.mdbSchema + "\n")
             else:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
@@ -849,7 +767,7 @@ class mdbConfig:
 
             # define destinationdumpfilename
             # validate value
-            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) == ['<', '>']:
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) + ['<', '>'] != ['<', '>']:
                 self.outputErrors('invalidSetting', 'dumpfiledirectory')
             # if no \ at the end of directory, the program will add a \
             if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']) != []:  # make sure the windows Path is end with \
@@ -938,6 +856,218 @@ class mdbConfig:
             f.write("  datetimetype=TIMESTAMP\n")
 
         self.outputLog("PostgreSQL")
+
+    # Load the settings of exporting to MySQL.
+    # If there is no settings file, create it.
+    # If the settings file is all default, then use the default settings.
+    def loadMariaDBSettings(self):
+        os.chdir(self.programDir)
+        
+        mariadbDefaultSettings = {
+        'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername':'<If no username, leave it as default>',
+        'sourcepassword':'<If no password, leave it as default>',
+        'sourcesystemdatabase':'<If no specified database, leave it as default>',
+        'destinationmethod':"DIRECT",
+        'destinationhost':'<Your DB Server Host>',
+        'destinationport':3306,
+        'destinationusername':'<Your DB Username>',
+        'destinationpassword':'<Your DB Password>',
+        'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        # 'storageengine':"<Select one of the following engine:'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
+        'dropdatabase':1,
+        'createtables':1,
+        'unicode':1,
+        'autocommit':1,
+        'transferdefaultvalues':1,
+        'transferindexes':1,
+        'transferautonumbers':1,
+        'transferrecords':1,
+        'columnlist':1,
+        'tableprefix':'',
+        'negativeboolean':0,
+        'ignorelargeblobs':0
+        }
+
+        if "mdb2mariadb.json" not in os.listdir():
+            print("\nCreate default settings file named 'mdb2mariadb.json' for exporting mdb to MySQL successfully.")
+            print("Please customize the settings in 'mdb2mariadb.json' as you need. Then run this program again.")
+            with open("mdb2mariadb.json", "w") as f:
+                json.dump(mariadbDefaultSettings, f, indent=4, sort_keys=False)
+            sys.exit()  # exit the program after creating the default settings
+        else:
+            print("\nLoading 'mdb2mariadb.json' successfully!\nIf you want to use the default settings, delete 'mdb2mariadb.json', and restart this program.")
+
+        with open("mdb2mariadb.json", "r") as f:
+            self.userSettings = json.load(f)
+
+    # generate .ini file for MySQL
+    def iniMariaDB(self, DUMP=None):
+        os.chdir(self.rootDir)
+
+        if "mariadb_ini" not in os.listdir(self.rootDir):
+            os.mkdir("mariadb_ini")
+
+        mariadb_iniDir = self.rootDir + "/mariadb_ini/"
+        os.chdir(mariadb_iniDir)
+
+        self.mdbSchema = self.mdbSchema.replace(".txt", "")  # remove the .txt extension
+
+        if DUMP is None:
+            extension = "_mariadb.ini"
+        elif DUMP == 'y':
+            extension = '_dump_mariadb.ini'
+
+        with open(self.mdbSchema + extension, "w", newline="\r\n") as f:
+            f.write("[MoveDB MSAccess to MySQL]\n")
+
+            # define sourcefilename
+            # validate value
+            if re.findall('^[<]|[>]$', self.userSettings['sourcedirectory']) + ['<', '>'] != ['<', '>']:
+                self.outputErrors('invalidSetting', 'sourcedirectory')
+            # if no \ at the end of directory, the program will add a \
+            if re.findall("[a-z]$", self.userSettings['sourcedirectory']) != []:  # make sure the windows Path is end with \
+                self.userSettings['sourcedirectory'] += '\\'
+            f.write("  sourcefilename=" + self.userSettings['sourcedirectory'] + self.mdbSchema + ".mdb\n")
+
+            # define sourceusername
+            if re.findall('^[<]|[>]$', self.userSettings['sourceusername']) + ['<', '>'] != ['<', '>']:
+                self.userSettings['sourceusername'] = ''
+            f.write("  sourceusername=" + self.userSettings['sourceusername'] + "\n")
+
+            # define sourcepassword
+            if re.findall('^[<]|[>]$', self.userSettings['sourcepassword']) == ['<', '>']:
+                self.userSettings['sourcepassword'] = ''
+            f.write("  sourcepassword=" + self.userSettings['sourcepassword'] + "\n")
+
+            # define sourcesystemdatabase
+            if re.findall('^[<]|[>]$', self.userSettings['sourcesystemdatabase']) + ['<', '>'] != ['<', '>']:
+                self.userSettings['sourcesystemdatabase'] = ''
+            f.write("  sourcesystemdatabase=" + self.userSettings['sourcesystemdatabase'] + "\n")
+
+            # define destinationmethod
+            if DUMP is None:
+                f.write("  destinationmethod=DIRECT\n")
+            elif DUMP == 'y':
+                f.write("  destinationmethod=DUMP\n")
+
+            # define destinationhost
+            if re.findall('^[<]|[>]$', self.userSettings['destinationhost']) + ['<', '>'] != ['<', '>']:
+                self.outputErrors('invalidSetting', 'destinationhost')
+            f.write("  destinationhost=" + self.userSettings['destinationhost'] + "\n")
+
+            # define destinationport
+            f.write("  destinationport=" + str(self.userSettings['destinationport']) + "\n")
+
+            # define destinationusername
+            if re.findall('^[<]|[>]$', self.userSettings['destinationusername']) + ['<', '>'] != ['<', '>']:
+                self.outputErrors('invalidSetting', 'destinationusername')
+            f.write("  destinationusername=" + self.userSettings['destinationusername'] + "\n")
+
+            # define destinationpassword
+            if re.findall('^[<]|[>]$', self.userSettings['destinationpassword']) == ['<', '>']:
+                self.outputErrors('invalidSetting', 'destinationpassword')
+            f.write("  destinationpassword=" + self.userSettings['destinationpassword'] + "\n")
+
+            # define destinationdatabase
+            if re.findall('^[<]|[>]$', self.userSettings['destinationdatabase']) + ['<', '>'] != ['<', '>']:
+                f.write("  destinationdatabase=" + self.mdbSchema + "\n")
+            else:
+                f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
+
+            # define destinationdumpfilename
+            # validate value
+            if re.findall('^[<]|[>]$', self.userSettings['dumpfiledirectory']) + ['<', '>'] != ['<', '>']:
+                self.outputErrors('invalidSetting', 'dumpfiledirectory')
+            # if no \ at the end of directory, the program will add a \
+            if re.findall("[a-z]$", self.userSettings['dumpfiledirectory']) != []:  # make sure the windows Path is end with \
+                self.userSettings['dumpfiledirectory'] += '\\'
+            f.write("  destinationdumpfilename=" + self.userSettings['dumpfiledirectory'] + self.mdbSchema + ".sql\n")
+
+            # define sourcetables[]
+            f.write("  sourcetables[]=")
+            for i in self.sourcetables[:-1]:
+                f.write('"' + i + '"' + ',')
+            f.write('"' + self.sourcetables[-1] + '"' + '\n')
+
+            # define dropdatabase
+            if self.userSettings['dropdatabase'] in [0, 1]:
+                f.write("  dropdatabase=" + str(self.userSettings['dropdatabase']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'dropdatabase')
+
+            # define createtables
+            if self.userSettings['createtables'] in [0, 1]:
+                f.write("  createtables=" + str(self.userSettings['createtables']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'createtables')
+
+            # define unicode
+            if self.userSettings['unicode'] in [0, 1]:
+                f.write("  unicode=" + str(self.userSettings['unicode']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'unicode')
+
+            # define autocommit
+            if self.userSettings['autocommit'] in [0, 1]:
+                f.write("  autocommit=" + str(self.userSettings['autocommit']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'autocommit')
+
+            # define transferdefaultvalues
+            if self.userSettings['transferdefaultvalues'] in [0, 1]:
+                f.write("  transferdefaultvalues=" + str(self.userSettings['transferdefaultvalues']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferdefaultvalues')
+
+            # define transferindexes
+            if self.userSettings['transferindexes'] in [0, 1]:
+                f.write("  transferindexes=" + str(self.userSettings['transferindexes']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferindexes')
+
+            # define transferautonumbers
+            if self.userSettings['transferautonumbers'] in [0, 1]:
+                f.write("  transferautonumbers=" + str(self.userSettings['transferautonumbers']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferautonumbers')
+
+            # define transferrecords
+            if self.userSettings['transferrecords'] in [0, 1]:
+                f.write("  transferrecords=" + str(self.userSettings['transferrecords']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'transferrecords')
+
+            # define columnlist
+            if self.userSettings['columnlist'] in [0, 1]:
+                f.write("  columnlist=" + str(self.userSettings['columnlist']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'columnlist')
+
+            # define tableprefix
+            f.write("  tableprefix=" + str(self.userSettings['tableprefix']) + "\n")
+
+            # define negativeboolean
+            if self.userSettings['negativeboolean'] in [0, 1]:
+                f.write("  negativeboolean=" + str(self.userSettings['negativeboolean']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'negativeboolean')
+
+            # define ignorelargeblobs
+            if self.userSettings['ignorelargeblobs'] in [0, 1]:
+                f.write("  ignorelargeblobs=" + str(self.userSettings['ignorelargeblobs']) + "\n")
+            else:
+                self.outputErrors('invalidSetting', 'ignorelargeblobs')
+
+            # define memotype
+            f.write("  memotype=LONGTEXT\n")
+
+            # define datetimetype
+            f.write("  datetimetype=DATETIME\n")
+
+        self.outputLog("MariaDB")
 
     # Define log function
     def outputLog(self, filetype):

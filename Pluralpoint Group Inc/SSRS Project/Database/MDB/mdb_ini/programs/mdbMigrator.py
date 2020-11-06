@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-05 3:50:14 pm                                         #
+# Last Modified: 2020-11-05 10:41:28 pm                                        #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -28,6 +28,7 @@ import json
 import mysql.connector
 import pymssql
 import psycopg2
+import mariadb
 
 
 class mdbMigrator:
@@ -54,7 +55,7 @@ class mdbMigrator:
             f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
             f.write("2. Make a directory named `mdb` to store mdb files.\n")
             f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
-            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`\n")
+            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`, `mariadb`\n")
             f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
             f.write("---\n")
             f.write("Sample .ini files:\n")
@@ -73,12 +74,12 @@ class mdbMigrator:
         os.chdir(self.rootDir)
         
         # get user target DB type
-        print("Which type of DB do you prefer to convert to:\n1. MySQL (for other engines such as MariaDB, input 1)\n2. MSSQL\n3. PostgreSQL\nq. q for Quit")
+        print("Which type of DB do you prefer to convert to:\n1. MySQL\n2. MSSQL\n3. PostgreSQL\n4. MariaDB\nq. q for Quit")
 
         while True:
             try:
                 targetDB = input("Input the number here: ")
-                if targetDB in ['1', '2', '3']:
+                if targetDB in ['1', '2', '3', '4']:
                     break
                 elif targetDB == 'q':
                     sys.exit()
@@ -94,6 +95,8 @@ class mdbMigrator:
             jsonFile = 'mdb2mssql.json'
         elif targetDB == '3':
             jsonFile = 'mdb2postgresql.json'
+        elif targetDB == '4':
+            jsonFile = 'mdb2mariadb.json'
 
         os.chdir(self.programDir)
         with open(jsonFile) as f:
@@ -150,6 +153,11 @@ class mdbMigrator:
                 self.setPostgreSQL('y')
             else:
                 self.setPostgreSQL('n')
+        elif targetDB == '4':
+            if validateDB == 'y':
+                self.setMariaDB('y')
+            else:
+                self.setMariaDB('n')
 
     # Set MySQL
     def setMySQL(self, validateDB):
@@ -205,6 +213,25 @@ class mdbMigrator:
                     
         self.migrateDB(exePath, "PostgreSQL", validateDB)
 
+    # Set MariaDB
+    def setMariaDB(self, validateDB):
+        exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MySQL\\msa2mys.exe'
+        self.iniDir = self.rootDir + "\\mariadb_ini\\"
+
+        os.chdir(self.dumpsDir)
+        if "mariadb_dumps" not in os.listdir(self.dumpsDir):
+            os.mkdir("mariadb_dumps")
+
+        if validateDB == 'y':
+            os.chdir(self.recordsDir)
+            if validateDB == 'y':
+                if 'mariadb_records' not in os.listdir(self.recordsDir):
+                    os.mkdir('mariadb_records')
+                self.mariadb_recordsDir = self.rootDir + '\\records\\mariadb_records\\'
+        
+        self.migrateDB(exePath, "MariaDB", validateDB)
+
+    # Define function for migrating DB
     def migrateDB(self, exePath, databaseType, validateDB):
         os.chdir(self.iniDir)
         iniFiles = os.listdir()
@@ -218,6 +245,8 @@ class mdbMigrator:
                 mdbName = iniFile.split('_mssql.ini')[0]
             elif databaseType == 'PostgreSQL':
                 mdbName = iniFile.split('_postgresql.ini')[0]
+            elif databaseType == 'MariaDB':
+                mdbName = iniFile.split('_mariadb.ini')[0]
             SETTINGS = "SETTINGS=" + iniFile
             args = [exePath, SETTINGS, ",AUTORUN", ",HIDE"]  # define the parameters for the .exe
             proc = subprocess.Popen(args)
@@ -245,6 +274,8 @@ class mdbMigrator:
                         shutil.move(os.path.join(self.dumpsDir, sqlFile+".sql"), os.path.join(self.dumpsDir+"\\mssql_dumps", sqlFile+".sql"))
                     elif databaseType == "PostgreSQL":
                         shutil.move(os.path.join(self.dumpsDir, sqlFile+".sql"), os.path.join(self.dumpsDir+"\\postgresql_dumps", sqlFile+".sql"))
+                    elif databaseType == "MariaDB":
+                        shutil.move(os.path.join(self.dumpsDir, sqlFile+".sql"), os.path.join(self.dumpsDir+"\\mariadb_dumps", sqlFile+".sql"))
                 print("")
             except:
                 # proc.kill()
@@ -262,6 +293,8 @@ class mdbMigrator:
             self.validateMSSQL(mdbName)
         elif databaseType == 'PostgreSQL':
             self.validatePostgreSQL(mdbName)
+        elif databaseType == 'MariaDB':
+            self.validateMariaDB(mdbName)
 
     # Define MySQL connection
     def validateMySQL(self, mdbName):
@@ -418,7 +451,7 @@ class mdbMigrator:
         cursor = cnx.cursor()
 
         # get all tables name of current database
-        cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
+        cursor.execute('SELECT table_name FROM information_schema.tables WHERE table_schema='"public")
         dbTables = cursor.fetchall()
 
         # write log into mdbMigrator.log
@@ -445,6 +478,72 @@ class mdbMigrator:
             # dbTable = dbTable[0].decode()
             dbTable = dbTable[0]
             cursor.execute('SELECT COUNT(*) FROM "{0}"'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
+            dbJson[dbTable] = dbRecords
+
+        with open(recordsJsonFile, "w", newline="\r\n") as f:
+            json.dump(dbJson, f, indent=4, sort_keys=False)
+
+        print("Write records in JSON file successfully!")
+
+        # Close the connection
+        cnx.close()
+
+    # Define MySQL connection
+    def validateMariaDB(self, mdbName):
+        os.chdir(self.programDir)
+
+        # read DB settings from .json file
+        with open('mdb2mariadb.json') as f:
+            userSettings = json.load(f)
+            dbUsername = userSettings['destinationusername']
+            dbPassword = userSettings['destinationpassword']
+            dbHost = userSettings['destinationhost']
+            dbPort = int(userSettings['destinationport'])
+
+        # create connection
+        try:
+            cnx = mariadb.connect(
+                host=dbHost,
+                user=dbUsername,
+                password=dbPassword,
+                port=dbPort,
+                database=mdbName,
+                )
+        except mariadb.ProgrammingError:
+            self.outputErrors(errorType='DBConnection', databaseType=databaseType)
+        except mariadb.OperationalError:
+            self.outputErrors(errorType='DBConnection', databaseType=databaseType)
+
+        # define cursor
+        cursor = cnx.cursor()
+
+        # get all tables name of current database
+        cursor.execute('SHOW TABLES')
+        dbTables = cursor.fetchall()
+        
+        # write log into mdbMigrator.log
+        for dbTable in dbTables:
+            dbTable = dbTable[0]
+            cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+            dbRecords = cursor.fetchall()[0][0]
+            with open("mdbMigrator.log", "a", newline="\r\n") as f:
+                f.write('Table: ' + dbTable + '\n')
+                f.write('Records: ' + str(dbRecords) + '\n')
+
+        with open("mdbMigrator.log", "a", newline="\r\n") as f:
+            f.write('\n')
+
+        print("Write records in log file successfully!")
+
+        # write records from querying table for each mdb in JSON file
+        os.chdir(self.mariadb_recordsDir)
+        
+        recordsJsonFile = mdbName + '.json'
+        dbJson = {}
+        for dbTable in dbTables:
+            dbTable = dbTable[0]
+            cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
             dbRecords = cursor.fetchall()[0][0]
             dbJson[dbTable] = dbRecords
 
