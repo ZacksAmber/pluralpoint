@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-05 3:11:17 pm                                         #
+# Last Modified: 2020-11-05 4:06:57 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -209,12 +209,12 @@ class mdbConfig:
             'sourcepassword': '<If no password, leave it as default>',
             'sourcesystemdatabase': '<If no specified database, leave it as default>',
             'destinationmethod': "DIRECT",
-            'destinationhost': '<Your MySQL Server Host>',
+            'destinationhost': '<Your DB Server Host>',
             'destinationport': 3306,
-            'destinationusername': '<Your MySQL Username>',
-            'destinationpassword': '<Your MySQL Password>',
+            'destinationusername': '<Your DB Username>',
+            'destinationpassword': '<Your DB Password>',
             'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-            'storageengine': "<Select one of the following engine: 'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
+            # 'storageengine': "<Select one of the following engine: 'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
             'dropdatabase': 1,
             'createtables': 1,
             'unicode': 1,
@@ -316,6 +316,7 @@ class mdbConfig:
                 f.write("  destinationdatabase=" + self.userSettings['destinationdatabase'] + "\n")
 
             # define storageengine
+            '''
             if re.findall('^[<]|[>]$', self.userSettings['storageengine']) == ['<', '>']:
                 self.outputErrors('invalidSetting', 'storageengine')
 
@@ -323,6 +324,8 @@ class mdbConfig:
                 f.write("  storageengine=" + self.userSettings['storageengine'] + "\n")
             else:
                 self.outputErrors('invalidSetting', 'storageengine')
+            '''
+            f.write("  storageengine=" + "InnoDB\n")
 
             # define destinationdumpfilename
             # validate value
@@ -430,10 +433,10 @@ class mdbConfig:
             'sourcepassword': '<If no password, leave it as default>',
             'sourcesystemdatabase': '<If no specified database, leave it as default>',
             'destinationmethod': 'DIRECT',
-            'destinationserver': '<Your MySQL Server Host>',
+            'destinationserver': '<Your DB Server Host>',
             'destinationauthentication': '<Your authentication method: SQL or Windows>',
-            'destinationusername': '<Your MySQL Username>',
-            'destinationpassword': '<Your MySQL Password>',
+            'destinationusername': '<Your DB Username>',
+            'destinationpassword': '<Your DB Password>',
             'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
             'dropdatabase': 1,
             'createtables': 1,
@@ -646,10 +649,10 @@ class mdbConfig:
             'sourcepassword': '<If no password, leave it as default>',
             'sourcesystemdatabase': '<If no specified database, leave it as default>',
             'destinationmethod': "DIRECT",
-            'destinationserver': '<Your MySQL Server Host>',
+            'destinationserver': '<Your DB Server Host>',
             'destinationport': 5432,
-            'destinationusername': '<Your MySQL Username>',
-            'destinationpassword': '<Your MySQL Password>',
+            'destinationusername': '<Your DB Username>',
+            'destinationpassword': '<Your DB Password>',
             'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
             'maintenancedb': 'postgres',
             'dropdatabase': 1,
