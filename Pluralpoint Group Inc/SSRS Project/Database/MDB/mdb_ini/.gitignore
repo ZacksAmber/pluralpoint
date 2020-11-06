@@ -36,6 +36,13 @@
 ehthumbs.db
 Thumbs.db
 
-# Directories  #
-################
-*ini
+# Directories #
+###############
+*_ini
+
+# Specific Files or Directories #
+################################
+*test.py
+*.json
+config.txt
+outdated
