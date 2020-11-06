@@ -192,8 +192,7 @@ with open('mdb2mysql.json') as f:
     dbHost = userSettings['destinationhost']
     dbPort = int(userSettings['destinationport'])
 
-
-dbConnection = mysql.connector.connect(
+cnx = mysql.connector.connect(
     host = dbHost,
     user = dbUsername,
     password = dbPassword,
@@ -201,15 +200,31 @@ dbConnection = mysql.connector.connect(
     database = 'xtreme'
     )
 
-dbCursor = dbConnection.cursor()
+dir(mysql.connector)
 
-dbCursor.execute('SHOW TABLES')
-dbTables = dbCursor.fetchall()
+try:
+    cnx = mysql.connector.connect(
+        host = 'mysql-xtr.c9d5goyg8g3a.us-east-1.rds.amazonaws.com',
+        user = 'admin',
+        password = 'myPassWord_123',
+        port = 3306,
+        database = 'xtrem'
+        )
+except mysql.connector.Error:
+    print("Connection Error")
+
+dir(mysql.connector.Error())
+help(mysql.connector.Error)
+
+cursor = cnx.cursor()
+
+cursor.execute('SHOW TABLES')
+dbTables = cursor.fetchall()
 for dbTable in dbTables:
     dbTable = dbTable[0]
     print('Table: ' + dbTable)
-    dbCursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
-    dbRecords = dbCursor.fetchall()[0][0]
+    cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+    dbRecords = cursor.fetchall()[0][0]
     print('Records: ' + str(dbRecords))
     #print('')
 
@@ -429,13 +444,20 @@ conn = pymssql.connect(
     password=dbPassword,
     database=mdbName
     )
+dir(pymssql)
 
-conn = pymssql.connect(
-    server='sql19.c9d5goyg8g3a.us-east-1.rds.amazonaws.com',
-    user='admin',
-    password='myPassWord_123',
-    database=mdbName
-    )
+dir(pymssql.Error())
+
+try:
+    conn = pymssql.connect(
+        server='sql19.c9d5goyg8g3a.us-east-1.rds.amazonaws.com',
+        user='admin',
+        password='myPassWord_123',
+        database=mdbName
+        )
+except pymssql.OperationalError:
+    print("Connection Error")
+
 
 cursor = conn.cursor()
 
@@ -485,6 +507,18 @@ cnx = psycopg2.connect(
     port=str(dbPort)
     )
 
+try:
+    cnx = psycopg2.connect(
+        database='xtreme',
+        user='postgre',
+        password='myPassWord_123',
+        host='postgresql.c9d5goyg8g3a.us-east-1.rds.amazonaws.com',
+        port='5432'
+        )
+except psycopg2.OperationalError:
+    print("Connection Error")
+
+
 # check connection status
 if cnx.status != 1:
     self.outputErrors(errorType='DBConnection', databaseType=databaseType)
@@ -533,3 +567,8 @@ print("Write records in JSON file successfully!")
 
 # Close the connection
 cnx.close()
+
+with open('mdb2mysql.json', newline="\n") as f:
+    userSettings = json.load(f)
+
+userSettings

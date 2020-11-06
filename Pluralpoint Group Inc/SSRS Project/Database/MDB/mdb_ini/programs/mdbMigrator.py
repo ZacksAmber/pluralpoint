@@ -20,11 +20,14 @@
 import os
 import sys
 import subprocess
+import shutil  # module for moving file
 import datetime
 import re
 import json
+# for databases connection
 import mysql.connector
 import pymssql
+import psycopg2
 
 
 class mdbMigrator:
@@ -83,15 +86,16 @@ class mdbMigrator:
                     print("Please input an valid number!\n")
             except ValueError:
                 print("Please input an number!\n")
-
+        
         # create dumps directory
         if targetDB == '1':
-            jsonFile = 'mbd2mysql.json'
+            jsonFile = 'mdb2mysql.json'
         elif targetDB == '2':
             jsonFile = 'mdb2mssql.json'
         elif targetDB == '3':
             jsonFile = 'mdb2postgresql.json'
 
+        os.chdir(self.programDir)
         with open(jsonFile) as f:
             userSettings = json.load(f)
             dumpsDir = userSettings['dumpfiledirectory']
@@ -99,9 +103,12 @@ class mdbMigrator:
         if re.findall("[a-z]$", dumpsDir) != []:  # make sure the windows Path is end with \
             dumpsDir += '\\'
 
+        os.chdir(self.rootDir)
         dumpsDir = dumpsDir.split('\\')[-2]
-        os.mkdir("dumpsDir")
-        os.chdir("dumpsDir")
+        if dumpsDir not in os.listdir(self.rootDir):
+            os.mkdir(dumpsDir)
+
+        os.chdir(dumpsDir)
         self.dumpsDir = os.getcwd()
 
         # get user preference for validation of DB migration
@@ -112,7 +119,9 @@ class mdbMigrator:
             try:
                 validateDB = input("Input the choice here: ")
                 if validateDB == 'y':
-                    os.mkdir('records')
+                    os.chdir(self.rootDir)
+                    if 'records' not in os.listdir(self.rootDir):
+                        os.mkdir('records')
                     os.chdir('records')
                     self.recordsDir = os.getcwd()
                     break
@@ -128,22 +137,22 @@ class mdbMigrator:
 
         if targetDB == '1':
             if validateDB == 'y':
-                self.getMySQL('y')
+                self.setMySQL('y')
             else:
-                self.getMySQL('n')
+                self.setMySQL('n')
         elif targetDB == '2':
             if validateDB == 'y':
-                self.getMSSQL('y')
+                self.setMSSQL('y')
             else:
-                self.getMSSQL('n')
+                self.setMSSQL('n')
         elif targetDB == '3':
             if validateDB == 'y':
-                self.PostgreSQL('y')
+                self.setPostgreSQL('y')
             else:
-                self.PostgreSQL('n')
+                self.setPostgreSQL('n')
 
-    # Define MySQL settings
-    def getMySQL(self, validateDB):
+    # Set MySQL
+    def setMySQL(self, validateDB):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MySQL\\msa2mys.exe'
         self.iniDir = self.rootDir + "\\mysql_ini\\"
 
@@ -151,45 +160,48 @@ class mdbMigrator:
         if "mysql_dumps" not in os.listdir(self.dumpsDir):
             os.mkdir("mysql_dumps")
 
-        os.chdir(self.recordsDir)
         if validateDB == 'y':
-            if 'mysql_records' not in os.listdir(self.recordsDir):
-                os.mkdir('mysql_records')
-            self.mysql_recordsDir = self.rootDir + '\\records\\mysql_records\\'
+            os.chdir(self.recordsDir)
+            if validateDB == 'y':
+                if 'mysql_records' not in os.listdir(self.recordsDir):
+                    os.mkdir('mysql_records')
+                self.mysql_recordsDir = self.rootDir + '\\records\\mysql_records\\'
         
         self.migrateDB(exePath, "MySQL", validateDB)
 
-    # Define MSSQL settings
-    def getMSSQL(self, validateDB):
+    # Set MSSQL
+    def setMSSQL(self, validateDB):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to MSSQL\\msa2sql.exe'
-        self.iniDir = self.rootDir + "\\records\\mssql_ini\\"
+        self.iniDir = self.rootDir + "\\mssql_ini\\"
 
         os.chdir(self.dumpsDir)
         if "mssql_dumps" not in os.listdir(self.dumpsDir):
             os.mkdir("mssql_dumps")
 
-        os.chdir(self.recordsDir)
         if validateDB == 'y':
-            if 'mssql_records' not in os.listdir(self.recordsDir):
-                os.mkdir('mssql_records')
-            self.mssql_recordsDir = self.rootDir + '\\records\\mssql_records\\'
+            os.chdir(self.recordsDir)
+            if validateDB == 'y':
+                if 'mssql_records' not in os.listdir(self.recordsDir):
+                    os.mkdir('mssql_records')
+                self.mssql_recordsDir = self.rootDir + '\\records\\mssql_records\\'
         
         self.migrateDB(exePath, "MSSQL", validateDB)
 
-    # Define PostgreSQL settings
-    def getPostgreSQL(self, validateDB):
+    # Set PostgreSQL
+    def setPostgreSQL(self, validateDB):
         exePath = 'C:\\Program Files (x86)\\Bullzip\\MS Access to PostgreSQL\\msa2pgs.exe'
         self.iniDir = self.rootDir + "\\postgresql_ini\\"
 
         os.chdir(self.dumpsDir)
-        if "postgresql__dumps" not in os.listdir(self.dumpsDir):
-            os.mkdir("postgresql__dumps")
+        if "postgresql_dumps" not in os.listdir(self.dumpsDir):
+            os.mkdir("postgresql_dumps")
 
-        os.chdir(self.recordsDir)
         if validateDB == 'y':
-            if "postgresql_records" not in os.listdir(self.recordsDir):
-                os.mkdir("postgresql_records")
-            self.postgresql_recordsDir = self.rootDir + '\\postgresql_records\\'
+            os.chdir(self.recordsDir)
+            if validateDB == 'y':
+                if "postgresql_records" not in os.listdir(self.recordsDir):
+                    os.mkdir("postgresql_records")
+                self.postgresql_recordsDir = self.rootDir + '\\records\\postgresql_records\\'
                     
         self.migrateDB(exePath, "PostgreSQL", validateDB)
 
@@ -217,7 +229,7 @@ class mdbMigrator:
                 proc.wait() # start migration
                 # proc
                 if re.findall("_dump$", mdbName) == []:
-                    print("Export DB " + mdbName + ": Successful!")
+                    print("Migrate DB " + mdbName + ": Successful!")
                     endTime = datetime.datetime.now()
                     self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)
                     if validateDB == 'y':  # validate the DB records
@@ -226,12 +238,20 @@ class mdbMigrator:
                     print("Dump DB " + mdbName + ": Successful!")
                     endTime = datetime.datetime.now()
                     self.outputLog(mdbName=mdbName, databaseType=databaseType, status="successful",  startTime=startTime, endTime=endTime)
+                    sqlFile = mdbName.split('_dump')[0]
+                    if databaseType == "MySQL":
+                        shutil.move(os.path.join(self.dumpsDir, sqlFile+".sql"), os.path.join(self.dumpsDir+"\\mysql_dumps", sqlFile+".sql"))
+                    elif databaseType == "MSSQL":
+                        shutil.move(os.path.join(self.dumpsDir, sqlFile+".sql"), os.path.join(self.dumpsDir+"\\mssql_dumps", sqlFile+".sql"))
+                    elif databaseType == "PostgreSQL":
+                        shutil.move(os.path.join(self.dumpsDir, sqlFile+".sql"), os.path.join(self.dumpsDir+"\\postgresql_dumps", sqlFile+".sql"))
                 print("")
             except:
                 # proc.kill()
                 startTime = datetime.datetime.now()
-                print("Export DB " + mdbName + ": Failed!")
+                print("Migrate DB " + mdbName + ": Failed!")
                 self.outputLog(mdbName=mdbName, databaseType=databaseType, status="failed", startTime=startTime)
+                input("Please review log file! Press enter to exit!\n")
                 sys.exit()
 
     # Define function for connecting to different DB

@@ -1,7 +1,7 @@
 {
     "ATTENTION": "PLEASE REMOVE < > IN THE FOLLOWING FIELDS.",
     "sourcedirectory": "W:\\My Documents\\mdb_ini\\mdb",
-    "dumpfiledirectory": "W:\\My Documents\\mdb_ini\\dumps\\",
+    "dumpfiledirectory": "W:\\My Documents\\mdb_ini\\dumps",
     "sourceusername": "<If no username, leave it as default>",
     "sourcepassword": "<If no password, leave it as default>",
     "sourcesystemdatabase": "<If no specified database, leave it as default>",

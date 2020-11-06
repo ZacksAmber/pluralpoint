@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-05 4:10:35 pm                                         #
+# Last Modified: 2020-11-05 6:27:57 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -201,32 +201,62 @@ class mdbConfig:
     def loadMySQLSettings(self):
         os.chdir(self.programDir)
 
+        '''
         mysqlDefaultSettings = {
-            'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-            'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
-            'sourceusername': '<If no username, leave it as default>',
-            'sourcepassword': '<If no password, leave it as default>',
-            'sourcesystemdatabase': '<If no specified database, leave it as default>',
-            'destinationmethod': "DIRECT",
-            'destinationhost': '<Your DB Server Host>',
-            'destinationport': 3306,
-            'destinationusername': '<Your DB Username>',
-            'destinationpassword': '<Your DB Password>',
-            'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-            # 'storageengine': "<Select one of the following engine: 'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
-            'dropdatabase': 1,
-            'createtables': 1,
-            'unicode': 1,
-            'autocommit': 1,
-            'transferdefaultvalues': 1,
-            'transferindexes': 1,
-            'transferautonumbers': 1,
-            'transferrecords': 1,
-            'columnlist': 1,
-            'tableprefix': '',
-            'negativeboolean': 0,
-            'ignorelargeblobs': 0
+        'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername': '<If no username, leave it as default>',
+        'sourcepassword': '<If no password, leave it as default>',
+        'sourcesystemdatabase': '<If no specified database, leave it as default>',
+        'destinationmethod': "DIRECT",
+        'destinationhost': '<Your DB Server Host>',
+        'destinationport': 3306,
+        'destinationusername': '<Your DB Username>',
+        'destinationpassword': '<Your DB Password>',
+        'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        # 'storageengine': "<Select one of the following engine: 'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
+        'dropdatabase': 1,
+        'createtables': 1,
+        'unicode': 1,
+        'autocommit': 1,
+        'transferdefaultvalues': 1,
+        'transferindexes': 1,
+        'transferautonumbers': 1,
+        'transferrecords': 1,
+        'columnlist': 1,
+        'tableprefix': '',
+        'negativeboolean': 0,
+        'ignorelargeblobs': 0
+        }
+        '''
+        
+        mysqlDefaultSettings = {
+        'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername':'<If no username, leave it as default>',
+        'sourcepassword':'<If no password, leave it as default>',
+        'sourcesystemdatabase':'<If no specified database, leave it as default>',
+        'destinationmethod':"DIRECT",
+        'destinationhost':'<Your DB Server Host>',
+        'destinationport':3306,
+        'destinationusername':'<Your DB Username>',
+        'destinationpassword':'<Your DB Password>',
+        'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        # 'storageengine':"<Select one of the following engine:'ARCHIVE', 'DBD', 'Brighthouse', 'CSV', 'Falcon', 'InnoDB', 'Maria', 'MyISAM'>",
+        'dropdatabase':1,
+        'createtables':1,
+        'unicode':1,
+        'autocommit':1,
+        'transferdefaultvalues':1,
+        'transferindexes':1,
+        'transferautonumbers':1,
+        'transferrecords':1,
+        'columnlist':1,
+        'tableprefix':'',
+        'negativeboolean':0,
+        'ignorelargeblobs':0
         }
 
         if "mdb2mysql.json" not in os.listdir():
@@ -425,31 +455,60 @@ class mdbConfig:
     def loadMSSQLSettings(self):
         os.chdir(self.programDir)
 
+        '''
         mssqlDefaultSettings = {
-            'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-            'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
-            'sourceusername': '<If no username, leave it as default>',
-            'sourcepassword': '<If no password, leave it as default>',
-            'sourcesystemdatabase': '<If no specified database, leave it as default>',
-            'destinationmethod': 'DIRECT',
-            'destinationserver': '<Your DB Server Host>',
-            'destinationauthentication': '<Your authentication method: SQL or Windows>',
-            'destinationusername': '<Your DB Username>',
-            'destinationpassword': '<Your DB Password>',
-            'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-            'dropdatabase': 1,
-            'createtables': 1,
-            'unicode': 1,
-            'autocommit': 1,
-            'transferdefaultvalues': 1,
-            'transferindexes': 1,
-            'transferautonumbers': 1,
-            'transferrecords': 1,
-            'columnlist': 1,
-            'tableprefix': '',
-            'negativeboolean': 0,
-            'ignorelargeblobs': 0
+        'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername': '<If no username, leave it as default>',
+        'sourcepassword': '<If no password, leave it as default>',
+        'sourcesystemdatabase': '<If no specified database, leave it as default>',
+        'destinationmethod': 'DIRECT',
+        'destinationserver': '<Your DB Server Host>',
+        'destinationauthentication': '<Your authentication method: SQL or Windows>',
+        'destinationusername': '<Your DB Username>',
+        'destinationpassword': '<Your DB Password>',
+        'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        'dropdatabase': 1,
+        'createtables': 1,
+        'unicode': 1,
+        'autocommit': 1,
+        'transferdefaultvalues': 1,
+        'transferindexes': 1,
+        'transferautonumbers': 1,
+        'transferrecords': 1,
+        'columnlist': 1,
+        'tableprefix': '',
+        'negativeboolean': 0,
+        'ignorelargeblobs': 0
+        }
+        '''
+
+        mssqlDefaultSettings = {
+        'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername':'<If no username, leave it as default>',
+        'sourcepassword':'<If no password, leave it as default>',
+        'sourcesystemdatabase':'<If no specified database, leave it as default>',
+        'destinationmethod':'DIRECT',
+        'destinationserver':'<Your DB Server Host>',
+        'destinationauthentication':'<Your authentication method:SQL or Windows>',
+        'destinationusername':'<Your DB Username>',
+        'destinationpassword':'<Your DB Password>',
+        'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        'dropdatabase':1,
+        'createtables':1,
+        'unicode':1,
+        'autocommit':1,
+        'transferdefaultvalues':1,
+        'transferindexes':1,
+        'transferautonumbers':1,
+        'transferrecords':1,
+        'columnlist':1,
+        'tableprefix':'',
+        'negativeboolean':0,
+        'ignorelargeblobs':0
         }
 
         if "mdb2mssql.json" not in os.listdir():
@@ -641,32 +700,62 @@ class mdbConfig:
     def loadPostgreSQLSettings(self):
         os.chdir(self.programDir)
 
+        '''
         postgresqlDefaultSettings = {
-            'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
-            'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
-            'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
-            'sourceusername': '<If no username, leave it as default>',
-            'sourcepassword': '<If no password, leave it as default>',
-            'sourcesystemdatabase': '<If no specified database, leave it as default>',
-            'destinationmethod': "DIRECT",
-            'destinationserver': '<Your DB Server Host>',
-            'destinationport': 5432,
-            'destinationusername': '<Your DB Username>',
-            'destinationpassword': '<Your DB Password>',
-            'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
-            'maintenancedb': 'postgres',
-            'dropdatabase': 1,
-            'createtables': 1,
-            'unicode': 1,
-            'autocommit': 1,
-            'transferdefaultvalues': 1,
-            'transferindexes': 1,
-            'transferautonumbers': 1,
-            'transferrecords': 1,
-            'columnlist': 1,
-            'tableprefix': '',
-            'negativeboolean': 0,
-            'ignorelargeblobs': 0
+        'ATTENTION': 'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory': '<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername': '<If no username, leave it as default>',
+        'sourcepassword': '<If no password, leave it as default>',
+        'sourcesystemdatabase': '<If no specified database, leave it as default>',
+        'destinationmethod': "DIRECT",
+        'destinationserver': '<Your DB Server Host>',
+        'destinationport': 5432,
+        'destinationusername': '<Your DB Username>',
+        'destinationpassword': '<Your DB Password>',
+        'destinationdatabase': '<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        'maintenancedb': 'postgres',
+        'dropdatabase': 1,
+        'createtables': 1,
+        'unicode': 1,
+        'autocommit': 1,
+        'transferdefaultvalues': 1,
+        'transferindexes': 1,
+        'transferautonumbers': 1,
+        'transferrecords': 1,
+        'columnlist': 1,
+        'tableprefix': '',
+        'negativeboolean': 0,
+        'ignorelargeblobs': 0
+        }
+        '''
+
+        postgresqlDefaultSettings = {
+        'ATTENTION':'PLEASE REMOVE < > IN THE FOLLOWING FIELDS.',
+        'sourcedirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\mdb\\>',
+        'dumpfiledirectory':'<Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>',
+        'sourceusername':'<If no username, leave it as default>',
+        'sourcepassword':'<If no password, leave it as default>',
+        'sourcesystemdatabase':'<If no specified database, leave it as default>',
+        'destinationmethod':"DIRECT",
+        'destinationserver':'<Your DB Server Host>',
+        'destinationport':5432,
+        'destinationusername':'<Your DB Username>',
+        'destinationpassword':'<Your DB Password>',
+        'destinationdatabase':'<Your destination database. Leave it as default and the program will create a database with the same name as your mdb file.>',
+        'maintenancedb':'postgres',
+        'dropdatabase':1,
+        'createtables':1,
+        'unicode':1,
+        'autocommit':1,
+        'transferdefaultvalues':1,
+        'transferindexes':1,
+        'transferautonumbers':1,
+        'transferrecords':1,
+        'columnlist':1,
+        'tableprefix':'',
+        'negativeboolean':0,
+        'ignorelargeblobs':0
         }
 
         if "mdb2postgresql.json" not in os.listdir():
