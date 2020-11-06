@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-05 4:06:57 pm                                         #
+# Last Modified: 2020-11-05 4:10:35 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -871,8 +871,3 @@ class mdbConfig:
 # execute the program
 obj = mdbConfig()
 obj.main()
-
-
-import pymssql
-
-dir(pymssql.connect())
