@@ -11,7 +11,7 @@
 # Email: <zacks.shen@pluralpoint.com>                                          #
 # Github: https://github.com/ZacksAmber                                        #
 # -----                                                                        #
-# Last Modified: 2020-11-05 10:41:28 pm                                        #
+# Last Modified: 2020-11-10 3:56:52 pm                                         #
 # Modified By: Zacks Shen <zacks.shen@pluralpoint.com>                         #
 # -----                                                                        #
 # Copyright (c) 2020 Pluralpoint Group Inc.                                    #
@@ -55,7 +55,7 @@ class mdbMigrator:
             f.write("1. Make a directory named `programs` to store `mdbConfig.py` and `mdbMigrator.py`.\n")
             f.write("2. Make a directory named `mdb` to store mdb files.\n")
             f.write("3. Copy all of the following directories from your MacOS or Linux to Windows: `programs`, `mdb`, `*_ini`.\n")
-            f.write("4. Modules Required: `mysql.connector`, `psmssql`, `psycopg2`, `mariadb`\n")
+            f.write("4. Modules Required: `mysql.connector`, `pymssql`, `psycopg2`, `mariadb`\n")
             f.write("- P.S: A better solution is sharing a folder through Windows and MackBook/Linux. And let them sync the files and directories automatically.\n")
             f.write("---\n")
             f.write("Sample .ini files:\n")
