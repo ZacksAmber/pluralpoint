@@ -283,7 +283,7 @@ value = 5
 js = {name: value}
 js
 
-#####
+##### connect to MySQL
 %reset -f
 
 import sys
@@ -568,7 +568,145 @@ print("Write records in JSON file successfully!")
 # Close the connection
 cnx.close()
 
-with open('mdb2mysql.json', newline="\n") as f:
-    userSettings = json.load(f)
+import os
+os.getcwd()
 
-userSettings
+import shutil  # module for moving file
+
+shutil.move(src="../*_ini", dst=".")
+
+help(shutil.move)
+
+"xtreme_dump".split("_dump")[0]
+
+
+print('W:\\My Documents\\mdb_ini\\dumps\\RptDB-01.sql')
+print('W:\\My Documents\\mdb_ini\\dumps\\postgresql_dumps\\RptDB-01.sql')
+
+
+s = 'Your mdb files directory, e.g, W:\\My Documents\\mdb_ini\\dumps\\>'
+re.findall('^[<]|[>]$', s)
+re.findall('^[<]|[>]$', s) in ['<', '>']
+
+['<', '>'] + []
+
+
+# connect to maria db
+
+import sys
+import os
+import mariadb
+import json
+
+rootDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini'
+programDir = '/Users/zacks/Desktop/Work/Pluralpoint Group Inc/SSRS Project/Database/MDB/mdb_ini/programs'
+os.chdir(programDir)
+
+mdbName = 'xtrdb'
+with open('mdb2mariadb.json') as f:
+    userSettings = json.load(f)
+    dbUsername = userSettings['destinationusername']
+    dbPassword = userSettings['destinationpassword']
+    dbHost = userSettings['destinationhost']
+    dbPort = int(userSettings['destinationport'])
+
+cnx = mariadb.connect(
+    host = dbHost,
+    user = dbUsername,
+    password = dbPassword,
+    port = dbPort,
+    database = mdbName
+    )
+
+import mariadb
+
+try:
+    cnx = mariadb.connect(
+            host = 'mariadb.c9d5goyg8g3a.us-east-1.rds.amazonaws.com',
+            user = 'admin',
+            password = 'myPassWord_123',
+            port = 3306,
+            database = 'mysql'
+            )
+except mariadb.ProgrammingError:
+    print('Connection Failed!')
+except mariadb.OperationalError:
+    print('Connection Failed!')
+
+# define cursor
+cursor = cnx.cursor()
+
+# get all tables name of current database
+cursor.execute('SHOW TABLES')
+dbTables = cursor.fetchall()
+
+# write log into mdbMigrator.log
+for dbTable in dbTables:
+    dbTable = dbTable[0]
+    cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+    dbRecords = cursor.fetchall()[0][0]
+    with open("mdbMigrator.log", "a", newline="\r\n") as f:
+        f.write('Table: ' + dbTable + '\n')
+        f.write('Records: ' + str(dbRecords) + '\n')
+
+with open("mdbMigrator.log", "a", newline="\r\n") as f:
+    f.write('\n')
+
+print("Write records in log file successfully!")
+
+# write records from querying table for each mdb in JSON file
+os.chdir(self.mysql_recordsDir)
+
+recordsJsonFile = mdbName + '.json'
+dbJson = {}
+for dbTable in dbTables:
+    dbTable = dbTable[0].decode()
+    cursor.execute('SELECT COUNT(*) FROM `{0}`'.format(dbTable))
+    dbRecords = cursor.fetchall()[0][0]
+    dbJson[dbTable] = dbRecords
+
+with open(recordsJsonFile, "w", newline="\r\n") as f:
+    json.dump(dbJson, f, indent=4, sort_keys=False)
+
+print("Write records in JSON file successfully!")
+
+# Close the connection
+cnx.close()
+
+
+import requests
+import re
+import bs4
+from bs4 import BeautifulSoup as bf
+
+import datetime
+import pandas as pd
+
+import os
+
+baseurl = "https://www.usnews.com/education/best-global-universities/rankings"
+page = "?page="
+i = str(2)
+
+url = baseurl + page + i
+kv = {'user-agent':'Mozilla/5.0'}
+r = requests.get(url, headers=kv, timeout=30)
+r.raise_for_status()
+r.encoding = r.apparent_encoding
+uinfo = []
+soup = bf(r.text, "html.parser")
+
+soup.title.text
+soup.find("div", id=("rankings"))
+
+results = soup.find("div", id=("rankings")).find_all("div", attrs=re.findall("DetailCardGlobalUniversities")) # locate the 
+
+<div class="DetailCardGlobalUniversities__TextContainer-sc-1v60hm5-3 fcGeTq">
+
+results = soup.find("div", id=("rankings"))
+
+results = soup.find("div", id=("rankings")).find_all("div", attrs=r"DetailCardGlobalUniversities__TextContainer-sc-1v60hm5-3 fcGeTq")
+results
+
+df = pd.DataFrame(columns=["Rank", "Name", "Global Score", "Country", "City, State", "Link"])
+

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MPV Project - Zacks.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="northeastern-university-aiml-business-applications-mpv-project">Northeastern University AI/ML Business Applications MPV Project</h1>
+<ul>
+<li>Date: 10/29/2020</li>
+<li>Author: Zacks Shen</li>
+</ul>
+<hr>
+<h2 id="definition">Definition</h2>
+<p><strong>Data Source:</strong></p>
+<ul>
+<li><strong>Old data source</strong>: Access DB &amp; MDB:</li>
+<li><strong>New data source</strong>: MySQL, MSSQL, MariaDB, and PostgreSQL</li>
+</ul>
+<p><strong>Report Source:</strong></p>
+<ul>
+<li><mark>from our data source or the Internet?</mark>
+<ul>
+<li><strong>Our report source</strong>: if the reports are our RDL files, we could check the visualization on code layer.</li>
+<li><strong>Internet report source</strong>: if the reports from the Internet, we have to classify them on <strong>image classification</strong> layer.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Visualization engine</strong></p>
+<ul>
+<li><strong>Old visualization engine</strong>: the videos you showed to me and Serigy, on the left window.</li>
+<li><strong>New visualization engine</strong>: the videos you showed to me and Serigy, on the right window.</li>
+</ul>
+<hr>
+<h2 id="core-targets">Core Targets</h2>
+<p><strong>Data verification:</strong></p>
+<ul>
+<li>We could have a program checking the query results for each table from the old data source and new data source during the idle time, which means comparing the data between two data sources automatically.</li>
+<li>It is not necessary to validate the data source when we are generating the reports and showing them to the customers.</li>
+</ul>
+<p><strong>Visualization verification:</strong></p>
+<ul>
+<li>visualization before chart (Zacks' suggestion): After the program did the <strong>Data verification</strong> without any error, there is one thing we can make sure -- our data is complete and correct. The next step we could check if the <strong>New data engine</strong> returns the chart correctly.There is no necessary to do any image ML/AI, since we could get the return code from the visualization engine. If the chart generation failed, it will return a error code. <mark>Then we could try to troubleshooting.</mark> e.g, missing value or wrong parameters. Then we need to check the original query statement to see if it works well in the <strong>old visualization engine</strong>? You know, the reason may be &quot;&quot; or ``, the quote symbol in different DBs. If you search <code>CharDataPoint</code> inside the rdl file. It will tell you which kind of visualization of the query statement is.
+<img src="https://raw.githubusercontent.com/ZacksAmber/PicGo/master/img/20201029144631.png" alt=""></li>
+<li>Image Classification(Tim's plan): That is a very cool solution. Could we do it? Yes, but I think it is not necessary. Although the image ML/AI could classify the type of visualization or if it is a visualization, <strong>it is not useful for us to troubleshooting</strong>. We still need to check the query statement and parameters that passed to the visualization engine. In other words, if our <strong>old visualization engine</strong> returns a correct bar chart and our <strong>new visualization engine</strong> returns a bar chart but with wrong information. The ML/AI program will still make a conclusion that the two charts are the same type <mark>since it only can verify the visualization type.</mark> Unless your target is not to validate our report source, instead, you want to train a model to classify all of the reports from the Internet.</li>
+</ul>
+<hr>
+<h2 id="executive-summary">Executive Summary</h2>
+<p><strong>Data verification:</strong></p>
+<ul>
+<li>I could write a Python program to compare the query data result between the <strong>old data source</strong> and the <strong>new data source</strong></li>
+<li>I could write a Python program to check the <code>CharDataPoint</code> field is what parameter and convert it in our <strong>new visualization engine</strong>. For example, if our <strong>old visualization engine</strong> read <code>bar</code> to generate bar chart. But in our <strong>new visualization engine</strong>, it using <code>plot_chart</code> to generate bar chart. I can replace all of the fields in the RDL file. And validate the return code from the <strong>new visualization engine</strong>. Just like Sergiy said, if the results of the query statements are correct, it is impossible you get a incorrect data.</li>
+</ul>
+<hr>
+<h2 id="my-questions">My questions:</h2>
+<ol>
+<li>Is this project designed for our customers?</li>
+<li>Your target is to verify <strong>our report source</strong> or the <strong>Internet report source</strong>?</li>
+</ol>
+
+</body>
+</html>

@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CrystalReport xmlns="urn:crystal-reports:schemas:report-detail"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:crystal-reports:schemas:report-detail http://www.businessobjects.com/products/xml/CR2008Schema.xsd">
+<ReportHeader>
+<Section SectionNumber="0">
+<Picture Name="Graph1" GraphicType="Chart">
+</Picture>
+<Text Name="Text1"><TextValue>Charting</TextValue>
+</Text>
+<Field Name="Field1" FieldName="PrintDate"><FormattedValue>10/30/2020</FormattedValue><Value>2020-10-30</Value></Field>
+<Field Name="Field2" FieldName="PrintTime"><FormattedValue>12:50:32AM</FormattedValue><Value>00:50:32</Value></Field>
+<Text Name="Text2"><TextValue>Drilldown on chart for details</TextValue>
+</Text>
+<Text Name="Text3"><TextValue>Add new charting features to your report</TextValue>
+</Text>
+<Picture Name="Picture4" GraphicType="OLE">
+</Picture>
+</Section>
+</ReportHeader>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Canberra Bikes</FormattedValue><Value>Canberra Bikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>New South Wales</FormattedValue><Value>New South Wales</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>5353</FormattedValue><Value>5353</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$10,662.75</FormattedValue><Value>10662.75</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Kangeroo Trikes</FormattedValue><Value>Kangeroo Trikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Victoria</FormattedValue><Value>Victoria</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>2155</FormattedValue><Value>2155</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$9,594.70</FormattedValue><Value>9594.70</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Bruce&apos;s Bikes</FormattedValue><Value>Bruce&apos;s Bikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Victoria</FormattedValue><Value>Victoria</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>4774</FormattedValue><Value>4774</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,138.09</FormattedValue><Value>1138.09</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Peddles of Perth</FormattedValue><Value>Peddles of Perth</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Western Australia</FormattedValue><Value>Western Australia</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>3326</FormattedValue><Value>3326</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$8,945.25</FormattedValue><Value>8945.25</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Koala Road Bikes</FormattedValue><Value>Koala Road Bikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Queensland</FormattedValue><Value>Queensland</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>4600</FormattedValue><Value>4600</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$6,744.80</FormattedValue><Value>6744.80</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Tasmanian Devil Bikes</FormattedValue><Value>Tasmanian Devil Bikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Tasmania</FormattedValue><Value>Tasmania</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>0912</FormattedValue><Value>0912</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,739.85</FormattedValue><Value>1739.85</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Down Under Bikes</FormattedValue><Value>Down Under Bikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>New South Wales</FormattedValue><Value>New South Wales</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>2061</FormattedValue><Value>2061</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,621.20</FormattedValue><Value>1621.20</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Australia</FormattedValue><Value>Australia</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$40,446.64</FormattedValue><Value>40446.64</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Bangladesh</FormattedValue><Value>Bangladesh</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Dhaka Bike Store</FormattedValue><Value>Dhaka Bike Store</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Dhaka</FormattedValue><Value>Dhaka</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>346457</FormattedValue><Value>346457</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$4,683.50</FormattedValue><Value>4683.50</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Bangladesh</FormattedValue><Value>Bangladesh</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$4,683.50</FormattedValue><Value>4683.50</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>JinJing Sports</FormattedValue><Value>JinJing Sports</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Tianjin</FormattedValue><Value>Tianjin</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>356001</FormattedValue><Value>356001</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$13,434.90</FormattedValue><Value>13434.90</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Galaxy Outdoors</FormattedValue><Value>Galaxy Outdoors</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hong Kong SAR</FormattedValue><Value>Hong Kong SAR</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>664463</FormattedValue><Value>664463</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$10,425.55</FormattedValue><Value>10425.55</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Min Dong Toy Store</FormattedValue><Value>Min Dong Toy Store</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Shanghai</FormattedValue><Value>Shanghai</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>200239</FormattedValue><Value>200239</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$6,467.35</FormattedValue><Value>6467.35</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Yue Xiu Bicycles</FormattedValue><Value>Yue Xiu Bicycles</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Guangdong</FormattedValue><Value>Guangdong</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>370999</FormattedValue><Value>370999</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$17,484.75</FormattedValue><Value>17484.75</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Hao Nannu Outdoors</FormattedValue><Value>Hao Nannu Outdoors</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Sichuan</FormattedValue><Value>Sichuan</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>250895</FormattedValue><Value>250895</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$8,819.55</FormattedValue><Value>8819.55</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Globe Bike</FormattedValue><Value>Globe Bike</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hong Kong SAR</FormattedValue><Value>Hong Kong SAR</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>573222</FormattedValue><Value>573222</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$10,245.55</FormattedValue><Value>10245.55</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Newpeople Biking Ltd.</FormattedValue><Value>Newpeople Biking Ltd.</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hong Kong SAR</FormattedValue><Value>Hong Kong SAR</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>863356</FormattedValue><Value>863356</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$7,981.41</FormattedValue><Value>7981.41</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>AIC Childrens</FormattedValue><Value>AIC Childrens</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hong Kong SAR</FormattedValue><Value>Hong Kong SAR</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>439433</FormattedValue><Value>439433</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$5,879.70</FormattedValue><Value>5879.70</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>C&amp;C Sports People</FormattedValue><Value>C&amp;C Sports People</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hong Kong SAR</FormattedValue><Value>Hong Kong SAR</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>357677</FormattedValue><Value>357677</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$2,546.12</FormattedValue><Value>2546.12</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>China</FormattedValue><Value>China</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$83,284.88</FormattedValue><Value>83284.88</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>India</FormattedValue><Value>India</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>India Cycle and Co.</FormattedValue><Value>India Cycle and Co.</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>New Delhi</FormattedValue><Value>New Delhi</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>3257</FormattedValue><Value>3257</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$49,774.50</FormattedValue><Value>49774.50</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>India</FormattedValue><Value>India</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$49,774.50</FormattedValue><Value>49774.50</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Indonesia</FormattedValue><Value>Indonesia</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Jakarta Sunrise Sports</FormattedValue><Value>Jakarta Sunrise Sports</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Jawa Bara West Java</FormattedValue><Value>Jawa Bara West Java</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>4532</FormattedValue><Value>4532</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$6,333.40</FormattedValue><Value>6333.40</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Indonesia</FormattedValue><Value>Indonesia</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$6,333.40</FormattedValue><Value>6333.40</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Japan</FormattedValue><Value>Japan</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Bendai Mountain Bikers</FormattedValue><Value>Bendai Mountain Bikers</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Tokyo To</FormattedValue><Value>Tokyo To</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>232-9333</FormattedValue><Value>232-9333</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$14,076.80</FormattedValue><Value>14076.80</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Japan</FormattedValue><Value>Japan</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Nishimoto Sports</FormattedValue><Value>Nishimoto Sports</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Tokyo To</FormattedValue><Value>Tokyo To</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>129-2323</FormattedValue><Value>129-2323</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$40,964.74</FormattedValue><Value>40964.74</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Japan</FormattedValue><Value>Japan</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Nogoya Paths</FormattedValue><Value>Nogoya Paths</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hiroshima Ken</FormattedValue><Value>Hiroshima Ken</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>106-4553</FormattedValue><Value>106-4553</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$8,819.55</FormattedValue><Value>8819.55</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Japan</FormattedValue><Value>Japan</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Yokohama Biking Fans</FormattedValue><Value>Yokohama Biking Fans</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Hyogo Ken</FormattedValue><Value>Hyogo Ken</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>124-2293</FormattedValue><Value>124-2293</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$2,003.10</FormattedValue><Value>2003.10</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Japan</FormattedValue><Value>Japan</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Totory Ken Cyclists</FormattedValue><Value>Totory Ken Cyclists</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Kanagawa Ken</FormattedValue><Value>Kanagawa Ken</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>112-3293</FormattedValue><Value>112-3293</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$5,913.60</FormattedValue><Value>5913.60</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Japan</FormattedValue><Value>Japan</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$71,777.79</FormattedValue><Value>71777.79</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Malaysia</FormattedValue><Value>Malaysia</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Kuala Lumpur Central Cycle</FormattedValue><Value>Kuala Lumpur Central Cycle</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Kuala Lumpur</FormattedValue><Value>Kuala Lumpur</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>478886</FormattedValue><Value>478886</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$3,985.13</FormattedValue><Value>3985.13</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Malaysia</FormattedValue><Value>Malaysia</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$3,985.13</FormattedValue><Value>3985.13</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Mongolia</FormattedValue><Value>Mongolia</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Ulaanbaatar Cycle</FormattedValue><Value>Ulaanbaatar Cycle</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Ulaanbaatar</FormattedValue><Value>Ulaanbaatar</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$5,223.50</FormattedValue><Value>5223.50</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Mongolia</FormattedValue><Value>Mongolia</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$5,223.50</FormattedValue><Value>5223.50</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Nepal</FormattedValue><Value>Nepal</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Kathmandu Sports</FormattedValue><Value>Kathmandu Sports</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Kathmandu</FormattedValue><Value>Kathmandu</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>7493</FormattedValue><Value>7493</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$7,613.40</FormattedValue><Value>7613.40</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Nepal</FormattedValue><Value>Nepal</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$7,613.40</FormattedValue><Value>7613.40</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Sports Fever</FormattedValue><Value>Sports Fever</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Wellington</FormattedValue><Value>Wellington</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$43,321.50</FormattedValue><Value>43321.50</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>New Trails</FormattedValue><Value>New Trails</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Canterbury</FormattedValue><Value>Canterbury</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,716.20</FormattedValue><Value>1716.20</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Mountain View Sport</FormattedValue><Value>Mountain View Sport</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Auckland</FormattedValue><Value>Auckland</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$65,231.70</FormattedValue><Value>65231.70</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Beach Trails and Wheels</FormattedValue><Value>Beach Trails and Wheels</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Waikato</FormattedValue><Value>Waikato</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$2,944.00</FormattedValue><Value>2944.00</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Forested Hills</FormattedValue><Value>Forested Hills</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Wellington</FormattedValue><Value>Wellington</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,067.30</FormattedValue><Value>1067.30</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Bill&apos;s Bikes</FormattedValue><Value>Bill&apos;s Bikes</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Taranaki</FormattedValue><Value>Taranaki</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue></FormattedValue><Value></Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$2,459.40</FormattedValue><Value>2459.40</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>New Zealand</FormattedValue><Value>New Zealand</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$116,740.10</FormattedValue><Value>116740.10</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Pakistan</FormattedValue><Value>Pakistan</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Islamabad Bike Stores</FormattedValue><Value>Islamabad Bike Stores</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Islamabad</FormattedValue><Value>Islamabad</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>4346</FormattedValue><Value>4346</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$5,486.70</FormattedValue><Value>5486.70</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Pakistan</FormattedValue><Value>Pakistan</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$5,486.70</FormattedValue><Value>5486.70</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Philippines</FormattedValue><Value>Philippines</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Manila Bicycle Store</FormattedValue><Value>Manila Bicycle Store</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Manila Metropolitan Area</FormattedValue><Value>Manila Metropolitan Area</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>34008</FormattedValue><Value>34008</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$11,300.70</FormattedValue><Value>11300.70</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Philippines</FormattedValue><Value>Philippines</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$11,300.70</FormattedValue><Value>11300.70</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Sanstone Cycle</FormattedValue><Value>Sanstone Cycle</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>311435</FormattedValue><Value>311435</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$3,300.00</FormattedValue><Value>3300.00</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Ministry of Sports</FormattedValue><Value>Ministry of Sports</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>169111</FormattedValue><Value>169111</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$8,819.55</FormattedValue><Value>8819.55</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Heuristic Beach Pte Ltd</FormattedValue><Value>Heuristic Beach Pte Ltd</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>119954</FormattedValue><Value>119954</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,823.65</FormattedValue><Value>1823.65</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>JR Biking Limited</FormattedValue><Value>JR Biking Limited</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>239732</FormattedValue><Value>239732</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$1,019.40</FormattedValue><Value>1019.40</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>United Bikers</FormattedValue><Value>United Bikers</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>368911</FormattedValue><Value>368911</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$26,489.30</FormattedValue><Value>26489.30</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</Details>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Fast Mover Pte Ltd</FormattedValue><Value>Fast Mover Pte Ltd</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>609929</FormattedValue><Value>609929</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$4,751.00</FormattedValue><Value>4751.00</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Singapore</FormattedValue><Value>Singapore</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$46,202.90</FormattedValue><Value>46202.90</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<Group Level="1">
+<GroupHeader>
+<Section SectionNumber="0">
+<Field Name="Field3" FieldName="GroupName ({Customer.Country})"><FormattedValue>Thailand</FormattedValue><Value>Thailand</Value></Field>
+</Section>
+</GroupHeader>
+<Details Level="2">
+<Section SectionNumber="0">
+<Field Name="Field4" FieldName="{Customer.Customer Name}"><FormattedValue>Bangkok Sports</FormattedValue><Value>Bangkok Sports</Value></Field>
+<Field Name="Field5" FieldName="{Customer.Region}"><FormattedValue>Bangkok</FormattedValue><Value>Bangkok</Value></Field>
+<Field Name="Field6" FieldName="{Customer.Postal Code}"><FormattedValue>6865</FormattedValue><Value>6865</Value></Field>
+<Field Name="Field7" FieldName="{Customer.Last Year&apos;s Sales}"><FormattedValue>$70,000.50</FormattedValue><Value>70000.50</Value></Field>
+<Field Name="Field8" FieldName="{Customer.Country}"><FormattedValue>Thailand</FormattedValue><Value>Thailand</Value></Field>
+</Section>
+</Details>
+<GroupFooter>
+<Section SectionNumber="0">
+<Field Name="Field9" FieldName="Sum ({Customer.Last Year&apos;s Sales}, {Customer.Country})"><FormattedValue>$70,000.50</FormattedValue><Value>70000.50</Value></Field>
+<Text Name="Text9"><TextValue>Subtotal</TextValue>
+</Text>
+</Section>
+</GroupFooter>
+</Group>
+<ReportFooter>
+<Section SectionNumber="0">
+<Field Name="Field10" FieldName="Sum ({Customer.Last Year&apos;s Sales})"><FormattedValue>$522,853.64</FormattedValue><Value>522853.64</Value></Field>
+<Text Name="Text10"><TextValue>Grand Total</TextValue>
+</Text>
+</Section>
+</ReportFooter>
+</CrystalReport>
