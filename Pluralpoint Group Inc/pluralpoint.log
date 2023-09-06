@@ -1,0 +1,311 @@
+commit 46a94495281bb10d693fdd578bc253aa555c3a18
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Wed Mar 9 10:21:38 2022 -0800
+
+    Remove irrelevant files
+
+commit 1cbe2c42ef835e4e0f3efe8d4376b3201ef4d3d2
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Mar 8 15:40:53 2022 -0800
+
+    Backup for wage claim
+
+commit c3c94e4c8c32673b7bc45fdafbd0b0b3c52d9730
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Mon Nov 16 20:33:37 2020 -0800
+
+    backup
+
+commit 911acbf8e9302c84140ee8ad483d02fb9a87ac92
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 10 15:57:17 2020 -0800
+
+    bug fixes: update README.md
+
+commit e1d2f91f2e423906a6cf791efc3c992d3c10e2d3
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 23:15:34 2020 -0800
+
+    update: add function for migrating MariaDB, PostgreSQL with log, records, and dumps
+
+commit 2a4d7ad96c3b95e8bf8903047c11568e8ed08cd3
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 20:18:41 2020 -0800
+
+    update: add function for recording PostgreSQL & bug fixes
+
+commit a15cf8069f4005552d14604ed3f2ce711b8df717
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 16:11:05 2020 -0800
+
+    bug fixes
+
+commit 269d5874d2a2d7c3548ae853871e3127a721200d
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 16:08:10 2020 -0800
+
+    backup
+
+commit 3504eb4b963ad0166b35db26831489d93cacc976
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 16:07:29 2020 -0800
+
+    backup
+
+commit 8e529864da7177703a3a9983097ec06c3adef1d3
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 15:58:35 2020 -0800
+
+    backup
+
+commit c6b82497e45e2798c85b417dc7030d527b6cc548
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 15:56:35 2020 -0800
+
+    backup
+
+commit d5b9d82422d381b6842a6fc9b9dc6be0bb35781b
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 15:51:46 2020 -0800
+
+    update: add function, read dumpdirectory
+
+commit 9575ab9fa98c22bdc2b63c8312e5a9834199c021
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Nov 5 15:51:13 2020 -0800
+
+    update: add function check db connection; add function validate postgresql
+
+commit f7d16ec975c82c16cac44ae5ce47023a2cae682d
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Wed Nov 4 23:15:37 2020 -0800
+
+    bug fixes: time log, time calculation
+
+commit 4ddacbf1c2895366845c39491a9e689034e9fe08
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Wed Nov 4 15:13:51 2020 -0800
+
+    backup
+
+commit 609792e3978150fb2846c7c91ed9df94ef069a8a
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 3 20:09:11 2020 -0800
+
+    update code style against PEP8
+
+commit cd9538e9cb08cf5243a93fae747ff492da3ee4ec
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 3 19:35:31 2020 -0800
+
+    backup
+
+commit 40a1d63021f9bc2ec2a8783c01b7104e6112c982
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 3 19:32:39 2020 -0800
+
+    update: update README.md, update user input function
+
+commit 9219c96babfec8b3ea43ba97447f043f3f3bbeba
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 3 18:46:27 2020 -0800
+
+    update: add function: write records in log and json
+
+commit 964b8b509011a2a6765f44da186ffddc51c9649c
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 3 12:36:48 2020 -0800
+
+    update: make code base against coding style (PEP8)
+
+commit 135f49c86dda3d2bb4626659b85568d569e69747
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Tue Nov 3 08:33:24 2020 -0800
+
+    before update backup
+
+commit ec187044089aad64a9ac025500f4a8c81e0796c4
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Mon Nov 2 16:14:56 2020 -0800
+
+    update: add function: dump the sql files with logging status
+
+commit e08546566d369f590f72e59fd964a900fd9fbb87
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Nov 1 22:07:01 2020 -0800
+
+    update: add function: export dump files
+
+commit 0c2f1a96eacd23902b9bd40055270b7643b13027
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Nov 1 21:40:52 2020 -0800
+
+    update: add function: export dump file
+
+commit e4db26abefcc02b9d261884d5c7ad6a9638ace30
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Nov 1 21:06:13 2020 -0800
+
+    update: add function to postgresql: load settings json
+
+commit 75561952e6693bd53e6ad984f11007ec2744ecaf
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Nov 1 20:11:13 2020 -0800
+
+    update: add function to mssql: read settings json file
+
+commit eec07285de122c9522455d8ba8c3b50e01641edc
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Nov 1 00:27:12 2020 -0700
+
+    update: add function to read user settings file in json type
+
+commit d548d47f07bbc5ecd8b6351910fbb2bbedc8c83d
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 31 16:43:48 2020 -0700
+
+    try to fix load 4 bug
+
+commit c2e26dee4ca15960035eac1a34b9e3227ea6f0d3
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Oct 29 15:24:48 2020 -0700
+
+    final version before add new function
+
+commit c572604157900ce582d7a2f12b7cf27c58bf8c8d
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Mon Oct 26 18:32:29 2020 -0700
+
+    update .gitignore
+
+commit 7f4815d96fca018a0543ef7ddaa72dd953b92a77
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Mon Oct 26 18:21:33 2020 -0700
+
+    update: put README.txt in /programs
+
+commit 3acb5f6ba537df409b0224defa65edfcb6e8cbdd
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Mon Oct 26 17:07:38 2020 -0700
+
+    add function: output README.txt in different OS.
+
+commit 5659999dd151198699b7d805e6cb06d2ebc6fd90
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Oct 25 22:30:38 2020 -0700
+
+    bug fixes: exporting DBs to RDS successful
+
+commit 1dcc7373200a69eae2c1b5b6e1c27f5a31bfe385
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Oct 25 20:35:07 2020 -0700
+
+    update: add function calculate time consume
+
+commit 4ce11a9f214ffa32afb8a4ef828bad1e32567a65
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sun Oct 25 11:44:15 2020 -0700
+
+    upadte info
+
+commit c111d114fd0488504becc756f42399f7c44fa85f
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 21:19:51 2020 -0700
+
+    add function: ouput log
+
+commit b2cfe303cf02bfc7bdc754f5d3c5213a94b939a4
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 21:18:59 2020 -0700
+
+    add function: ouput log
+
+commit d11829802d9d1ed9ce8636a848c44d7fdded043c
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 20:51:59 2020 -0700
+
+    add function: log
+
+commit 12264577672cc6ed61cdab5abd4a3deda64777c4
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 20:24:16 2020 -0700
+
+    bug fixes: export DB to RDS successful
+
+commit 9add628ac2c766af721741876d9daac21e33919f
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 13:05:40 2020 -0700
+
+    create README.txt
+
+commit a474ec8f939a32726ab88c5d4c26ba0a8e3f44d1
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 01:31:28 2020 -0700
+
+    bug fixes: os.mkdir()
+
+commit 487db3be85ca10370a535ac28b86a391e060ab45
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Sat Oct 24 00:26:18 2020 -0700
+
+    bug fixes
+
+commit 5a7b183eb4a46fb60948451f936184c780da57f7
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Fri Oct 23 22:12:20 2020 -0700
+
+    redesign the directory structure
+
+commit 00e826c71ceaa28f8b3bf83d0b22e0040fc15a2e
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Fri Oct 23 21:04:43 2020 -0700
+
+    add function to mdb_ini_Generator.py for returning .mdb files name
+
+commit 4aa79afa707fe720866a834ef055836a47cd127a
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Fri Oct 23 20:47:56 2020 -0700
+
+    Packaging mdb_ini_Generator.py as Python project
+
+commit 2d66be00250dfec6ca47fb77b66ae6fdf71a8544
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Fri Oct 23 20:47:12 2020 -0700
+
+    Create mdb_ini_exe.py for executing mdb_ini_Generator.py
+
+commit 4892315e72b4f2d6ae1e92a983b4552bd8e15555
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Fri Oct 23 20:03:30 2020 -0700
+
+    edit .ini samples
+
+commit b192358dc1cba550b6ad5e420495dc5fe08e7d47
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Fri Oct 23 19:52:40 2020 -0700
+
+    add funtion to mdb_ini.py: add .txt to schema files
+
+commit d234920b3939197b4550cf7f6fe297262d0d5edb
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Thu Oct 22 15:28:17 2020 -0700
+
+    rename msa_ini.py to mdb_ini.py; update new functions, support MySQL, MSSQL, PostgreSQL
+
+commit 61a5edcaa12a20e6cc5666a47a17f8ff9d3c38b6
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Wed Oct 21 19:50:40 2020 -0700
+
+    rename .py
+
+commit 9fd1066c6ffd70998250c0fa5742c3649434e6e3
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Wed Oct 21 18:37:17 2020 -0700
+
+    add 3 .ini files
+
+commit 8a9661df11e44b232989463e474c4983741d3b5c
+Author: Zacks <Zacks.Shen@gmail.com>
+Date:   Wed Oct 21 18:34:12 2020 -0700
+
+    Init
